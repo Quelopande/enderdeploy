@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    box-sizing: border-box;
+    padding: 0;
+}
+body {
+    font-family: "Poppins", serif;
+    background-color: rgb(250, 250, 250);
+    --blue-light: #7492ff;
+    overflow-x: hidden;
+}
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--blue-light);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.menu a{
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    background: rgb(0, 0, 0);
+    padding: 10px 30px;
+    border-radius: 100px;
+}
+.allUsers{
+    overflow-x: auto;
+}
+table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    width: 100%;
+}
+table tr:first-child{
+    background-color: #c8d8ff;
+}
+table tr:hover{
+    background-color: #e1e1e1;
+    cursor: pointer;
+    transition: 0.1s all;
+}
+td, th {
+    border: 1px solid #8e8e8e;
+    text-align: left;
+    padding: 8px;
+}
+.private{
+    background-color: #000000;
+}
+.private:hover{
+    background-color: #ffffff;
+}

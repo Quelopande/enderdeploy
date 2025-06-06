@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Poppins", serif;
+    background-color: #ffffff;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+.wrapper {
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 25px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+.info-section {
+    background-color: var(--main);
+    color: #ffffff;
+    font-family: "Funnel Display", serif;
+    padding: 40px;
+    flex: 1;
+}
+.logo-image {
+    width: 60px;
+    height: auto;
+    margin-bottom: 20px;
+}
+.info-text {
+    font-size: 16px;
+    color: #d1d1e9;
+    margin-top: 20px;
+}
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.form-section {
+    padding: 40px;
+    flex: 1;
+    background-color: #ffffff;
+}
+h1 {
+    font-family: "Funnel Display", serif;
+    font-weight: 1000;
+    color: #414141;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #979797;
+    border-radius: 16px;
+    font-size: 16px;
+}
+.login-button {
+    background-color: var(--main);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    border-radius: 180px;
+    transition: background-color 0.3s, transform 0.3s ease;
+    box-shadow: 0 0 20px 0px var(--main-hover);
+    margin-top: 15px;
+    font-size: 16px;
+    width: 100%;
+}
+.login-button:hover {
+    background: var(--main-hover);
+    transform: translateY(-2px);
+}
+.register-link {
+    margin-top: 30px;
+    font-size: 14px;
+}
+.register-link a {
+    color: var(--main);
+    text-decoration: none;
+    font-weight: bold;
+}
+.register-link a:hover {
+    text-decoration: underline;
+}
+.container {
+    cursor: pointer;
+}  
+.container input {
+    display: none;
+}  
+.container svg {
+    overflow: visible;
+}  
+.path {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+    stroke-dasharray: 241 9999999;
+    stroke-dashoffset: 0;
+}  
+.container input:checked ~ svg .path {
+    stroke-dasharray: 70.5096664428711 9999999;
+    stroke-dashoffset: -262.2723388671875;
+}
+@media (max-width: 837px) {
+    .wrapper{
+        flex-direction: column;
+        margin: 10px;
+    }
+}

@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+body{
+    font-family: "Poppins", serif;
+    --blue-light: #7492ff;
+    overflow-x: hidden;
+    margin-left: -10px;
+    margin-right: -10px;
+    height: 100%;
+}
+nav .topbar{
+    display: flex;
+    position: fixed;
+    border-bottom: 2px solid #e1e1e1;
+    z-index: 90;
+    background-color: white;
+    width: 100%;
+    margin-left: 10px!important;
+    top: 0;
+    padding-top: 5px;
+}
+nav .topbar .logo{
+    display: flex;
+    border-right: solid 2px #e1e1e1;
+    margin-left: 15px;
+    padding-top: 10px;
+    margin-top: -10px;
+}
+nav .topbar .logo img{
+    height: 70px;
+    margin-left:0px;
+}
+nav .topbar .logo p{
+    font-size: 25px;
+    margin-top: 18px;
+    margin-left: 10px;
+    margin-right: 25px;
+}
+nav .topbar .updetails{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+nav .topbar .updetails p:nth-child(1){
+    margin: 0;
+    font-size: 13px;
+}
+nav .topbar .updetails p:nth-child(2){
+    font-size: 25px;
+    margin-top: 0px;
+}
+nav .sidebar {
+    height: 100%;
+    border-right: 2px solid #e1e1e1;
+    position: fixed;
+    margin-left: -10px;
+    width: 75px;
+    overflow: hidden;
+    transition: width 0.5s ease;
+    margin-top: 82px;
+}
+nav .sidebar:hover {
+    width: 226px;
+}
+nav .sidebar ul {
+    margin: 20px 10px;
+    padding: 0;
+}
+nav .sidebar li {
+    background-color: rgb(226, 226, 226);
+    margin: 10px -5px 10px 13px;
+    border-radius: 1000px;
+    display: flex;
+    align-items: center;
+}
+nav .sidebar li:hover{
+    background-color: rgb(203, 203, 203);
+    transition: all 0.5s;
+}
+nav .sidebar li i{
+    margin-left: 15px;
+}
+nav .sidebar a{
+    color: black;
+    text-decoration: none;
+}
+nav .sidebar a p {
+    margin-left: 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+nav .sidebar:hover a p {
+    opacity: 1;
+}
+nav .sidebar .selected{
+    background-color: #3142c4;
+    color: white;
+    font-weight: 300;
+}
+nav .sidebar .selected:hover{
+    background-color: #3142c4;
+    cursor:no-drop;
+}
+.separate {
+    transition: all 0.5s ease;
+    margin-right: 45px;
+}
+@media (max-width: 837px) {
+    nav .topbar .logo img{height: 42px;}
+    nav .topbar .logo p{font-size: 18px;margin-top: 10px;}
+    nav .topbar .updetails p:nth-child(1){font-size: 9px;}
+    nav .topbar .updetails p:nth-child(2){font-size: 18px;}
+}

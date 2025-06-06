@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    box-sizing: border-box;
+    padding: 0;
+}
+body {
+    font-family: "Poppins", serif;
+    background-color: rgb(250, 250, 250);
+    --blue-light: #7492ff;
+    overflow-x: hidden;
+}
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--blue-light);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.menu a{
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    background: rgb(0, 0, 0);
+    padding: 10px 30px;
+    border-radius: 100px;
+}
+.tickets{
+    display: grid;
+    font-weight: 500;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 407px));
+    justify-content: space-around;
+}
+.ticket{
+    position: relative;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.123);
+    display: flex;
+    border-radius: 26px;
+    flex-direction: column;
+    margin-top: 6%;
+    color: rgb(30, 30, 30);
+}
+.ticket h2,p{
+    margin: 20px;
+    word-wrap: break-word;
+}
+.ticket .status {
+    background-color: #bbe8c8;
+    border-radius: 20px;
+    position: absolute;
+    color: #188038;
+    padding: 5px 10px;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+    margin: 10px;
+    right: 0;
+}
+.noResponse{
+    background-color: rgb(158, 0, 0);
+    color: white;
+    font-weight: 400;
+    text-align: center;
+}

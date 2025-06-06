@@ -1,0 +1,49 @@
+nav .sidebar {
+    margin-top: -10px !important;
+}
+.serverStatus{
+    background-color: #bbe8c8;
+    margin-top: 100px;
+    padding: 15px;
+    border-radius: 20px;
+    color: #188038;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+}
+.containers .container{
+    background-color: rgba(0, 0, 0, 0.123);
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 20px;
+    display: block;
+}
+.containers .container:hover{
+    background-color: rgba(0, 0, 0, 0.187);
+    cursor: pointer;
+    color: rgb(30, 30, 30);
+}
+.containers .container:active{
+    background-color: rgba(0, 0, 0, 0.248);
+}
+.containers .container h2{
+    font-weight: 400;
+    color: black !important;
+}
+.containers .container h3{
+    font-weight: 400;
+    color: rgb(48, 48, 48);
+}
+.containers .container h2 i{
+    background-color: rgba(42, 42, 42, 0.176);
+    padding: 10px 12px;
+    border-radius: 100px;
+}
+.containers a{
+    text-decoration: none;
+    color: rgb(48, 48, 48);
+}
+@media (max-width: 837px) {
+    nav .sidebar {margin-top: -35px !important;}
+}

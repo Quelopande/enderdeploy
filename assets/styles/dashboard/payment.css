@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    box-sizing: border-box;
+    padding: 0;
+}
+body {
+    font-family: "Poppins", serif;
+    background-color: rgb(250, 250, 250);
+    --blue-light: #7492ff;
+    overflow-x: hidden;
+}
+h1{
+    font-family: "Funnel Display", sans-serif;
+    font-size: 70px;
+    background-color: var(--bg-theme-page);
+    padding: 20px;
+    color: var(--txt-theme-page);
+    font-weight: 800;
+    text-align: center;
+    margin-top: 1rem;
+}
+p{
+    font-size: 27px;
+    color: #2b2b2b;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 1rem;
+}
+a{
+    text-decoration: none;
+    color: #2b2b2b;
+    border: solid 1px #2b2b2b;
+    padding: 20px 70px;
+    border-radius: 1000px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    display: block;
+    text-align: center;
+}
+a:hover{
+    background-color: #2b2b2b;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+@media (max-width: 837px) {
+    h1{
+        font-size: 50px;
+    }
+    p{
+        font-size: 20px;
+    }
+    div{
+        flex-direction: column !important;
+    }
+}
