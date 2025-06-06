@@ -3,8 +3,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody) {
-    $smtpPassword = getenv('smtpPassword');
     require_once 'vendor/autoload.php';
+    $smtpPassword = $_ENV['smtpPassword'];
 
     $mail = new PHPMailer(true);
 

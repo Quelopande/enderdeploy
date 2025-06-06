@@ -57,8 +57,7 @@ $planes = [
     ],
 ];
 
-$stripeSecret = getenv('stripeSecret');
-$stripeSecret = "sk_test_51R5XoZGdjC2d4P7WcAD9XeSe6wrrmQHP2LLNS21CZUzDGoghfOHYO3sDhcLDh2R62AZ7h6ouPPocKfMQqiQwVW0U00DWtQR1CC";
+$stripeSecret = $_ENV['stripeSecret'];
 \Stripe\Stripe::setApiKey($stripeSecret);
 $billingPortalSessionLink = \Stripe\BillingPortal\Session::create([
     'customer' => $result['stripeCustomerId'],

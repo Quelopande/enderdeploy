@@ -1,4 +1,5 @@
-<?phpini_set('session.cookie_secure', 1);
+<?php
+ini_set('session.cookie_secure', 1);
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_samesite', 'Strict');
 session_start();
@@ -13,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $code= mt_rand(211111,999999);
   require '../vendor/autoload.php';
 
-  \Stripe\Stripe::setApiKey('sk_test_tu_clave_secreta');
+  \Stripe\Stripe::setApiKey('' . $_ENV['stripeSecret'] . '');
   
   $errors = '';
 
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $errors .= '¡Este email está en uso! Si crees que es un error contacta con soporte.';
     }
 
-    $pepper = getenv('pepper');
+    $pepper = $_ENV['pepper'];
     $salt = openssl_random_pseudo_bytes(32);
     $passPepper = $password . $pepper . $salt;
     $hash = password_hash($passPepper, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -83,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userStatement = $connection->prepare('UPDATE users SET stripeId = :stripeId WHERE id = :userId');
     $userStatement->execute(array(':stripeId' => $stripeId, ':userId' => $id));
     function encryptCookie($data) {
-      $encryptionKey = getenv('cookieEncryptKey');
+      $encryptionKey = $_ENV['cookieEncryptKey'];
       $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-gcm'));
       $ciphertext = openssl_encrypt($data, 'aes-256-gcm', $encryptionKey, 0, $iv, $tag);
       return base64_encode($iv . $tag . $ciphertext);

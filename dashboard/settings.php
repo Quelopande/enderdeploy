@@ -6,6 +6,7 @@ session_start();
 $id = $_SESSION['id'];
 
 require '../connection.php';
+require_once '../vendor/autoload.php';
 require_once '../GoogleAuthenticator.php';
 $ga = new PHPGangsta_GoogleAuthenticator();
 
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newPassword = trim($_POST['newPassword']);
         $newPassword2 = trim($_POST['newPassword2']);
         $password = $result['password'];
-        $pepper = getenv('pepper');
+        $pepper = $_ENV['pepper'];
         
         if (empty($actualPassword) || empty($newPassword) || empty($newPassword2)) {
             $passErrors .= '<p style="border: solid 1px #8d0000;background: #ad00005c;color: #8d0000;padding:10px;border-radius:20px;display:block;">Rellena todos los campos.</p>';

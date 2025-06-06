@@ -4,16 +4,17 @@ ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_samesite', 'Strict');
 session_start();
 $errors = '';
+require '../vendor/autoload.php';
 
 function encryptCookie($data) {
-    $cookieEncryptKey = getenv('cookieEncryptKey');
+    $cookieEncryptKey = $_ENV['cookieEncryptKey'];
     $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-gcm'));
     $ciphertext = openssl_encrypt($data, 'aes-256-gcm', $cookieEncryptKey, 0, $iv, $tag);
     return base64_encode($iv . $tag . $ciphertext);
 }
 
 function decryptCookie($data) {
-    $cookieEncryptKey = getenv('cookieEncryptKey');
+    $cookieEncryptKey = $_ENV['cookieEncryptKey'];
     $data = base64_decode($data);
     $iv_length = openssl_cipher_iv_length('aes-256-gcm');
     $iv = substr($data, 0, $iv_length);
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors .= '<div class="alert alert-danger d-flex align-items-center" role="alert">Email account not found.</div>';
         } else {
             $id = $result['id'];
-            $pepper = getenv('pepper');
+            $pepper = $_ENV['pepper'];
             $passPepper = $password . $pepper . $result['salt'];
 
             if (!password_verify($passPepper, $result['password'])) {

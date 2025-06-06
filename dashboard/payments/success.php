@@ -2,7 +2,7 @@
 require '../../vendor/autoload.php';
 require '../../connection.php';
 
-$stripeSecret = getenv('stripeSecret');
+$stripeSecret = $_ENV['stripeSecret'];
 \Stripe\Stripe::setApiKey($stripeSecret);
 
 if (!isset($_GET['session_id'])) {
