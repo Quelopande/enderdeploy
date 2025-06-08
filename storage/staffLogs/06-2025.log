@@ -1,0 +1,19 @@
+{
+    "roles": [
+      {
+        "action": "roleModified",
+        "staffId": 1,
+        "staffIp": "0.0.0.0",
+        "affectedRole": "1",
+        "newPerms": {
+            "VIEW_STAFF_PANEL": 1
+        }
+      },
+      {
+        "action": "roleCreated",
+        "staffId": 1,
+        "staffIp": "0.0.0.0",
+        "newRole": "1"
+      }
+    ]
+}
