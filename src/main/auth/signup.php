@@ -3,7 +3,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $password = strtolower($_POST['password']);
   $email = filter_var(strtolower($_POST['email']), FILTER_SANITIZE_EMAIL);
   $password2 = trim($_POST['password2']);
-  $rank = 'user';
+  $role = '-1';
   $status = 'notverified';
   $code= mt_rand(211111,999999);
 
@@ -44,13 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if ($errors === '') {
-    $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, code, status) VALUES (NULL, :email, :password, :salt, :code, :status)');
+    $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, code, status, role) VALUES (NULL, :email, :password, :salt, :code, :status, :role)');
     $statement->execute(array(
       ':email' => $email,
       ':password' => $hash,
       ':code' => $code,
       ':status' => $status,
       ':salt' => $salt,
+      ':role' => $role
     ));
     $newUserId = $connection->lastInsertId();
 
