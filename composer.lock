@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e1b90f06aad0dad02bad5beb1454eb7",
+    "content-hash": "d5084b18c97e9e35ad4f2f2abe62892e",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -223,6 +223,57 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "sebastiandevs/simplethenticator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/poetter-sebastian/SimpleThenticator.git",
+                "reference": "6f7b341221e16be3d27d2caed7f049892b13abee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/poetter-sebastian/SimpleThenticator/zipball/6f7b341221e16be3d27d2caed7f049892b13abee",
+                "reference": "6f7b341221e16be3d27d2caed7f049892b13abee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "src\\": "src/SimpleAuthenticator.php"
+                },
+                "classmap": [
+                    "src/SimpleAuthenticator.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Poetter"
+                }
+            ],
+            "description": "TOTP based on https://github.com/PHPGangsta/GoogleAuthenticator updated and reworked to php8.2 because of inactivity of the original creator.",
+            "homepage": "https://poetter-sebastian.github.io/",
+            "keywords": [
+                "2 factor authenticator library",
+                "2fa",
+                "totp"
+            ],
+            "support": {
+                "issues": "https://github.com/poetter-sebastian/SimpleThenticator/issues",
+                "source": "https://github.com/poetter-sebastian/SimpleThenticator"
+            },
+            "time": "2023-12-14T12:16:30+00:00"
         },
         {
             "name": "stripe/stripe-php",
