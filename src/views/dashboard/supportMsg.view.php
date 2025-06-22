@@ -28,7 +28,7 @@
     <main class="separate">
         <section class="top separate">
             <a class="btn" href="/dashboard/support"><i class="fa-solid fa-circle-left"></i> Atrás</a>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?msg=' . $messageId); ?>" method="post">
+            <form action="<?php echo htmlspecialchars('/dashboard/supportMsg?msg=' . $messageId); ?>" method="post">
                 <button id="answerDelete" name="answerDelete" class="btn"><i class="fa-solid fa-hexagon-xmark"></i> Cerrar ticket</button>
             </form>
         </section>
