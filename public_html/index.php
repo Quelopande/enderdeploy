@@ -1,7 +1,7 @@
 <?php
 ini_set('session.cookie_secure', 1);
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.cookie_samesite', 'Lax');
 session_start();
 define('APP_ROOT', __DIR__ . '/../');
 
@@ -27,45 +27,43 @@ if ($path === '/') {
     }
 }
 
-if (strpos($path, '/dashboard/') === 0) {
+if (strpos($path, '/dashboard') === 0) {
     $subpath = substr($path, strlen('/dashboard/'));
-    if (empty($subpath)) {
-        header("Location: /dashboard/index.php", true, 302); // Default page
-        exit();
-    }
     $target_file = APP_ROOT . 'src/main/dashboard/' . $subpath . '.php';
+
+    require_once APP_ROOT . 'src/config/connection.php';
+    $id = $_SESSION['id'];
     if (file_exists($target_file)) {
-        $id = $_SESSION['id'];
-        require_once APP_ROOT . 'src/config/connection.php';
         require_once $target_file;
+        exit();
+    } else if ($subpath === 'index' || $subpath === '') {
+        require_once APP_ROOT . 'src/main/dashboard/index.php';
         exit();
     }
 }
 
-if (strpos($path, '/auth/') === 0) {
+if (strpos($path, '/auth') === 0) {
     $subpath = substr($path, strlen('/auth/'));
-    if (empty($subpath)) {
-        header("Location: /auth/signin", true, 302); // Default page
-        exit();
-    }
     $target_file = APP_ROOT . 'src/main/auth/' . $subpath . '.php';
     if (file_exists($target_file)) {
         require_once $target_file;
         exit();
+    } else{
+        require_once APP_ROOT . 'src/main/auth/signin.php';
+        exit();
     }
 }
 
-if (strpos($path, '/staffpanel/') === 0) {
+if (strpos($path, '/staffpanel') === 0) {
     $subpath = substr($path, strlen('/staffpanel/'));
-    if (empty($subpath)) {
-        header("Location: /staffpanel/signin", true, 302); // Default page
-        exit();
-    }
     $target_file = APP_ROOT . 'src/main/staffpanel/' . $subpath . '.php';
     if (file_exists($target_file)) {
         $id = $_SESSION['id'];
         require_once APP_ROOT . 'src/config/connection.php';
         require_once $target_file;
+        exit();
+    } else{
+        require_once APP_ROOT . 'src/main/staffpanel/index.php';
         exit();
     }
 }
