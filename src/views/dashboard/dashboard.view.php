@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>

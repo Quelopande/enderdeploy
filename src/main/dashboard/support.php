@@ -25,7 +25,7 @@ $messagesStatement->execute(array(':userId' => $id));
 $messages = $messagesStatement->fetchAll();
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/support.view.php';
+    require_once APP_ROOT . 'src/views/dashboard/support.view.php';
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

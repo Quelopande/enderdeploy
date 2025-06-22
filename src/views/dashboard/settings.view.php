@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
@@ -25,7 +25,7 @@
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet"/>
 </head>
 <body data-page-id="5">
-    <?php require "menutemplate.view.php";?>
+    <?php require APP_ROOT . 'src/views/dashboard/menutemplate.view.php';?>
     <main class="separate">
         <div class="serverStatus separate"><i class="fa-solid fa-leaf"></i> Todos nuestros servicios estan funcionales, disfruta sin problemas</div>
         <?php
@@ -60,7 +60,7 @@
                     <div id="contenteditable" contenteditable="false"><?php echo callForData('users', 'user', true) . " " . callForData('users', 'secondName', false) . " " . callForData('users', 'lastName', true) . " " . callForData('users', 'secondLastName', false)?></div>
                 </div>
             </div>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="POST">
                 <div class="firstInfo">
                     <div>
                         <label for="name">Nombre <span class="asterisk">*</span></label>
@@ -93,33 +93,33 @@
         </section>
         <section class="separate">
             <h1>Detalles Avanzados del Usuario</h1>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="POST">
                 <div class="secondInfo">
                     <label for="organization">Organización</label><br>
-                    <input type="text" id="organization" name="organization" value="<?php echo callForData('userslocation', 'organization', false); ?>">
+                    <input type="text" id="organization" name="organization" value="<?php echo callForData('usersLocation', 'organization', false); ?>">
                 </div>
                 <div class="firstInfo">
                     <div>
                         <label for="country">País <span class="asterisk">*</span></label>
-                        <input type="text" id="country" name="country" required value="<?php echo callForData('userslocation', 'country', true); ?>">
+                        <input type="text" id="country" name="country" required value="<?php echo callForData('usersLocation', 'country', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="state">Estado / Región / Provincia <span class="asterisk">*</span></label>
-                        <input type="text" id="state" name="state" required value="<?php echo callForData('userslocation', 'state', true); ?>">
+                        <input type="text" id="state" name="state" required value="<?php echo callForData('usersLocation', 'state', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="zipCode">Código postal <span class="asterisk">*</span></label>
-                        <input type="text" id="zipCode" name="zipCode" required min="0" max="99999" value="<?php echo callForData('userslocation', 'zipCode', true); ?>">
+                        <input type="text" id="zipCode" name="zipCode" required min="0" max="99999" value="<?php echo callForData('usersLocation', 'zipCode', true); ?>">
                     </div>
                 </div>
                 <div class="firstInfo">
                     <div>
                         <label for="city">Ciudad <span class="asterisk">*</span></label>
-                        <input type="text" id="city" name="city" required value="<?php echo callForData('userslocation', 'city', true); ?>">
+                        <input type="text" id="city" name="city" required value="<?php echo callForData('usersLocation', 'city', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="domicile">Domicilio <span class="asterisk">*</span></label>
-                        <input type="text" id="domicile" name="domicile" required value="<?php echo callForData('userslocation', 'domicile', true); ?>">
+                        <input type="text" id="domicile" name="domicile" required value="<?php echo callForData('usersLocation', 'domicile', true); ?>">
                     </div>
                 </div>
                 <?php if(!empty($secondUsersErrors)): ?>
@@ -132,7 +132,7 @@
         </section>
         <section class="separate">
             <h1><i class="fa-solid fa-shield"></i> Seguridad</h1>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="POST">
                 <div class="firstInfo">
                     <div>
                         <label for="actualPassword">Contraseña Actual <span class="asterisk">*</span></label>
@@ -190,7 +190,7 @@
     </main>
     <?php if($result['role'] != '-1') : ?>
     <div class="modal" id="modal">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="post">
             <h1 style="font-size: 35px;">Crear ticket</h1>
             <div>
                 <p>Escanea el código QR en tu aplicación <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Google authenticator</a>, <a href="https://support.microsoft.com/es-es/account-billing/descargar-microsoft-authenticator-351498fc-850a-45da-b7b6-27e523b8702a">Microsoft authenticator</a>, <a href="https://getaegis.app/">Aegis authenticator (Android)</a> y <a href="https://www.authy.com/">Authy authenticator (recomendado IOS)</a></p>

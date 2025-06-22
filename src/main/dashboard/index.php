@@ -5,7 +5,7 @@ $result = $statement->fetch();
 
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/dashboard.view.php';
+    require_once APP_ROOT . 'src/views/dashboard/dashboard.view.php';
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

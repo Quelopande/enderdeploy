@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
@@ -24,7 +24,7 @@
     <script src="/assets/js/menu.js" defer></script>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet"/>
 </head>
-<body data-page-id="2">
+<body data-page-id="4">
     <?php require "menutemplate.view.php";?>
     <main class="separate">
         <div class="serverStatus separate"><i class="fa-solid fa-leaf"></i> Todos nuestros servicios estan funcionales, disfruta sin problemas</div>
@@ -47,7 +47,7 @@
         <?php endif; ?>	
     </main>
     <div class="modal" id="modal">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <form action="<?php echo htmlspecialchars('/dashboard/services'); ?>" method="post">
             <h1>Crear servicio</h1>
             <div class="first">
                 <input type="text" name="serviceName" id="serviceName" required>

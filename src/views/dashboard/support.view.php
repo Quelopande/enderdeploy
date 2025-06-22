@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
@@ -45,7 +45,7 @@
         </div>
     </main>
     <div class="modal" id="modal">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <form action="<?php echo htmlspecialchars('/dashboard/support'); ?>" method="post">
             <h1>Crear ticket</h1>
             <div>
                 <label for="title">Título</label><br>

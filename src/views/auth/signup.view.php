@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Registro"/>
     <meta property="og:description" content="EnderDeploy es una plataforma avanzada de despliegue de aplicaciones SaaS y administración de infraestructura como servicio (IaaS), diseñada para optimizar la implementación y gestión de soluciones tecnológicas. Desarrollada por EnderHosting, proporciona un entorno flexible y escalable para facilitar el crecimiento de tu empresa."/>
@@ -37,11 +37,7 @@
         </div>
         <div class="form-section">
             <h1>Regístrate</h1>
-            <form  action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" id="usuario-form" validate>
-                <div class="form-group">
-                    <label for="user">Nombre de usuario:</label>
-                    <input type="text" name="user" id="user" class="input-text" placeholder="Ingresa un nombre de usuario" required maxlength="21">
-                </div>
+            <form  action="<?php echo htmlspecialchars('/auth/signup'); ?>" method="POST" id="usuario-form" validate>
                 <div class="form-group">
                     <label for="email">Correo:</label>
                     <input type="email" name="email" id="email" class="input-text" placeholder="Ingresa tu correo" required maxlength="254">
@@ -56,10 +52,10 @@
                 <label class="container">
                     <input type="checkbox" required name="agree">
                     <svg viewBox="0 0 64 64" height="20px" width="20px"><path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path></svg>
-                    He leído y acepto los <a href="/terms" target="_blank">Términos de Servicio</a> y la <a href="/privacy" target="_blank">Política de Privacidad</a>.
+                    <p>He leído y acepto los <a href="/terms" target="_blank">Términos de Servicio</a> y la <a href="/privacy" target="_blank">Política de Privacidad</a>.</p>
                 </label>
                 <?php if(!empty($errors)): ?>
-				<div>
+				<div style="color: red; margin-bottom: 10px;">
 					<ul>
 						<?php echo $errors; ?>
 					</ul>

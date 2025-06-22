@@ -1,7 +1,7 @@
 <?php 
 $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
-$statement->execute(array(':id' => $id));
-$result = $statement->fetch();
+$statement->execute([':id' => $id]);
+$result = $statement->fetch(PDO::FETCH_ASSOC);
 $serviceErrors = [];
 
 $planes = [
@@ -52,7 +52,7 @@ $stripeSecret = $_ENV['stripeSecret'];
 \Stripe\Stripe::setApiKey($stripeSecret);
 $billingPortalSessionLink = \Stripe\BillingPortal\Session::create([
     'customer' => $result['stripeCustomerId'],
-    'return_url' => 'https://enderdeploy.space/dashboard/services',
+    'return_url' => 'https://www.rendercores.com/dashboard/services',
 ]);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'quantity' => 1,
             ]],
             'mode' => 'subscription',
-            'success_url' => 'http://enderdeploy.space/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => 'https://enderdeploy.space/dashboard/services',
+            'success_url' => 'http://rendercores.com/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'https://rendercores.com/dashboard/services',
             'metadata' => [
                 'userId' => $id,
                 'serviceName' => $serviceName,
@@ -105,7 +105,7 @@ $subscriptionsStatement->execute(array(':userId' => $id));
 $subscriptions = $subscriptionsStatement->fetchAll();
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/services.view.php';
+    require_once APP_ROOT . 'src/views/dashboard/services.view.php';
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

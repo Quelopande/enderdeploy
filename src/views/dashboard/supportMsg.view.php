@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
@@ -51,7 +51,7 @@
                     <p><?php echo $answer['message'];?></p>
                 </div>
             <?php endforeach; ?>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?msg=' . $messageId); ?>" method="post">
+            <form action="<?php echo htmlspecialchars('/dashboard/supportMsg?msg=' . $messageId); ?>" method="post">
                 <input type="text" name="postAnswer" id="postAnswer" required placeholder="Respuesta">
                 <button type="submit" name="answerInsert" id="answerInsert">Enviar</button>
                 <p style="margin-left: 20px;"><b>Alerta:</b> Los mensajes no se pueden borrar.</p>

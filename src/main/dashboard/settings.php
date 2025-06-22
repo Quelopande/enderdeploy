@@ -1,13 +1,14 @@
 <?php
-require_once APP_ROOT . 'src/classes/GoogleAuthenticator.php';
-$ga = new PHPGangsta_GoogleAuthenticator();
+use SebastianDevs\SimpleAuthenticator;
+require_once APP_ROOT . 'src/classes/SimpleAuthenticator.php';
+$auth = new SimpleAuthenticator(6, 'SHA1');
 
 $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
 $statement->execute(array(':id' => $id));
 $result = $statement->fetch();
 $id = $result['id'];
 $userEmail = $result['email'];
-$secret = $ga->createSecret();
+$secret = $auth->createSecret();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     function checksimilarity($oldData, $newData) {
@@ -130,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hexIv = bin2hex($iv);
             $hexTag = bin2hex($tag);
 
-            if ($ga->verifyCode($secret, $_POST['totpCode'], 2)) {
+            if ($auth->verifyCode($secret, $_POST['totpCode'], 2)) {
                 $statement = $connection->prepare('INSERT INTO usersTotp (id, totpSecret, totpKey, totpIv, totpTag) VALUES (:id, :totpSecret, :totpKey, :totpIv, :totpTag) ON DUPLICATE KEY UPDATE totpSecret = :totpSecret, totpKey = :totpKey, totpIv = :totpIv, totpTag = :totpTag');
                 if ($statement->execute([
                     ':id' => $id,
@@ -153,23 +154,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 if (isset($_SESSION['tempTotpSecret'])) {
-    $totpStatement = $connection->prepare('SELECT * FROM userstotp WHERE id = :id LIMIT 1');
+    $totpStatement = $connection->prepare('SELECT * FROM usersTotp WHERE id = :id LIMIT 1');
     $totpStatement->execute([':id' => $id]);
     $totpResult = $totpStatement->fetch();
 
     if (!$totpResult) {
         $secret = $_SESSION['tempTotpSecret'];
-        $qrCodeUrl = $ga->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
+        $qrCodeUrl = $auth->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
     }
 } else {
-    $secret = $ga->createSecret();
+    $secret = $auth->createSecret();
     $_SESSION['tempTotpSecret'] = $secret;
-    $qrCodeUrl = $ga->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
+    $qrCodeUrl = $auth->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
 }
 
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/settings.view.php';
+    require_once APP_ROOT . 'src/views/dashboard/settings.view.php';
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

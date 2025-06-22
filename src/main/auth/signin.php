@@ -27,17 +27,14 @@ if (isset($_COOKIE['id'])) {
     }
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = htmlspecialchars(strtolower(trim($_POST['email'])), ENT_QUOTES, 'UTF-8');
     $password = trim($_POST['password']);
-    
 
     if (empty($email) || empty($password)) {
         $errors .= '<div class="alert alert-danger d-flex align-items-center" role="alert">Please, fill the gaps.</div>';
     } else {
-    require_once APP_ROOT . 'src/config/connection.php';
-
+        require_once APP_ROOT . 'src/config/connection.php';
         $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
         $statement->execute([':email' => $email]);
         $result = $statement->fetch();
@@ -59,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $encryptedCookieValue = encryptCookie($id);
         setcookie('id', $encryptedCookieValue, time() + 3 * 24 * 60 * 60, '/', '', true, true); // 15 days cookie
         $_SESSION['id'] = $id;
-        header("Location: /");
+        header("Location: /dashboard/");
         exit;
     }
 }

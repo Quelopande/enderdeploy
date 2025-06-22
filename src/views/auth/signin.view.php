@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©EnderHosting"/>
+    <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Inicio de sesión"/>
     <meta property="og:description" content="EnderDeploy es una plataforma avanzada de despliegue de aplicaciones SaaS y administración de infraestructura como servicio (IaaS), diseñada para optimizar la implementación y gestión de soluciones tecnológicas. Desarrollada por EnderHosting, proporciona un entorno flexible y escalable para facilitar el crecimiento de tu empresa."/>
@@ -37,7 +37,7 @@
         </div>
         <div class="form-section">
             <h1>Inicio de Sesión</h1>
-            <form  action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" id="usuario-form" validate>
+            <form  action="<?php echo htmlspecialchars('/auth/signin'); ?>" method="POST" id="usuario-form" validate>
                 <div class="form-group">
                     <label for="email">Correo:</label>
                     <input type="email" name="email" id="email" class="input-text" placeholder="Ingresa tu correo" required maxlength="254">
