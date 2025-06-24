@@ -1,7 +1,9 @@
 <?php
 ini_set('session.cookie_secure', 1);
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Lax');
+ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.use_strict_mode', 1);
+ini_set('session.use_only_cookies', 1);
 session_start();
 define('APP_ROOT', __DIR__ . '/../');
 
@@ -9,6 +11,11 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
 require_once APP_ROOT . 'vendor/autoload.php';
+
+ini_set('display_errors', 0); // Disable error display in production
+ini_set('log_errors', 1);
+ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
+error_reporting(E_ALL);
 
 use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(APP_ROOT);
@@ -54,16 +61,17 @@ if (strpos($path, '/auth') === 0) {
     }
 }
 
-if (strpos($path, '/staffpanel') === 0) {
-    $subpath = substr($path, strlen('/staffpanel/'));
-    $target_file = APP_ROOT . 'src/main/staffpanel/' . $subpath . '.php';
+if (strpos($path, '/staffPanel') === 0) {
+    // staffPanel === Works | staffpanel === Doesn't work
+    $subpath = substr($path, strlen('/staffPanel/'));
+    $target_file = APP_ROOT . 'src/main/staffPanel/' . $subpath . '.php';
+    require_once APP_ROOT . 'src/config/connection.php';
+    $id = $_SESSION['id'];
     if (file_exists($target_file)) {
-        $id = $_SESSION['id'];
-        require_once APP_ROOT . 'src/config/connection.php';
         require_once $target_file;
         exit();
     } else{
-        require_once APP_ROOT . 'src/main/staffpanel/index.php';
+        require_once APP_ROOT . 'src/main/staffPanel/index.php';
         exit();
     }
 }
