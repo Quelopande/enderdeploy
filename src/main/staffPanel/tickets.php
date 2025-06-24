@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
         $roleStatement->execute(array(':roleId' => $roleId));
         $roleResult = $roleStatement->fetch();
         if ($roleResult['ticket'] == '1') {
-            $messagesStatement = $connection->prepare('SELECT * FROM helpbody');
+            $messagesStatement = $connection->prepare('SELECT * FROM helpBody');
             $messagesStatement->execute();
             $messages = $messagesStatement->fetchAll();
             require_once APP_ROOT . 'src/views/staffPanel/tickets.view.php';

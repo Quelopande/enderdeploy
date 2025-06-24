@@ -1,25 +1,36 @@
 <?php
+$errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $password = strtolower($_POST['password']);
-  $email = filter_var(strtolower($_POST['email']), FILTER_SANITIZE_EMAIL);
-  $password2 = trim($_POST['password2']);
+  $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+  $password = $_POST['password'] ?? '';
+  $password2 = $_POST['password2'] ?? '';
+  $agree = isset($_POST['agree']);
+  $email = strtolower($email);
   $role = '-1';
   $status = 'notverified';
-  $code= mt_rand(211111,999999);
+  $code = mt_rand(211111, 999999);
 
-  \Stripe\Stripe::setApiKey('' . $_ENV['stripeSecret'] . '');
-  
-  $errors = '';
+  $pepper = $_ENV['pepper'] ?? ''; // Ensure this env var exists and is set
 
   if (empty($password) || empty($email) || empty($password2)) {
-    $errors .= 'Rellena todo el formulario.';
-  } else if (strlen($password) < 8) {
-    $errors .= 'La contraseña debe tener 8 carácteres o más';
-  } else if (strlen($email) > 254) {
-    $errors .= '¡Este dirección de correo es muy larga! Inserta un correo 254 carácteres o menos.';
-  } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors .= 'Correo electrónico no valido.';
-  } else {
+    $errors[] = 'Rellena todo el formulario.';
+  }
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors[] = 'Correo electrónico no válido.';
+  }
+  if (strlen($email) > 254) {
+    $errors[] = '¡Esta dirección de correo es muy larga! Inserta un correo de 254 caracteres o menos.';
+  }
+  if (strlen($password) < 8) {
+    $errors[] = 'La contraseña debe tener 8 caracteres o más.';
+  }
+  if ($password !== $password2) {
+    $errors[] = 'Las contraseñas no coinciden.';
+  }
+  if (!$agree) {
+    $errors[] = 'Debes aceptar la política de privacidad y los términos y condiciones para registrarte.';
+  }
+  if (empty($errors)) {
     require_once APP_ROOT . 'src/config/connection.php';
     $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
     $statement->execute(array(':email' => $email));
@@ -44,42 +55,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if ($errors === '') {
-    $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, code, status, role) VALUES (NULL, :email, :password, :salt, :code, :status, :role)');
-    $statement->execute(array(
-      ':email' => $email,
-      ':password' => $hash,
-      ':code' => $code,
-      ':status' => $status,
-      ':salt' => $salt,
-      ':role' => $role
-    ));
-    $newUserId = $connection->lastInsertId();
+    try{
+      $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, code, status, role) VALUES (NULL, :email, :password, :salt, :code, :status, :role)');
+      $statement->execute(array(
+        ':email' => $email,
+        ':password' => $hash,
+        ':code' => $code,
+        ':status' => $status,
+        ':salt' => $salt,
+        ':role' => $role
+      ));
+      $newUserId = $connection->lastInsertId();
 
-    $customer = \Stripe\Customer::create([
-      'name' => (string)$newUserId,
-      'email' => $email,
-      'metadata' => [
-        'userId' => $newUserId
-      ],
-    ]);
-    $stripeCustomerId = $customer->id;
-    $userStatement = $connection->prepare('UPDATE users SET stripeCustomerId = :stripeCustomerId WHERE id = :userId');
-    $userStatement->execute(array(
-      ':stripeCustomerId' => $stripeCustomerId,
-      ':userId' => $newUserId
-    ));
+      $customer = \Stripe\Customer::create([
+        'name' => (string)$newUserId,
+        'email' => $email,
+        'metadata' => [
+          'userId' => $newUserId
+        ],
+      ]);
+      $stripeCustomerId = $customer->id;
+      $userStatement = $connection->prepare('UPDATE users SET stripeCustomerId = :stripeCustomerId WHERE id = :userId');
+      $userStatement->execute(array(
+        ':stripeCustomerId' => $stripeCustomerId,
+        ':userId' => $newUserId
+      ));
 
-    function encryptCookie($data) {
-      $encryptionKey = $_ENV['cookieEncryptKey'];
-      $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-gcm'));
-      $ciphertext = openssl_encrypt($data, 'aes-256-gcm', $encryptionKey, 0, $iv, $tag);
-      return base64_encode($iv . $tag . $ciphertext);
+      $userLocationstatement = $connection->prepare('INSERT INTO usersLocation (userId) VALUES (:userId)');
+      $userLocationstatement->execute(array(
+        ':userId' => $newUserId
+      ));
+
+      function encryptCookie($data) {
+        $encryptionKey = $_ENV['cookieEncryptKey'];
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-gcm'));
+        $ciphertext = openssl_encrypt($data, 'aes-256-gcm', $encryptionKey, 0, $iv, $tag);
+        return base64_encode($iv . $tag . $ciphertext);
+      }
+      $encryptedCookieValue = encryptCookie($newUserId);
+
+      setcookie('user', $encryptedCookieValue, time() + 15 * 24 * 60 * 60, '/', '', true, true);
+      header('Location: ../auth/signin');
+      exit; 
+    } catch (PDOException $e) {
+      $connection->rollBack();
+      error_log("SIGNUP (1): Database error during signup: " . $e->getMessage());
+      $errors[] = 'Ocurrió un error en la base de datos al registrar tu cuenta. Inténtalo de nuevo.';
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+      $connection->rollBack();
+      error_log("SIGNUP (2): Stripe API error during signup for email " . $email . ": " . $e->getMessage());
+      $errors[] = 'Ocurrió un error con el servicio de pago (Stripe). Por favor, inténtalo de nuevo o contacta con soporte.';
+    } catch (Exception $e) {
+      $connection->rollBack();
+      error_log("SIGNUP (3): General error during signup for email " . $email . ": " . $e->getMessage());
+      $errors[] = 'Ocurrió un error inesperado al registrar tu cuenta. Inténtalo de nuevo.';
     }
-    $encryptedCookieValue = encryptCookie($newUserId);
-
-    setcookie('user', $encryptedCookieValue, time() + 15 * 24 * 60 * 60, '/', '', true, true);
-    header('Location: ../auth/signin');
-    exit;
   }
 }
 

@@ -18,11 +18,11 @@
     </div>
     <div class="utils">
         <form action="/staffPanel/user" method="get">
-            <input type="text" name="id" id="id" placeholder="Buscar usuario por ID"> 
+            <input type="text" name="userId" id="userId" placeholder="Buscar usuario por ID"> 
             <input type="submit">
         </form>
         <form action="/staffPanel/user" method="get">
-            <input type="text" name="email" id="email" placeholder="Buscar usuario por EMAIL"> 
+            <input type="text" name="userEmail" id="userEmail" placeholder="Buscar usuario por EMAIL"> 
             <input type="submit">
         </form>
     </div>
@@ -47,7 +47,7 @@
                 $role = htmlspecialchars(trim($singleUser['role']), ENT_QUOTES, 'UTF-8');
                 $status = htmlspecialchars(trim($singleUser['status']), ENT_QUOTES, 'UTF-8');
 
-                echo "<tr onclick='location.href=\"/staffPanel/user?\";'>\n";
+                echo "<tr onclick='location.href=\"/staffPanel/user?userId=$id\";'>\n";
                 echo "<td>" . $id . "</td>\n";
                 echo "<td>" . $user . " " . $secondName . " " . $lastName . " " . $secondLastName . "</td>\n";
                 echo "<td class='private'>" . $email . "</td>\n";

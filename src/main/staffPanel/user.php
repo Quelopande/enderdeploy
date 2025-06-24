@@ -1,24 +1,30 @@
 <?php
-if (isset($_SESSION['id'])) {    
+if (isset($_SESSION['id'])) {
     $viewServices = '';
     $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
     $statement->execute(array(':id' => $id));
     $result = $statement->fetch();
-
+    
     if ($result['role'] != '-1') {
         $roleId = $result['role'];
         $roleStatement = $connection->prepare('SELECT * FROM roles WHERE roleId = :roleId LIMIT 1');
         $roleStatement->execute(array(':roleId' => $roleId));
         $roleResult = $roleStatement->fetch();
         if ($roleResult['viewUser'] == '1') {
-            if($_GET['id']){
-                $userId = $_GET['id'];
-                $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
-                $userStatement->execute(array(':userId' => $userId));
-                $userResult = $userStatement->fetch();
+            // The first two variables of the fuction are used to obtain the variables of the rest of the code into the function.
+            function getUserData($connection, $roleResult, $obteinedUserData, $dataType){
+                if ($dataType === "idType"){
+                    $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
+                    $userStatement->execute(array(':userId' => $obteinedUserData));
+                    $userResult = $userStatement->fetch();
+                } elseif ($dataType === "emailType") {
+                    $userStatement = $connection->prepare('SELECT * FROM users WHERE email = :userEmail LIMIT 1');
+                    $userStatement->execute(array(':userEmail' => $obteinedUserData));
+                    $userResult = $userStatement->fetch();
+                }
                 if($userResult){
                     $userLocationStatement = $connection->prepare('SELECT * FROM usersLocation WHERE userId = :userId LIMIT 1');
-                    $userLocationStatement->execute(array(':userId' => $userId));
+                    $userLocationStatement->execute(array(':userId' => $userResult['id']));
                     $userLocationResult = $userLocationStatement->fetch();
                     if ($roleResult['viewServiceData'] == '1') {
                         $viewServices = "<div class='user-info'><h2>Servicios</h2><a href='/staffPanel/service?userId=" . $userResult['id'] ."'>Ver Servicios</a></div>";
@@ -28,30 +34,19 @@ if (isset($_SESSION['id'])) {
                     echo 'No se ha encontrado el usuario.<br>';
                     echo '<a href="/staffPanel/users">Regresar</a>';
                 }
-            } elseif($_GET['email']){
-                $userEmail = $_GET['email'];
-                $userStatement = $connection->prepare('SELECT * FROM users WHERE email = :userEmail LIMIT 1');
-                $userStatement->execute(array(':userEmail' => $userEmail));
-                $userResult = $userStatement->fetch();
-                if($userResult){
-                    $userId = $userResult['id'];
-                    $userLocationStatement = $connection->prepare('SELECT * FROM usersLocation WHERE userId = :userId LIMIT 1');
-                    $userLocationStatement->execute(array(':userId' => $userId));
-                    $userLocationResult = $userLocationStatement->fetch();
-                    if ($roleResult['viewServiceData'] == '1') {
-                        $viewServices = "<div class='user-info'><h2>Servicios</h2><a href='/staffPanel/service?userId=" . $userResult['id'] ."'>Ver Servicios</a></div>";
-                    }
-                    require_once APP_ROOT . 'src/views/staffPanel/user.view.php';
-                } else {
-                    echo 'No se ha encontrado el usuario.<br>';
-                    echo '<a href="/staffPanel/users">Regresar</a>';
-                }
+            }
+            if($_GET['userId']){
+                $userId = $_GET['userId'];
+                getUserData($connection, $roleResult, $userId, "idType");
+            } elseif($_GET['userEmail']){
+                $userEmail = $_GET['userEmail'];
+                getUserData($connection, $roleResult, $userEmail, "emailType");
             } else {
-                echo 'No se ha encontrado el usuario.<br>';
+                echo 'No se ha encontrado el usuario asignado a ese ID o email.<br>';
                 echo '<a href="/staffPanel/users">Regresar</a>';
             }
         } else {
-            require 'noAccess.php';
+            require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
         }
         if ($roleResult['manageUser'] == '1') {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -78,7 +73,7 @@ if (isset($_SESSION['id'])) {
                     } catch (Exception $e) {
                         echo 'Error al actualizar los datos: ' . $e->getMessage();
                     }
-                    header('Location: ' . htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']));
+                    header('Location: ' . htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']));
                     exit;                    
                 }
             }
