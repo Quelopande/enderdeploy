@@ -1,0 +1,80 @@
+nav .sidebar {
+    margin-top: -10px !important;
+}
+.serverStatus{
+    background-color: #bbe8c8;
+    margin-top: 100px;
+    padding: 15px;
+    border-radius: 20px;
+    color: #188038;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+}
+.verifyContainer{
+    display: flex;
+    margin-right: 47px !important;
+}
+.verifyContainer div{
+    background: #e7e5e5;
+    margin: 30px auto;
+    border-radius: 36px;
+    padding: 20px;
+}
+.verifyContainer * {
+    font-family: "Poppins", serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.verifyContainer h1, .verifyContainer p{
+    color: #373737;
+    padding: 5px;
+}
+.verifyForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.verifyForm label {
+    text-align: left;
+    padding: 0 5px;
+}
+.verifyForm input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+}
+.verifyForm input:focus{
+    border: solid 1px #424242;
+}
+.verifyForm button {
+    padding: 10px 15px;
+    background-color: var(--blue-light);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: 300;
+}
+.verifyForm button:hover{
+    background-color: #597dff;
+    transition: all 200ms;
+}
+.resendForm {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+.resendForm button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}

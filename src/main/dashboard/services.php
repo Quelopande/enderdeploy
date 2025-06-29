@@ -105,7 +105,11 @@ $subscriptionsStatement->execute(array(':userId' => $id));
 $subscriptions = $subscriptionsStatement->fetchAll();
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/dashboard/services.view.php';
+    if($result['status'] === 'verified'){
+        require_once APP_ROOT . 'src/views/dashboard/services.view.php';
+    } else{
+        require_once APP_ROOT . 'src/views/dashboard/notVerified.view.php';
+    }
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

@@ -170,7 +170,11 @@ if (isset($_SESSION['tempTotpSecret'])) {
 
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/dashboard/settings.view.php';
+    if($result['status'] === 'verified'){
+        require_once APP_ROOT . 'src/views/dashboard/settings.view.php';
+    } else{
+        require_once APP_ROOT . 'src/views/dashboard/notVerified.view.php';
+    }
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {

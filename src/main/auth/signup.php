@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $email = strtolower($email);
   $role = '-1';
   $status = 'notverified';
-  $code = mt_rand(211111, 999999);
 
   $pepper = $_ENV['pepper'] ?? ''; // Ensure this env var exists and is set
 
@@ -56,11 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($errors === '') {
     try{
-      $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, code, status, role) VALUES (NULL, :email, :password, :salt, :code, :status, :role)');
+      $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, status, role) VALUES (NULL, :email, :password, :salt, :status, :role)');
       $statement->execute(array(
         ':email' => $email,
         ':password' => $hash,
-        ':code' => $code,
         ':status' => $status,
         ':salt' => $salt,
         ':role' => $role
@@ -82,6 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       ));
 
       $userLocationstatement = $connection->prepare('INSERT INTO usersLocation (userId) VALUES (:userId)');
+      $userLocationstatement->execute(array(
+        ':userId' => $newUserId
+      ));
+
+      $userLocationstatement = $connection->prepare('INSERT INTO usersCode (userId) VALUES (:userId)');
       $userLocationstatement->execute(array(
         ':userId' => $newUserId
       ));

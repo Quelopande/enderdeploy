@@ -8,11 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = htmlspecialchars(trim($_POST['title']), ENT_QUOTES, 'UTF-8');
     $content = htmlspecialchars(trim($_POST['content']), ENT_QUOTES, 'UTF-8');
 
-    $estatement = $connection->prepare('SELECT * FROM helpbody WHERE userId = :userId LIMIT 1');
+    $estatement = $connection->prepare('SELECT * FROM helpBody WHERE userId = :userId LIMIT 1');
     $estatement->execute(array(':userId' => $id));
     $eresult = $estatement->fetch();
 
-    $estatement = $connection->prepare('INSERT INTO helpbody (messageId, userId, title, content, creationTime) VALUES (NULL, :userId, :title, :content, NOW())');
+    $estatement = $connection->prepare('INSERT INTO helpBody (messageId, userId, title, content, creationTime) VALUES (NULL, :userId, :title, :content, NOW())');
     $estatement->execute(array(
       ':userId' => $id,
       ':title' => $title,
@@ -20,12 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ));
 }
 
-$messagesStatement = $connection->prepare('SELECT * FROM helpbody WHERE userId = :userId');
+$messagesStatement = $connection->prepare('SELECT * FROM helpBody WHERE userId = :userId');
 $messagesStatement->execute(array(':userId' => $id));
 $messages = $messagesStatement->fetchAll();
 
 if (isset($_SESSION['id'])){
-    require_once APP_ROOT . 'src/views/dashboard/support.view.php';
+    if($result['status'] === 'verified'){
+        require_once APP_ROOT . 'src/views/dashboard/support.view.php';
+    } else{
+        require_once APP_ROOT . 'src/views/dashboard/notVerified.view.php';
+    }
 } else if (!isset($_SESSION['id'])){
     header('Location: ../auth/signin');
 } else {
