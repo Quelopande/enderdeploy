@@ -9,7 +9,7 @@
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
-    <meta property="og:site_name" content="©RenderCores"/>
+    <meta property="og:site_name" content="©EnderHosting"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
     <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
@@ -32,11 +32,18 @@
             function callForData($dbName, $data, $mustContain) {
                 global $connection; 
                 global $id; 
-
-                $query = "SELECT * FROM {$dbName} WHERE id = :id LIMIT 1";
-                $statement = $connection->prepare($query);
-                $statement->execute(array(':id' => $id));
-                $result = $statement->fetch();
+                
+                if($dbName === "users"){
+                    $query = "SELECT * FROM {$dbName} WHERE id = :id LIMIT 1";
+                    $statement = $connection->prepare($query);
+                    $statement->execute(array(':id' => $id));
+                    $result = $statement->fetch();
+                } else if($dbName === "usersLocation"){
+                    $query = "SELECT * FROM {$dbName} WHERE userId = :userId LIMIT 1";
+                    $statement = $connection->prepare($query);
+                    $statement->execute(array(':userId' => $id));
+                    $result = $statement->fetch();   
+                }
 
                 $dataNotFoundError = $mustContain ? "Error, por favor contacte con soporte." : "";
 
