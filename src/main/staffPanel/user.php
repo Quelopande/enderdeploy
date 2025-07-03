@@ -57,14 +57,13 @@ if (isset($_SESSION['id'])) {
                     $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_STRING);
                     $secondLastName = filter_input(INPUT_POST, 'secondLastName', FILTER_SANITIZE_STRING);
                     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                    $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_NUMBER_INT);
                     $domicile = filter_input(INPUT_POST, 'domicile', FILTER_SANITIZE_STRING);
                     $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
                     $state = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
                     $country = filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);                    
                     try {
-                        $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email, role = :role WHERE id = :userId');
-                        $userStatement->execute(array(':user' => $user, ':secondName' => $secondName, ':lastName' => $lastName, ':secondLastName' => $secondLastName, ':email' => $email, ':role' => $role, ':userId' => $userId));
+                        $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email, WHERE id = :userId');
+                        $userStatement->execute(array(':user' => $user, ':secondName' => $secondName, ':lastName' => $lastName, ':secondLastName' => $secondLastName, ':email' => $email, ':userId' => $userId));
                     
                         $userLocationStatement = $connection->prepare('UPDATE usersLocation SET domicile = :domicile, city = :city, state = :state, country = :country WHERE userId = :userId');
                         $userLocationStatement->execute(array(':domicile' => $domicile, ':city' => $city, ':state' => $state, ':country' => $country, ':userId' => $userId));

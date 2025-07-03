@@ -40,8 +40,6 @@
                         <label>Correo:</label>
                         <input type="email" name="email" value="<?php echo htmlspecialchars($userResult['email'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
-                        <label>Rol:</label>
-                        <input type="text" name="role" value="<?php echo htmlspecialchars($userResult['role'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
                         <p><b>Última edición:</b> <?php echo htmlspecialchars($date->format('H:i:s d/m/Y'), ENT_QUOTES, 'UTF-8'); ; ?></p>
                     <?php else: ?>
                         <p><b>Nombre:</b> <?php echo htmlspecialchars(ucwords(trim($userResult['user'])), ENT_QUOTES, 'UTF-8') . " " .
@@ -50,7 +48,6 @@
                             htmlspecialchars(ucwords(trim($userResult['secondLastName'])), ENT_QUOTES, 'UTF-8'); ?>
                         </p>
                         <p><b>Correo:</b> <?php echo htmlspecialchars($userResult['email'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><b>Rol:</b> <?php echo htmlspecialchars($userResult['role'], ENT_QUOTES, 'UTF-8'); ?></p>
                         <p><b>Última edición:</b> <?php echo htmlspecialchars($date->format('H:i:s d/m/Y'), ENT_QUOTES, 'UTF-8'); ; ?></p>
                     <?php endif; ?>
                 </div>
