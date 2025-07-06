@@ -162,7 +162,7 @@
                 <button type="submit" name="securitySubmit"><b>Guardar</b> Seguridad</button>
             </form>
             <?php if($result['role'] != '-1') : ?>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="POST">
                 <button id="displayModal" type="reset" style="background: #363cff; position:static; margin-top: 10px;">Activar <b style="font-weight: 600;">verificacíon en dos pasos</b> (Totp)</button>
             </form>
             <?php endif; ?>
@@ -209,7 +209,7 @@
                 <input type="text" name="totpCode" id="totpCode" style="width:150px" required>
             </div>
             <div>
-                <button id="exitModal" style="color:black; margin-right: 170px;">Salir</button>
+                <span id="exitModal">Salir</span>
                 <button type="submit" name="codeTotpSubmit">Guardar</button>
             </div>
         </form>

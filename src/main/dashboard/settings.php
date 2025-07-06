@@ -121,7 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $key = random_bytes(32);
         $iv = random_bytes(12);
         $encryptedSecret = openssl_encrypt($secret, $cypherMethod, $key, OPENSSL_RAW_DATA, $iv, $tag);
-
+        if($_POST['totpCode'] === '') {
+            echo "<script>alert('Por favor, introduce el código TOTP.');</script>";
+            unset($_SESSION['tempTotpSecret']);
+            die();
+        }
         if ($encryptedSecret === false) {
             error_log("Error during encryption: " . openssl_error_string());
             die("ERROR AL ENCRIPTAR CLAVE. POR FAVOR CONTACTE CON SOPORTE.");

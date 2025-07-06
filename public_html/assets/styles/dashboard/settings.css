@@ -112,10 +112,34 @@ form button:hover{
     width: 100%;
     margin-top: -10px;
 }
+.modal form button,span{
+    padding: 10px 50px;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-radius: 200px;
+    cursor: pointer;
+}
+.modal form span{
+    margin-top: -20px;
+    margin-right: 180px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.modal form span:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+.modal form div:nth-child(5){
+    display: flex;
+    flex-direction: row;
+    right: 0;
+    justify-content: right;
+}
 @media (max-width: 990px) {
     .firstInfo{flex-direction: column;}
     section{padding: 10px 30px 40px;}
     form button{margin-top: 20px;padding: 10px 20px;width: 100%;position: static;}
+    .modal form div:nth-child(5){flex-direction: column;}
+    .modal form span{margin: 10px 0 -10px 0;display:block; text-align: center;padding: 10px 0;width: 100%;position: static;}
     .secondInfo{display: flex;flex-direction: column;}
     .secondInfo input{margin-top: -20px;}
     .showInformation{flex-direction: column;}
