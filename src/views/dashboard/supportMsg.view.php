@@ -35,8 +35,7 @@
         <section class="problemExplanation">
             <h1><?php echo $eresult['title'] ?></h1>
             <p><?php echo $eresult['content'] ?></p>
-            <?php if($result['role'] != '-1'){    echo '<a href="/staffPanel/users?q=' . $eresult['userId'] . '" target="_blank">Datos del usuario</a>';}
-            ?>
+            <?php if($result['role'] != '-1'){    echo '<a href="/staffPanel/user?userId=' . $eresult['userId'] . '" target="_blank">Datos del usuario</a>';}?>
         </section>
         <h2>Todas las respuestas</h2>
         <section class="answers">
