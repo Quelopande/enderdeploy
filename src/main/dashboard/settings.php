@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (isset($_POST["firstInfoSubmit"])) {
         $fields = [
-            'user' => filter_var(strtolower($_POST['name']), FILTER_SANITIZE_STRING),
-            'secondName' => filter_var(strtolower($_POST['secondName']), FILTER_SANITIZE_STRING),
-            'lastName' => filter_var(strtolower($_POST['lastName']), FILTER_SANITIZE_STRING),
-            'secondLastName' => filter_var(strtolower($_POST['secondLastName']), FILTER_SANITIZE_STRING),
-            'email' => filter_var(strtolower($_POST['email']), FILTER_SANITIZE_EMAIL)
+            'user' => htmlspecialchars(strtolower($_POST['name']), ENT_QUOTES, 'UTF-8'),
+            'secondName' => htmlspecialchars(strtolower($_POST['secondName']), ENT_QUOTES, 'UTF-8'),
+            'lastName' => htmlspecialchars(strtolower($_POST['lastName']), ENT_QUOTES, 'UTF-8'),
+            'secondLastName' => htmlspecialchars(strtolower($_POST['secondLastName']), ENT_QUOTES, 'UTF-8'),
+            'email' => htmlspecialchars(strtolower($_POST['email']), FILTER_SANITIZE_EMAIL)
         ];
     
         if (!empty($_POST['name']) && !empty($_POST['lastName']) && !empty($_POST['email'])) {
@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (isset($_POST["secondInfoSubmit"])) {
         $fields = [
-            'organization' => filter_var(strtolower($_POST['organization']), FILTER_SANITIZE_STRING),
-            'country' => filter_var(strtolower($_POST['country']), FILTER_SANITIZE_STRING),
-            'state' => filter_var(strtolower($_POST['state']), FILTER_SANITIZE_STRING),
-            'zipCode' => filter_var(strtolower($_POST['zipCode']), FILTER_SANITIZE_STRING),
-            'city' => filter_var(strtolower($_POST['city']), FILTER_SANITIZE_STRING),
-            'domicile' => filter_var(strtolower($_POST['domicile']), FILTER_SANITIZE_STRING)
+            'organization' => htmlspecialchars(strtolower($_POST['organization']), ENT_QUOTES, 'UTF-8'),
+            'country' => htmlspecialchars(strtolower($_POST['country']), ENT_QUOTES, 'UTF-8'),
+            'state' => htmlspecialchars(strtolower($_POST['state']), ENT_QUOTES, 'UTF-8'),
+            'zipCode' => htmlspecialchars(strtolower($_POST['zipCode']), ENT_QUOTES, 'UTF-8'),
+            'city' => htmlspecialchars(strtolower($_POST['city']), ENT_QUOTES, 'UTF-8'),
+            'domicile' => htmlspecialchars(strtolower($_POST['domicile']), ENT_QUOTES, 'UTF-8')
         ];
         $requiredFields = ['country', 'state', 'zipCode', 'city', 'domicile'];
         $missingFields = [];
@@ -75,9 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $allowedFields = ['organization', 'country', 'state', 'zipCode', 'city', 'domicile'];
             foreach ($fields as $field => $postField) {
                 if (in_array($field, $allowedFields) && !checkSimilarity($postField, $result[$field])) {
-                    $statement = $connection->prepare("UPDATE usersLocation SET $field = :$field WHERE id = :id");
+                    $statement = $connection->prepare("UPDATE usersLocation SET $field = :$field WHERE userId = :userId");
                     $statement->execute([
-                        ':id' => $id,
+                        ':userId' => $id,
                         ":$field" => $postField,
                     ]);
                 }
@@ -132,9 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hexTag = bin2hex($tag);
 
             if ($auth->verifyCode($secret, $_POST['totpCode'], 2)) {
-                $statement = $connection->prepare('INSERT INTO usersTotp (id, totpSecret, totpKey, totpIv, totpTag) VALUES (:id, :totpSecret, :totpKey, :totpIv, :totpTag) ON DUPLICATE KEY UPDATE totpSecret = :totpSecret, totpKey = :totpKey, totpIv = :totpIv, totpTag = :totpTag');
+                $statement = $connection->prepare('INSERT INTO usersTotp (userId, totpSecret, totpKey, totpIv, totpTag) VALUES (:userId, :totpSecret, :totpKey, :totpIv, :totpTag) ON DUPLICATE KEY UPDATE totpSecret = VALUES(totpSecret), totpKey = VALUES(totpKey), totpIv = VALUES(totpIv), totpTag = VALUES(totpTag)');
                 if ($statement->execute([
-                    ':id' => $id,
+                    ':userId' => $id,
                     ':totpSecret' => $finalEncryptedString,
                     ':totpKey' => $hexKey,
                     ':totpIv' => $hexIv,
@@ -153,21 +153,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-if (isset($_SESSION['tempTotpSecret'])) {
-    $totpStatement = $connection->prepare('SELECT * FROM usersTotp WHERE id = :id LIMIT 1');
-    $totpStatement->execute([':id' => $id]);
-    $totpResult = $totpStatement->fetch();
 
-    if (!$totpResult) {
+$statementTotp = $connection->prepare('SELECT * FROM usersTotp WHERE userId = :userId LIMIT 1');
+$statementTotp->execute(array(':userId' => $id));
+$resultTotp = $statementTotp->fetch();
+if (!$resultTotp) {
+    if (!isset($_SESSION['tempTotpSecret'])) {
+        $secret = $auth->createSecret();
+        $_SESSION['tempTotpSecret'] = $secret;
+    } else {
         $secret = $_SESSION['tempTotpSecret'];
-        $qrCodeUrl = $auth->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
     }
+    $qrCodeUrl = $auth->getQRCodeGoogleUrl($secret, "EnderDeploy.space: $userEmail");
 } else {
-    $secret = $auth->createSecret();
-    $_SESSION['tempTotpSecret'] = $secret;
-    $qrCodeUrl = $auth->getQRCodeGoogleUrl("EnderDeploy.space: $userEmail", $secret);
+    unset($_SESSION['tempTotpSecret']);
+    $qrCodeUrl = "/assets/img/logo.png";
 }
-
 
 if (isset($_SESSION['id'])){
     if($result['status'] === 'verified'){
