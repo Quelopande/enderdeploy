@@ -236,7 +236,7 @@ function isChecked($value) {
         </table>
         <button type="submit" name="createRol">Crear Rol</button>           
     </form>
-    <form action="<?php echo htmlspecialchars('/staffPanel/roles'); ?> method="post" class="addRoleUser" validate>
+    <form action="<?php echo htmlspecialchars('/staffPanel/roles'); ?>" method="post" class="addRoleUser" validate>
         <h1>Agregar usuario a rol</h1>
         <label for="userId">ID del usuario</label>
         <input type="text" name="userId" id="userId" placeholder="ID de usuario" required>
