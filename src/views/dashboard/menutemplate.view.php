@@ -19,6 +19,6 @@
                 <?php if($result['role'] != '-1') {
                     echo '<a href="/staffPanel/"><li id="5"><i class="fa-solid fa-person"></i> <p class="overTxt">Staff</p></li></a>';
                 } ?>
-            </ul>
+                <a href="/auth/signout"><li id="6"><i class="fa-solid fa-right-to-bracket"></i> <p class="overTxt">Cerrar Sesión</p></li></a>
         </div>
     </nav>
