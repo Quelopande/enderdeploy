@@ -1,6 +1,7 @@
 <?php
-require_once APP_ROOT . 'src/classes/GoogleAuthenticator.php';
-
+use SebastianDevs\SimpleAuthenticator;
+require_once APP_ROOT . 'src/classes/SimpleAuthenticator.php';
+$auth = new SimpleAuthenticator(6, 'SHA1');
 if (!isset($_SESSION['id'])) {
     header('Location: ../auth/signin');
     exit;
@@ -27,15 +28,14 @@ if (!$roleResult || $roleResult['manageRoles'] != '1') {
 }
 
 if (!isset($_SESSION['totpVerified'])) {
-    $totpStatement = $connection->prepare('SELECT * FROM usersTotp WHERE id = :id LIMIT 1');
-    $totpStatement->execute([':id' => $id]);
+    $totpStatement = $connection->prepare('SELECT * FROM usersTotp WHERE userId = :userId LIMIT 1');
+    $totpStatement->execute([':userId' => $id]);
     $totpResult = $totpStatement->fetch();
 
     if (!$totpResult) {
         exit("Todos los administradores de roles deben tener 2FA habilitado.<br><a href='/dashboard'>Volver</a>");
     }
-
-    $ga = new PHPGangsta_GoogleAuthenticator();
+    
     $errors = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
@@ -50,22 +50,25 @@ if (!isset($_SESSION['totpVerified'])) {
             die('Error al descifrar el secreto TOTP.');
         }
 
-        $checkResult = $ga->verifyCode($secret, $oneCodeInput, 2);
+        $checkResult = $auth->verifyCode($secret, $oneCodeInput, 2);
         if ($checkResult) {
             $_SESSION['totpVerified'] = true;
             $_SESSION['totpVerifiedTime'] = time();
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: /staffPanel/roles");
             exit;
         } else {
             $errors = '<div class="alert alert-danger">Código incorrecto. Inténtalo de nuevo.</div>';
         }
     }
 
-    echo "<form action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' method='POST'>
-            <input id='code' type='text' maxlength='6' size='6' name='code' placeholder='Código TOTP'/>
-            <input type='submit' value='Verificar'/>
-          </form>";
-    echo $errors;
+    echo "<form action='" . htmlspecialchars('/staffPanel/roles') . "' method='POST'>
+        <input id='code' type='text' maxlength='6' size='6' name='code' placeholder='Código TOTP' autocomplete='one-time-code' required autofocus/>
+        <input type='submit' value='Verificar'/>
+      </form>";
+
+if (!empty($errors)) {
+    echo "<div class='error'>" . htmlspecialchars($errors) . "</div>";
+}
     exit;
 }
 
@@ -73,7 +76,7 @@ $sessionDuration = 1800;
 if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTime'] > $sessionDuration)) {
     unset($_SESSION['totpVerified']);
     unset($_SESSION['totpVerifiedTime']);
-    header("Location: " . $_SERVER['PHP_SELF']);
+    header("Location: /staffPanel/roles");
     exit;
 } else {
     $_SESSION['totpVerifiedTime'] = time();
@@ -108,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveRoles'])) {
                 $_POST['manageRoles'][$roleId] ?? '0',
                 $roleId
             ]);
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: /staffPanel/roles");
         }
     }
 } else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createRol'])){
@@ -138,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveRoles'])) {
     $roleId = htmlspecialchars(strtolower(trim($_POST['roleId'])), ENT_QUOTES, 'UTF-8');
     $stmt = $connection->prepare('UPDATE users SET role = ? WHERE id = ?');
     $stmt->execute([$roleId, $userId]);
-    header("Location: " . $_SERVER['PHP_SELF']);
+    header("Location: /staffPanel/roles");
 }
 
 function isChecked($value) {
@@ -200,7 +203,7 @@ function isChecked($value) {
             <button type="submit" name="saveRoles">Guardar Roles</button>
         </form>
     </div>
-    <form class="createRol" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" validate>
+    <form class="createRol" method="POST" action="<?php echo htmlspecialchars('/staffPanel/roles'); ?> validate>
         <h1>Creador de roles</h1>
         <table>
             <tr>
@@ -233,7 +236,7 @@ function isChecked($value) {
         </table>
         <button type="submit" name="createRol">Crear Rol</button>           
     </form>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="addRoleUser" validate>
+    <form action="<?php echo htmlspecialchars('/staffPanel/roles'); ?> method="post" class="addRoleUser" validate>
         <h1>Agregar usuario a rol</h1>
         <label for="userId">ID del usuario</label>
         <input type="text" name="userId" id="userId" placeholder="ID de usuario" required>
