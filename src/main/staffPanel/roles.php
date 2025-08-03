@@ -169,7 +169,7 @@ function isChecked($value) {
     </div>
 
     <div class="roles">
-        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" validate>
+        <form method="POST" action="<?php echo htmlspecialchars('/staffPanel/roles'); ?>" validate>
             <table>
                 <tr>
                     <th>ID</th>
@@ -203,7 +203,7 @@ function isChecked($value) {
             <button type="submit" name="saveRoles">Guardar Roles</button>
         </form>
     </div>
-    <form class="createRol" method="POST" action="<?php echo htmlspecialchars('/staffPanel/roles'); ?> validate>
+    <form class="createRol" method="POST" action="<?php echo htmlspecialchars('/staffPanel/roles'); ?>" validate>
         <h1>Creador de roles</h1>
         <table>
             <tr>
