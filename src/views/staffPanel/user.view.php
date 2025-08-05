@@ -20,7 +20,7 @@
     <div class="main">
         <h1>Usuario</h1>
         <div class="user">
-            <form id="editUserForm" method="POST" action="<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']); ?>">
+            <form id="editUserForm" method="POST" action="<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>">
             <input type="hidden" name="userId" value="<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>">
                 <div class="user-info">
                     <h2>Información del usuario</h2>
@@ -48,6 +48,7 @@
                             htmlspecialchars(ucwords(trim($userResult['secondLastName'])), ENT_QUOTES, 'UTF-8'); ?>
                         </p>
                         <p><b>Correo:</b> <?php echo htmlspecialchars($userResult['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>Rol:</b> <?php echo htmlspecialchars($userResult['role'], ENT_QUOTES, 'UTF-8'); ?></p>
                         <p><b>Última edición:</b> <?php echo htmlspecialchars($date->format('H:i:s d/m/Y'), ENT_QUOTES, 'UTF-8'); ; ?></p>
                     <?php endif; ?>
                 </div>
@@ -55,39 +56,31 @@
                     <h2>Información de contacto</h2>
                     <b>Es posible que cierta información no aparezca ya que el usuario no ha querido dar la información.</b>
 
-                    <?php 
-                    function getUserLocationData($dataToObtain){
-                        if($userLocationResult[$dataToObtain]){
-                            return htmlspecialchars($userLocationResult[$dataToObtain], ENT_QUOTES, 'UTF-8');
-                        } else{
-                            return "";
-                        }
-                    }
-                    if ($roleResult['manageUser'] == '1'): ?>
+                    <?php if ($roleResult['manageUser'] == '1'): ?>
                         <label>Dirección:</label>
-                        <input type="text" name="domicile" value="<?php echo getUserLocationData('domicile'); ?>" disabled>
+                        <input type="text" name="domicile" value="<?php echo htmlspecialchars($userLocationResult['domicile'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
                         <label>Ciudad:</label>
-                        <input type="text" name="city" value="<?php echo getUserLocationData('city'); ?>" disabled>
+                        <input type="text" name="city" value="<?php echo htmlspecialchars($userLocationResult['city'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
                         <label>Estado:</label>
-                        <input type="text" name="state" value="<?php echo getUserLocationData('state'); ?>" disabled>
+                        <input type="text" name="state" value="<?php echo htmlspecialchars($userLocationResult['state'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
                         <label>País:</label>
-                        <input type="text" name="country" value="<?php echo getUserLocationData('country'); ?>" disabled>
+                        <input type="text" name="country" value="<?php echo htmlspecialchars($userLocationResult['country'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
                         <label>Organización:</label>
-                        <input type="text" name="organization" value="<?php echo getUserLocationData('organization'); ?>" disabled>
+                        <input type="text" name="organization" value="<?php echo htmlspecialchars($userLocationResult['organization'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
 
                         <label>Código postal:</label>
-                        <input type="text" name="zipCode" value="<?php echo getUserLocationData('zipCode'); ?>" disabled>
+                        <input type="text" name="zipCode" value="<?php echo htmlspecialchars($userLocationResult['zipCode'], ENT_QUOTES, 'UTF-8'); ?>" disabled>
                     <?php else: ?>
-                        <p><b>Dirección:</b> <?php echo getUserLocationData('domicile'); ?></p>
-                        <p><b>Ciudad:</b> <?php echo getUserLocationData('city'); ?></p>
-                        <p><b>Estado:</b> <?php echo getUserLocationData('state'); ?></p>
-                        <p><b>País:</b> <?php echo getUserLocationData('country'); ?></p>
-                        <p><b>Organización:</b> <?php echo getUserLocationData('organization'); ?></p>
-                        <p><b>Código postal:</b> <?php echo getUserLocationData('zipCode'); ?></p>
+                        <p><b>Dirección:</b> <?php echo htmlspecialchars($userLocationResult['domicile'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>Ciudad:</b> <?php echo htmlspecialchars($userLocationResult['city'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>Estado:</b> <?php echo htmlspecialchars($userLocationResult['state'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>País:</b> <?php echo htmlspecialchars($userLocationResult['country'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>Organización:</b> <?php echo htmlspecialchars($userLocationResult['organization'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><b>Código postal:</b> <?php echo htmlspecialchars($userLocationResult['zipCode'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <?php endif; ?>
                 </div>
 
