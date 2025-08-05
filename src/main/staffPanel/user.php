@@ -36,10 +36,10 @@ if (isset($_SESSION['id'])) {
                 }
             }
             if($_GET['userId']){
-                $userId = $_GET['userId'];
+                $userId = filter_input(INPUT_GET, 'userId', FILTER_VALIDATE_INT);
                 getUserData($connection, $roleResult, $userId, "idType");
             } elseif($_GET['userEmail']){
-                $userEmail = $_GET['userEmail'];
+                $userEmail = filter_input(INPUT_GET, 'userEmail', FILTER_VALIDATE_EMAIL);
                 getUserData($connection, $roleResult, $userEmail, "emailType");
             } else {
                 echo 'No se ha encontrado el usuario asignado a ese ID o email.<br>';
@@ -50,30 +50,34 @@ if (isset($_SESSION['id'])) {
         }
         if ($roleResult['manageUser'] == '1') {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                if ($_POST['userId'] && $_POST['user'] && $_POST['secondName'] && $_POST['lastName'] && $_POST['secondLastName'] && $_POST['email'] && $_POST['role']) {
-                    $userId = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_NUMBER_INT);
-                    $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
-                    $secondName = filter_input(INPUT_POST, 'secondName', FILTER_SANITIZE_STRING);
-                    $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_STRING);
-                    $secondLastName = filter_input(INPUT_POST, 'secondLastName', FILTER_SANITIZE_STRING);
-                    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                    $domicile = filter_input(INPUT_POST, 'domicile', FILTER_SANITIZE_STRING);
-                    $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
-                    $state = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
-                    $country = filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);                    
+                if ($_POST['userId'] && $_POST['user'] && $_POST['lastName'] && $_POST['email']) {
+                    $userId = filter_input(INPUT_POST, 'userId', FILTER_VALIDATE_INT);
+                    $email = strip_tags(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL));
+                    $user = strip_tags(filter_input(INPUT_POST, 'user', FILTER_UNSAFE_RAW));
+                    $secondName = strip_tags(filter_input(INPUT_POST, 'secondName', FILTER_UNSAFE_RAW));
+                    $lastName = strip_tags(filter_input(INPUT_POST, 'lastName', FILTER_UNSAFE_RAW));
+                    $secondLastName = strip_tags(filter_input(INPUT_POST, 'secondLastName', FILTER_UNSAFE_RAW));
+                    $domicile = strip_tags(filter_input(INPUT_POST, 'domicile', FILTER_UNSAFE_RAW));
+                    $city = strip_tags(filter_input(INPUT_POST, 'city', FILTER_UNSAFE_RAW));
+                    $state = strip_tags(filter_input(INPUT_POST, 'state', FILTER_UNSAFE_RAW));
+                    $country = strip_tags(filter_input(INPUT_POST, 'country', FILTER_UNSAFE_RAW));                  
                     try {
-                        $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email, WHERE id = :userId');
+                        $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email WHERE id = :userId');
                         $userStatement->execute(array(':user' => $user, ':secondName' => $secondName, ':lastName' => $lastName, ':secondLastName' => $secondLastName, ':email' => $email, ':userId' => $userId));
-                    
+                        
+                        
                         $userLocationStatement = $connection->prepare('UPDATE usersLocation SET domicile = :domicile, city = :city, state = :state, country = :country WHERE userId = :userId');
                         $userLocationStatement->execute(array(':domicile' => $domicile, ':city' => $city, ':state' => $state, ':country' => $country, ':userId' => $userId));
                         
-                        echo "Datos actualizados correctamente.";
-                    } catch (Exception $e) {
-                        echo 'Error al actualizar los datos: ' . $e->getMessage();
+                        echo "Datos 2 actualizados correctamente.";
+                    } catch (PDOException $e) {
+                        error_log('Error updating user data: ' . $e->getMessage());
+                        echo "Error al actualizar los datos del usuario. Por favor, inténtelo de nuevo más tarde.";
                     }
-                    header('Location: ' . htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']));
+                    header('Location: ' . htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING'] . '&sexon=success'));
                     exit;                    
+                } else {
+                    echo "<script>alert('Faltan los siguientes datos obligatorios: Nombre, apellido y email');</script>";
                 }
             }
         }
@@ -81,4 +85,4 @@ if (isset($_SESSION['id'])) {
 } else {
     header('Location: ../auth/signin');
     exit;
-}
+} 
