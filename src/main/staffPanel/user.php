@@ -27,7 +27,7 @@ if (isset($_SESSION['id'])) {
                     $userLocationStatement->execute(array(':userId' => $userResult['id']));
                     $userLocationResult = $userLocationStatement->fetch();
                     if ($roleResult['viewServiceData'] == '1') {
-                        $viewServices = "<div class='user-info'><h2>Servicios</h2><a href='/staffPanel/service?userId=" . $userResult['id'] ."'>Ver Servicios</a></div>";
+                        $viewServices = "<div class='user-info'><h2>Servicios</h2><a href='/staffPanel/services?userId=" . $userResult['id'] ."'>Ver Servicios</a></div>";
                     }
                     require_once APP_ROOT . 'src/views/staffPanel/user.view.php';
                 } else {
