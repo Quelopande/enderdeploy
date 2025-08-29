@@ -3,7 +3,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody) {
-    require_once 'vendor/autoload.php';
     $smtpPassword = $_ENV['smtpPassword'];
 
     $mail = new PHPMailer(true);
@@ -19,7 +18,7 @@ function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody)
         $mail->Port = 587;
 
         $mail->setFrom('administrador@endercores.com', 'EnderDeploy - Noreply');
-        $mail->addAddress($receiverMail, $receiverName);
+        $mail->addAddress(htmlspecialchars($receiverMail), htmlspecialchars($receiverName));
 
         $mail->isHTML(true);
         $mail->Subject = $subject;

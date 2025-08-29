@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Twitter card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="EnderDeploy - Dashboard">
     <meta name="twitter:image" content="/assets/img/logo.png">
-    <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
     <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
@@ -16,7 +14,7 @@
     <meta property="og:image" content="/assets/img/logo.png"/>
     <meta property="og:image:width" content="540"/>
     <meta property="og:image:height" content="520"/>
-    <title>Enderdeploy dashboard</title>
+    <title>Enderdeploy Dashboard - Verify</title>
     <link rel="website icon" type="ico" href="/assets/img/logo.ico">
     <link rel="stylesheet" href="/assets/styles/menu.css">
     <link rel="stylesheet" href="/assets/styles/dashboard/verify.css">
@@ -34,12 +32,21 @@
                 <form class="verifyForm" action="<?php echo htmlspecialchars('/dashboard/verify'); ?>" method="post" validate>
                     <label for="verificationCode">Código de verificación</label>
                     <input type="text" id="verificationCode" name="verificationCode" required>
-                    <button type="verifationCodeSubmit">Verificar</button>           
+                    <button type="submit" name="verifationCodeSubmit">Verificar</button>
                 </form>
                 <form class="resendForm" action="<?php echo htmlspecialchars('/dashboard/verify'); ?>" method="post">
                     <p>No has recibido el código?</p>
-                    <button type="submit" class="resendVerificationCode"> Reenviar código</button>
-                </form>
+                    <button type="submit" name="resendVerificationCode" class="resendVerificationCode"> Reenviar código</button>
+                </form>        
+                <?php if(!empty($errors)): ?>
+                    <div class="errors">
+                        <ul>
+                            <?php foreach($errors as $error): ?>
+                                <li><?php echo htmlspecialchars($error); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </main>
