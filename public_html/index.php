@@ -9,71 +9,34 @@ define('APP_ROOT', __DIR__ . '/../');
 
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
-
-require_once APP_ROOT . 'vendor/autoload.php';
-
-ini_set('display_errors', 0); // Disable error display in production
-ini_set('log_errors', 1);
-ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
-error_reporting(E_ALL);
-
-use Dotenv\Dotenv;
-$dotenv = Dotenv::createImmutable(APP_ROOT);
-$dotenv->load();
-
 $path = rtrim($path, '/');
-if (empty($path)) {
-    $path = '/';
+
+if (empty($path) || $path === '/') {
+    $path = '/index';
 }
 
-if ($path === '/') {
-    $target_file = 'index1.html';
-    if (file_exists($target_file)) {
-        require_once $target_file;
-        exit();
-    }
-}
-
-if (strpos($path, '/dashboard') === 0) {
-    $subpath = substr($path, strlen('/dashboard/'));
-    $target_file = APP_ROOT . 'src/main/dashboard/' . $subpath . '.php';
-
+// staff panel only shows up when the path starts with /staffPanel and not with /staffpanel
+if (strpos($path, '/dashboard') === 0 || strpos($path, '/staffPanel') === 0) {
     require_once APP_ROOT . 'src/config/connection.php';
-    $id = $_SESSION['id'];
-    if (file_exists($target_file)) {
-        require_once $target_file;
-        exit();
-    } else if ($subpath === 'index' || $subpath === '') {
-        require_once APP_ROOT . 'src/main/dashboard/index.php';
+    if (!isset($_SESSION['id'])) {
+        header('Location: /auth/signin');
         exit();
     }
 }
 
 if (strpos($path, '/auth') === 0) {
-    $subpath = substr($path, strlen('/auth/'));
-    $target_file = APP_ROOT . 'src/main/auth/' . $subpath . '.php';
-    if (file_exists($target_file)) {
-        require_once $target_file;
-        exit();
-    } else{
-        require_once APP_ROOT . 'src/main/auth/signin.php';
-        exit();
-    }
+    $target_file = APP_ROOT . 'src/main' . $path . '.php';
+} else if (strpos($path, '/dashboard') === 0) {
+    $target_file = APP_ROOT . 'src/main' . $path . '.php';
+} else if (strpos($path, '/staffPanel') === 0) {
+    $target_file = APP_ROOT . 'src/main' . $path . '.php';
+} else {
+    $target_file = APP_ROOT . 'src/main/pages' . $path . '.php';
 }
 
-if (strpos($path, '/staffPanel') === 0) {
-    // staffPanel === Works | staffpanel === Doesn't work
-    $subpath = substr($path, strlen('/staffPanel/'));
-    $target_file = APP_ROOT . 'src/main/staffPanel/' . $subpath . '.php';
-    require_once APP_ROOT . 'src/config/connection.php';
-    $id = $_SESSION['id'];
-    if (file_exists($target_file)) {
-        require_once $target_file;
-        exit();
-    } else{
-        require_once APP_ROOT . 'src/main/staffPanel/index.php';
-        exit();
-    }
+if (file_exists($target_file)) {
+    require_once $target_file;
+    exit();
 }
 
 header("HTTP/1.0 404 Not Found");
@@ -81,5 +44,4 @@ echo "<h1>Error 404 - Página no encontrada.</h1>";
 echo "<p>No existe la página: " . htmlspecialchars($path) . "</p>";
 echo "<a href='/'>Volver al inicio</h1>";
 exit();
-
 ?>
