@@ -11,7 +11,7 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 $path = rtrim($path, '/');
 
-if (empty($path) || $path === '/') {
+if (empty($path) || $path === '/' || $path === '/index') {
     $path = '/index';
 }
 
