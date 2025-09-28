@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RenderCores GameServers</title>
-    <meta name="description" content="Ofrecemos un servicio de hosting de alto rendimiento para tus juegos favoritos, con servidores ubicados en todo el mundo y una garantía de 99.9% de tiempo de actividad.">
+    <title>RenderCores</title>
+    <meta name="description" content="ERP moderno para PYMEs en México. Implementación rápida, personalización low-code y soporte humano. Crea flujos, formularios y reportes sin tocar código, o amplía con Python/Javascript cuando lo necesites.">
     <link href="/assets/styles/index.css" rel="stylesheet">
     <link href="/assets/styles/fonts/aspekta.css" rel="stylesheet">
     <link href="/assets/styles/fonts/poppins.css" rel="stylesheet">
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet">
-    <link rel="preload" href="/assets/img/logo.webp" as="image">
+    <link rel="preload" href="/assets/img/logo.png" as="image">
     <link rel="icon" type="image/x-icon" href="/assets/img/logo.ico">
     <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://rendercores.online">
+    <meta property="og:url" content="https://rendercores.com">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="RenderCores GameServers">
-    <meta property="og:description" content="Ofrecemos un servicio de hosting de alto rendimiento para tus juegos favoritos, con servidores ubicados en todo el mundo y una garantía de 99.9% de tiempo de actividad.">
-    <meta property="og:image" content="https://rendercores.online/assets/media/logo.webp">
+    <meta property="og:title" content="RenderCores">
+    <meta property="og:description" content="ERP moderno para PYMEs en México. Implementación rápida, personalización low-code y soporte humano. Crea flujos, formularios y reportes sin tocar código, o amplía con Python/Javascript cuando lo necesites.">
+    <meta property="og:image" content="https://rendercores.com/assets/img/logo.png">
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="rendercores.online">
-    <meta property="twitter:url" content="https://rendercores.online">
-    <meta name="twitter:title" content="RenderCores GameServers">
-    <meta name="twitter:description" content="Ofrecemos un servicio de hosting de alto rendimiento para tus juegos favoritos, con servidores ubicados en todo el mundo y una garantía de 99.9% de tiempo de actividad.">
-    <meta property="twitter:image" content="https://rendercores.online/assets/media/logo.webp">
+    <meta property="twitter:domain" content="rendercores.com">
+    <meta property="twitter:url" content="https://rendercores.com">
+    <meta name="twitter:title" content="RenderCores">
+    <meta name="twitter:description" content="ERP moderno para PYMEs en México. Implementación rápida, personalización low-code y soporte humano. Crea flujos, formularios y reportes sin tocar código, o amplía con Python/Javascript cuando lo necesites.">
+    <meta property="twitter:image" content="https://rendercores.com/assets/img/logo.png">
 </head>
 <body class="font-poppins bg-standard text-txt overflow-x-hidden">
     <nav class="px-5 lg:px-3 flex flex-row left-0 right-0 justify-between z-70 fixed top-0 mx-4 min-[1450px]:mx-25 border border-gray-300 mt-2 pt-4 lg:py-2 rounded-6xl lg:rounded-5xl bg-standard">
@@ -61,8 +61,8 @@
                 <h2 class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800 leading-[1.25] font-aspekta"><span class="underline decoration-branding">ERP moderno</span> para PYMEs en México</h2>
                 <p class="mt-5 text-lg lg:text-2xl text-gray-500 font-aspekta tracking-wide">Creado por una PYME para las PYMEs</p>
                 <div class="mt-7 flex flex-col md:flex-row justify-center gap-3">
-                    <a href="#plans" class="bg-branding text-white py-3 px-18 md:px-28 rounded-2xl hover:bg-branding-hover active:bg-branding duration-300">Ver planes</a>
-                    <a href="/demo" class="border-1 border-branding py-3 px-18 md:px-28 bg-branding/30 hover:bg-branding hover:text-white duration-300 rounded-2xl active:bg-branding-hover">Probar gratis</a>
+                    <a href="/#planes" class="bg-branding text-white py-3 px-18 md:px-28 rounded-2xl hover:bg-branding-hover active:bg-branding duration-300">Ver planes</a>
+                    <a href="/#contacto" class="border-1 border-branding py-3 px-18 md:px-28 bg-branding/30 hover:bg-branding hover:text-white duration-300 rounded-2xl active:bg-branding-hover">Probar gratis</a>
                 </div>
             </div>
             <div class="mt-10 flex gap-3 lg:gap-6 md:flex-row flex-col text-gray-600">
