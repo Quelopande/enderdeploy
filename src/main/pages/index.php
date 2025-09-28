@@ -261,7 +261,7 @@
                 </div>
             </div>
         </section>
-        <section class="mt-25 text-center" id="Recursos">
+        <section class="mt-25 text-center" id="recursos">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Recursos</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">Obtén ayuda e información con nuestros recursos</h2>
             <p class="mt-5 text-base md:text-xl">Infórmate del funcionamiento del ERP y obtén ayuda a través de la comunidad o desde soporte privado.</p>
