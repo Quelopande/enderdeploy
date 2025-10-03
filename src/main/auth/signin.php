@@ -22,9 +22,12 @@ if (isset($_COOKIE['id'])) {
     $decryptedId = decryptCookie($_COOKIE['id']);
     if ($decryptedId) {
         $_SESSION['id'] = $decryptedId;
-        header('Location: /');
+        header('Location: /dashboard/');
         exit;
     }
+} else if(isset($_SESSION['id'])) {
+    header('Location: /dashboard/');
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

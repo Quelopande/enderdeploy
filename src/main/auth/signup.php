@@ -1,5 +1,14 @@
 <?php
 $errors = [];
+
+if(isset($_SESSION['id'])) {
+  header('Location: /dashboard/');
+  exit;
+} else if (isset($_COOKIE['id'])) {
+  header('Location: /auth/signin');
+  exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
   $password = $_POST['password'] ?? '';
