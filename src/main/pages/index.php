@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RenderCores</title>
     <meta name="description" content="ERP moderno para PYMEs en México. Implementación rápida, personalización low-code y soporte humano. Crea flujos, formularios y reportes sin tocar código, o amplía con Python/Javascript cuando lo necesites.">
-    <link href="/assets/styles/index.css" rel="stylesheet">
-    <link href="/assets/styles/fonts/aspekta.css" rel="stylesheet">
-    <link href="/assets/styles/fonts/poppins.css" rel="stylesheet">
+    <link href="./assets/styles/index.css" rel="stylesheet">
+    <link href="./assets/styles/fonts/aspekta.css" rel="stylesheet">
+    <link href="./assets/styles/fonts/poppins.css" rel="stylesheet">
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet">
     <link rel="preload" href="/assets/img/logo.png" as="image">
     <link rel="icon" type="image/x-icon" href="/assets/img/logo.ico">
@@ -70,7 +70,7 @@
                 <p><i class="fa-solid fa-check"></i> Personalización low‑code</p>
                 <p><i class="fa-solid fa-check"></i> Soporte humano</p>
             </div>
-            <div class="hidden lg:mt-20 mt-10 md:flex flex-wrap justify-center items-center gap-6 md:gap-20 w-full max-w-4xl px-4">
+            <div class="hidden xl:mt-20 xl:flex flex-wrap justify-center items-center gap-6 xl:gap-20 w-full max-w-4xl px-4">
                 <div class="flex flex-col items-center">
                     <div class="text-4xl md:text-6xl lg:text-8xl text-branding px-7 py-6 rounded-3xl shadow-[0px_0px_54px_0px_#4284f5] bg-white transform -rotate-6 border border-branding/70">
                         <i class="fa-solid fa-list-check"></i>
@@ -140,7 +140,7 @@
                 </div>
             </div>
         </div>
-        <section class="mt-25 text-center" id="caracteristicas">
+        <section class="mt-25 md:mt-40 text-center" id="caracteristicas">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Características</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">Lo último en tecnología para cumplir tus necesidades</h2>
             <p class="mt-5 text-base md:text-xl">Crea flujos, formularios y reportes sin tocar código, o amplía con Python/Javascript cuando lo necesites.</p>
@@ -177,7 +177,7 @@
                 </div>
             </div>
         </section>
-        <section class="mt-25 text-center" id="modulos">
+        <section class="mt-25 md:mt-40 text-center" id="modulos">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Modulos</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">Modulos integrados</h2>
             <p class="mt-5 text-base md:text-xl">Trabajan en armonía para darte control total: desde la primera oportunidad hasta el cierre contable.</p>
@@ -220,7 +220,7 @@
                 </div>
             </div>
         </section>
-        <section class="mt-25 text-center" id="planes">
+        <section class="mt-25 md:mt-40 text-center" id="planes">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Precios</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">Precios simples, planes buenos</h2>
             <p class="mt-5 text-base md:text-xl">Comienza gratis. Planes que crecen contigo.</p>
@@ -261,7 +261,7 @@
                 </div>
             </div>
         </section>
-        <section class="mt-25 text-center" id="recursos">
+        <section class="mt-25 md:mt-40 text-center" id="recursos">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Recursos</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">Obtén ayuda e información con nuestros recursos</h2>
             <p class="mt-5 text-base md:text-xl">Infórmate del funcionamiento del ERP y obtén ayuda a través de la comunidad o desde soporte privado.</p>
@@ -286,7 +286,7 @@
                 </a>
             </div>
         </section>
-        <section id="contacto" class="mt-25 text-center mb-20">
+        <section id="contacto" class="mt-25 md:mt-40 text-center mb-20">
             <p class="border rounded-full py-2 block md:inline-block md:px-40 border-branding bg-branding/30 text-branding-hover text-md">Contacto</p>
             <h2 class="mt-5 text-3xl md:text-5xl text-branding-hover font-[600]">¿Listo para transformar tu negocio?</h2>
             <p class="mt-5 text-base md:text-xl">Contáctanos para una demo personalizada o resolver tus dudas.</p>
