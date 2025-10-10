@@ -10,7 +10,7 @@ session_start();
 define('APP_ROOT', __DIR__ . '/../');
 
 
-ini_set('display_errors', 1); // Disable error display in production
+ini_set('display_errors', 0); // Disable error display in production
 ini_set('log_errors', 1);
 ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
 
