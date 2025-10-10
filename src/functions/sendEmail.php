@@ -10,14 +10,15 @@ function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody)
     try {
         $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = 'smtp.zeptomail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'administrador@endercores.com'; 
+        $mail->Username = 'emailapikey'; 
         $mail->Password = $smtpPassword;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
+        $mail->CharSet = 'UTF-8';
 
-        $mail->setFrom('administrador@endercores.com', 'EnderDeploy - Noreply');
+        $mail->setFrom('noreply@rendercores.online', 'EnderDeploy - Noreply');
         $mail->addAddress(htmlspecialchars($receiverMail), htmlspecialchars($receiverName));
 
         $mail->isHTML(true);
@@ -26,9 +27,11 @@ function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody)
         $mail->AltBody = $plainBody;
 
         $mail->send();
-        echo 'Correo enviado correctamente.';
+        return true;
     } catch (Exception $e) {
-        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+        error_log("SEND_MAIL_ERROR: Fallo al enviar a {$receiverMail}. PHPMailer Error: {$mail->ErrorInfo}");
+        throw $e;
+        return false;
     }
 }
 ?>
