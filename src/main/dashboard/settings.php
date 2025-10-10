@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $allowedFields = ['organization', 'country', 'state', 'zipCode', 'city', 'domicile'];
             foreach ($fields as $field => $postField) {
                 if (in_array($field, $allowedFields) && !checkSimilarity($postField, $result[$field])) {
-                    $statement = $connection->prepare("UPDATE usersLocation SET $field = :$field WHERE userId = :userId");
+                    $statement = $connection->prepare("UPDATE userslocation SET $field = :$field WHERE userId = :userId");
                     $statement->execute([
                         ':userId' => $id,
                         ":$field" => $postField,
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hexTag = bin2hex($tag);
 
             if ($auth->verifyCode($secret, $_POST['totpCode'], 2)) {
-                $statement = $connection->prepare('INSERT INTO usersTotp (userId, totpSecret, totpKey, totpIv, totpTag) VALUES (:userId, :totpSecret, :totpKey, :totpIv, :totpTag) ON DUPLICATE KEY UPDATE totpSecret = VALUES(totpSecret), totpKey = VALUES(totpKey), totpIv = VALUES(totpIv), totpTag = VALUES(totpTag)');
+                $statement = $connection->prepare('INSERT INTO userstotp (userId, totpSecret, totpKey, totpIv, totpTag) VALUES (:userId, :totpSecret, :totpKey, :totpIv, :totpTag) ON DUPLICATE KEY UPDATE totpSecret = VALUES(totpSecret), totpKey = VALUES(totpKey), totpIv = VALUES(totpIv), totpTag = VALUES(totpTag)');
                 if ($statement->execute([
                     ':userId' => $id,
                     ':totpSecret' => $finalEncryptedString,
@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$statementTotp = $connection->prepare('SELECT * FROM usersTotp WHERE userId = :userId LIMIT 1');
+$statementTotp = $connection->prepare('SELECT * FROM userstotp WHERE userId = :userId LIMIT 1');
 $statementTotp->execute(array(':userId' => $id));
 $resultTotp = $statementTotp->fetch();
 if (!$resultTotp) {

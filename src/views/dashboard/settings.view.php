@@ -38,7 +38,7 @@
                     $statement = $connection->prepare($query);
                     $statement->execute(array(':id' => $id));
                     $result = $statement->fetch();
-                } else if($dbName === "usersLocation"){
+                } else if($dbName === "userslocation"){
                     $query = "SELECT * FROM {$dbName} WHERE userId = :userId LIMIT 1";
                     $statement = $connection->prepare($query);
                     $statement->execute(array(':userId' => $id));
@@ -103,30 +103,30 @@
             <form action="<?php echo htmlspecialchars('/dashboard/settings'); ?>" method="POST">
                 <div class="secondInfo">
                     <label for="organization">Organización</label><br>
-                    <input type="text" id="organization" name="organization" value="<?php echo callForData('usersLocation', 'organization', false); ?>">
+                    <input type="text" id="organization" name="organization" value="<?php echo callForData('userslocation', 'organization', false); ?>">
                 </div>
                 <div class="firstInfo">
                     <div>
                         <label for="country">País <span class="asterisk">*</span></label>
-                        <input type="text" id="country" name="country" required value="<?php echo callForData('usersLocation', 'country', true); ?>">
+                        <input type="text" id="country" name="country" required value="<?php echo callForData('userslocation', 'country', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="state">Estado / Región / Provincia <span class="asterisk">*</span></label>
-                        <input type="text" id="state" name="state" required value="<?php echo callForData('usersLocation', 'state', true); ?>">
+                        <input type="text" id="state" name="state" required value="<?php echo callForData('userslocation', 'state', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="zipCode">Código postal <span class="asterisk">*</span></label>
-                        <input type="text" id="zipCode" name="zipCode" required min="0" max="99999" value="<?php echo callForData('usersLocation', 'zipCode', true); ?>">
+                        <input type="text" id="zipCode" name="zipCode" required min="0" max="99999" value="<?php echo callForData('userslocation', 'zipCode', true); ?>">
                     </div>
                 </div>
                 <div class="firstInfo">
                     <div>
                         <label for="city">Ciudad <span class="asterisk">*</span></label>
-                        <input type="text" id="city" name="city" required value="<?php echo callForData('usersLocation', 'city', true); ?>">
+                        <input type="text" id="city" name="city" required value="<?php echo callForData('userslocation', 'city', true); ?>">
                     </div>
                     <div class="margin-left">
                         <label for="domicile">Domicilio <span class="asterisk">*</span></label>
-                        <input type="text" id="domicile" name="domicile" required value="<?php echo callForData('usersLocation', 'domicile', true); ?>">
+                        <input type="text" id="domicile" name="domicile" required value="<?php echo callForData('userslocation', 'domicile', true); ?>">
                     </div>
                 </div>
                 <?php if(!empty($secondUsersErrors)): ?>
