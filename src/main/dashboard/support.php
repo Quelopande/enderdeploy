@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ));
 }
 
-$messagesStatement = $connection->prepare('SELECT * FROM helpBody WHERE userId = :userId');
+$messagesStatement = $connection->prepare('SELECT * FROM helpbody WHERE userId = :userId');
 $messagesStatement->execute(array(':userId' => $id));
 $messages = $messagesStatement->fetchAll();
 
