@@ -1,8 +1,8 @@
 <?php
-ini_set('session.cookie_secure', 1);
+ini_set('session.cookie_secure', 1); // 1 in production
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Strict');
-ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_samesite', 'Strict'); // Strict in production
+ini_set('session.use_strict_mode', 1); // 1 in production
 ini_set('session.use_only_cookies', 1);
 error_reporting(E_ALL);
 session_start();
@@ -10,7 +10,7 @@ session_start();
 define('APP_ROOT', __DIR__ . '/../');
 
 
-ini_set('display_errors', 0); // Disable error display in production
+ini_set('display_errors', 1); // Disable error display in production
 ini_set('log_errors', 1);
 ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
 
@@ -36,18 +36,20 @@ if (strpos($path, '/dashboard') === 0 || strpos($path, '/staffPanel') === 0) {
     require_once APP_ROOT . 'src/config/connection.php';
     if (!isset($_SESSION['id'])) {
         header('Location: /auth/signin');
-        exit();
+        exit;
+    } else if(isset($_SESSION['id'])){
+        $id = $_SESSION['id'];
     }
+} else if(strpos($path, '/auth') === 0){
+    $dotenv->load();
+    require_once APP_ROOT . 'src/config/connection.php';
 }
 
 if (strpos($path, '/auth') === 0) {
-    $dotenv->load();
     $target_file = APP_ROOT . 'src/main' . $path . '.php';
 } else if (strpos($path, '/dashboard') === 0) {
-    $dotenv->load();
     $target_file = APP_ROOT . 'src/main' . $path . '.php';
 } else if (strpos($path, '/staffPanel') === 0) {
-    $dotenv->load();
     $target_file = APP_ROOT . 'src/main' . $path . '.php';
 } else {
     $target_file = APP_ROOT . 'src/main/pages' . $path . '.php';

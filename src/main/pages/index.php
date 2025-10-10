@@ -70,7 +70,7 @@
                 <p><i class="fa-solid fa-check"></i> Personalización low‑code</p>
                 <p><i class="fa-solid fa-check"></i> Soporte humano</p>
             </div>
-            <div class="hidden xl:mt-20 xl:flex flex-wrap justify-center items-center gap-6 xl:gap-20 w-full max-w-4xl px-4">
+            <!-- <div class="hidden xl:mt-20 xl:flex flex-wrap justify-center items-center gap-6 xl:gap-20 w-full max-w-4xl px-4">
                 <div class="flex flex-col items-center">
                     <div class="text-4xl md:text-6xl lg:text-8xl text-branding px-7 py-6 rounded-3xl shadow-[0px_0px_54px_0px_#4284f5] bg-white transform -rotate-6 border border-branding/70">
                         <i class="fa-solid fa-list-check"></i>
@@ -91,7 +91,7 @@
                         <i class="fa-solid fa-boxes-stacked"></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </header>
     <main class="mx-4 min-[1450px]:mx-25 mt-[10vh]">
