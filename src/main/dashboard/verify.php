@@ -10,7 +10,7 @@ $estatement->execute(array(':userId' => $id));
 $eresult = $estatement->fetch();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['verifationCodeSubmit'])) {
-    $submittedVerificationCode = $_POST['verificationCode'];
+    $submittedVerificationCode = trim($_POST['verificationCode']);
     if (empty($submittedVerificationCode)) {
         $errors[] = 'Por favor, introduce el código de verificación.';
     } 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['verifationCodeSubmit']
     }
 
     if (empty($errors)) {
-        if ($eresult && hash_equals($eresult['verificationCode'], $submittedVerificationCode)) {
+        if ($eresult && hash_equals((string)$eresult['verificationCode'], $submittedVerificationCode)) {
             if (strtotime($eresult['verificationCodeDate']) < strtotime('-1 hour')) {
                 $errors[] = 'El código de verificación ha expirado ya que solo era válido por 1 hora. Por favor, solicita un nuevo código.';
             } else {
@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['verifationCodeSubmit']
 
                     $estatement = $connection->prepare('UPDATE usersCode SET verificationCode = :verificationCode, verificationCodeDate = :verificationCodeDate, lastUserVerification = :lastUserVerification WHERE userId = :userId');
                     $estatement->execute(array(
-                        ':verificationCode' => "",
+                        ':verificationCode' => NULL,
                         ':userId' => $id,
-                        ':verificationCodeDate' => "",
+                        ':verificationCodeDate' => NULL,
                         ':lastUserVerification' => date('Y-m-d H:i:s'),
                     ));
 

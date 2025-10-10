@@ -37,9 +37,9 @@
                 <form class="resendForm" action="<?php echo htmlspecialchars('/dashboard/verify'); ?>" method="post">
                     <p>No has recibido el código?</p>
                     <button type="submit" name="resendVerificationCode" class="resendVerificationCode"> Reenviar código</button>
-                </form>        
+                </form>    
                 <?php if(!empty($errors)): ?>
-                    <div class="errors">
+                    <div class="errors" style="color: #801818ff; background-color: #e8bbbbff; padding: 10px 20px; border-radius: 20px;">
                         <ul>
                             <?php foreach($errors as $error): ?>
                                 <li><?php echo htmlspecialchars($error); ?></li>
