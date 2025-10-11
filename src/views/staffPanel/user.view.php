@@ -92,8 +92,12 @@
             </form>
         </div>
     </div>
-
-    <script>
+    <?php if ($_GET['userDataRegistrationStatus'] === 'success'): ?>
+        <script>alert('Los 2 tipos datos del usuario se han actualizado correctamente.');</script>
+    <?php elseif ($_GET['userDataRegistrationStatus'] === 'error'): ?>
+        <script>alert('Error al actualizar los datos del usuario. Por favor, inténtelo de nuevo más tarde.');</script>
+    <?php endif; ?>
+<script>
         document.addEventListener("DOMContentLoaded", function() {
             const editButton = document.getElementById("editButton");
             const saveButton = document.getElementById("saveButton");
@@ -106,6 +110,5 @@
             });
         });
     </script>
-
 </body>
 </html>

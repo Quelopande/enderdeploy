@@ -42,21 +42,25 @@ if (!isset($_SESSION['id'])) {
     header('Location: ../auth/signin');
     exit;
 } else {
-    if ($result['role'] != '-1') {
-        $roleId = $result['role'];
-        $rstatement = $connection->prepare('SELECT * FROM roles WHERE roleId = :roleId LIMIT 1');
-        $rstatement->execute(array(':roleId' => $roleId));
-        $rresult = $rstatement->fetch();
-        if ($rresult['ticket'] == '1') {
-            require_once APP_ROOT . 'src/views/dashboard/supportMsg.view.php';
+    if($result['status'] === 'verified'){
+        if ($result['role'] != '-1') {
+            $roleId = $result['role'];
+            $rstatement = $connection->prepare('SELECT * FROM roles WHERE roleId = :roleId LIMIT 1');
+            $rstatement->execute(array(':roleId' => $roleId));
+            $rresult = $rstatement->fetch();
+            if ($rresult['ticket'] == '1') {
+                require_once APP_ROOT . 'src/views/dashboard/supportMsg.view.php';
+            } else {
+                require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            }
         } else {
-            require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            if ($eresult['userId'] === $id) {
+                require_once APP_ROOT . 'src/views/dashboard/supportMsg.view.php';
+            } else {
+                require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            }
         }
-    } else {
-        if ($eresult['userId'] === $id) {
-            require_once APP_ROOT . 'src/views/dashboard/supportMsg.view.php';
-        } else {
-            require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
-        }
+    } else{
+        require_once APP_ROOT . 'src/views/dashboard/notVerified.view.php';
     }
 }

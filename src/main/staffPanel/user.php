@@ -23,13 +23,20 @@ if (isset($_SESSION['id'])) {
                     $userResult = $userStatement->fetch();
                 }
                 if($userResult){
-                    $userLocationStatement = $connection->prepare('SELECT * FROM usersLocation WHERE userId = :userId LIMIT 1');
+                    $userLocationStatement = $connection->prepare('SELECT * FROM userslocation WHERE userId = :userId LIMIT 1');
                     $userLocationStatement->execute(array(':userId' => $userResult['id']));
                     $userLocationResult = $userLocationStatement->fetch();
                     if ($roleResult['viewServiceData'] == '1') {
                         $viewServices = "<div class='user-info'><h2>Servicios</h2><a href='/staffPanel/services?userId=" . htmlspecialchars($userResult['id']) ."'>Ver Servicios</a></div>";
                     }
-                    require_once APP_ROOT . 'src/views/staffPanel/user.view.php';
+                    if ($userResult['role'] != '-1') {
+                        header("HTTP/1.0 403 Forbidden");
+                        echo "<h1>Error 403 - Ni tienes acceso a esta página.</h1>";
+                        echo "<a href='/'>Volver al inicio</h1>";
+                        exit();
+                    } else {
+                        require_once APP_ROOT . 'src/views/staffPanel/user.view.php';
+                    }
                 } else {
                     echo 'No se ha encontrado el usuario.<br>';
                     echo '<a href="/staffPanel/users">Regresar</a>';
@@ -60,24 +67,25 @@ if (isset($_SESSION['id'])) {
                     $domicile = strip_tags(filter_input(INPUT_POST, 'domicile', FILTER_UNSAFE_RAW));
                     $city = strip_tags(filter_input(INPUT_POST, 'city', FILTER_UNSAFE_RAW));
                     $state = strip_tags(filter_input(INPUT_POST, 'state', FILTER_UNSAFE_RAW));
-                    $country = strip_tags(filter_input(INPUT_POST, 'country', FILTER_UNSAFE_RAW));                  
+                    $country = strip_tags(filter_input(INPUT_POST, 'country', FILTER_UNSAFE_RAW));
+                    $zipCode = strip_tags(filter_input(INPUT_POST, 'zipCode', FILTER_UNSAFE_RAW));               
                     try {
                         $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email WHERE id = :userId');
                         $userStatement->execute(array(':user' => $user, ':secondName' => $secondName, ':lastName' => $lastName, ':secondLastName' => $secondLastName, ':email' => $email, ':userId' => $userId));
                         
                         
-                        $userLocationStatement = $connection->prepare('UPDATE usersLocation SET domicile = :domicile, city = :city, state = :state, country = :country WHERE userId = :userId');
-                        $userLocationStatement->execute(array(':domicile' => $domicile, ':city' => $city, ':state' => $state, ':country' => $country, ':userId' => $userId));
-                        
-                        echo "Datos 2 actualizados correctamente.";
+                        $userLocationStatement = $connection->prepare('UPDATE userslocation SET domicile = :domicile, city = :city, state = :state, country = :country, zipCode = :zipCode WHERE userId = :userId');
+                        $userLocationStatement->execute(array(':domicile' => $domicile, ':city' => $city, ':state' => $state, ':country' => $country, ':userId' => $userId, ':zipCode' => $zipCode));
                     } catch (PDOException $e) {
                         error_log('Error updating user data: ' . $e->getMessage());
-                        echo "Error al actualizar los datos del usuario. Por favor, inténtelo de nuevo más tarde.";
+                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userId . '&userDataRegistrationStatus=error";</script>';
+                        exit;
                     }
-                    header('Location: ' . htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING'] . '&sexon=success'));
+                    echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userId . '&userDataRegistrationStatus=success";</script>';
                     exit;                    
                 } else {
                     echo "<script>alert('Faltan los siguientes datos obligatorios: Nombre, apellido y email');</script>";
+                    exit;
                 }
             }
         }

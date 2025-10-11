@@ -5,7 +5,7 @@ $result = $statement->fetch();
 
 $errors = [];
 
-$estatement = $connection->prepare('SELECT * FROM usersCode WHERE userId = :userId LIMIT 1');
+$estatement = $connection->prepare('SELECT * FROM userscode WHERE userId = :userId LIMIT 1');
 $estatement->execute(array(':userId' => $id));
 $eresult = $estatement->fetch();
 
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['verifationCodeSubmit']
                         ':id' => $id,
                     ));
 
-                    $estatement = $connection->prepare('UPDATE usersCode SET verificationCode = :verificationCode, verificationCodeDate = :verificationCodeDate, lastUserVerification = :lastUserVerification WHERE userId = :userId');
+                    $estatement = $connection->prepare('UPDATE userscode SET verificationCode = :verificationCode, verificationCodeDate = :verificationCodeDate, lastUserVerification = :lastUserVerification WHERE userId = :userId');
                     $estatement->execute(array(
                         ':verificationCode' => NULL,
                         ':userId' => $id,
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['verifationCodeSubmit']
     } else{
         $verificationCode = strval(random_int(100000, 999999));
         try {
-            $statement = $connection->prepare('INSERT INTO usersCode (userId, verificationCode, verificationCodeDate) VALUES (:userId, :verificationCode, :verificationCodeDate) ON DUPLICATE KEY UPDATE verificationCode = VALUES(verificationCode), verificationCodeDate = VALUES(verificationCodeDate);');
+            $statement = $connection->prepare('INSERT INTO userscode (userId, verificationCode, verificationCodeDate) VALUES (:userId, :verificationCode, :verificationCodeDate) ON DUPLICATE KEY UPDATE verificationCode = VALUES(verificationCode), verificationCodeDate = VALUES(verificationCodeDate);');
             $statement->execute(array(
                 ':verificationCode' => $verificationCode,
                 ':userId' => $id,
