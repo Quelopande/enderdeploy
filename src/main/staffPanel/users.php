@@ -15,10 +15,16 @@ if (isset($_SESSION['id'])) {
             $allUsers = $allUsersStatement->fetchAll();
             require_once APP_ROOT . 'src/views/staffPanel/users.view.php';
         } else {
-            require 'noAccess.php';
-        }
+            header("HTTP/1.0 403 Forbidden");
+            require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            exit();
+    }
+    } else {
+        header("HTTP/1.0 403 Forbidden");
+        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+        exit();
     }
 } else {
     header('Location: ../auth/signin');
-    exit;
+    exit();
 }

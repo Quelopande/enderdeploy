@@ -13,8 +13,9 @@ $statement->execute([':id' => $id]);
 $result = $statement->fetch();
 
 if (!$result || $result['role'] == '-1') {
-    require 'noAccess.php';
-    exit;
+    header("HTTP/1.0 403 Forbidden");
+    require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+    exit();
 }
 
 $roleId = $result['role'];
@@ -23,12 +24,13 @@ $roleStatement->execute([':roleId' => $roleId]);
 $roleResult = $roleStatement->fetch();
 
 if (!$roleResult || $roleResult['manageRoles'] != '1') {
-    require 'noAccess.php';
-    exit;
+    header("HTTP/1.0 403 Forbidden");
+    require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+    exit();
 }
 
 if (!isset($_SESSION['totpVerified'])) {
-    $totpStatement = $connection->prepare('SELECT * FROM usersTotp WHERE userId = :userId LIMIT 1');
+    $totpStatement = $connection->prepare('SELECT * FROM userstotp WHERE userId = :userId LIMIT 1');
     $totpStatement->execute([':userId' => $id]);
     $totpResult = $totpStatement->fetch();
 

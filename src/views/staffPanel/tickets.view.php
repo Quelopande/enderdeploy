@@ -18,13 +18,13 @@
         </div>
     </div>
     <h1>Tickets</h1>
-    <a href="/staffPanel/tickets.php?filter=noResponseAlert">Sin respuesta</a>
-    <a href="/staffPanel/tickets.php?filter=withResponse">Con respuesta</a>
-    <a href="/staffPanel/tickets.php">Limpiar filtros</a>
+    <a href="/staffPanel/tickets?filter=noResponseAlert">Sin respuesta</a>
+    <a href="/staffPanel/tickets?filter=withResponse">Con respuesta</a>
+    <a href="/staffPanel/tickets">Limpiar filtros</a>
     <div class="tickets">
         <?php 
         foreach ($messages as $message) {
-            $responseStatement = $connection->prepare('SELECT * FROM helpAnswers WHERE messageId = :messageId ORDER BY creationDate DESC LIMIT 1');
+            $responseStatement = $connection->prepare('SELECT * FROM helpanswers WHERE messageId = :messageId ORDER BY creationDate DESC LIMIT 1');
             $responseStatement->execute([':messageId' => $message['messageId']]);
             $response = $responseStatement->fetch(PDO::FETCH_ASSOC);
 

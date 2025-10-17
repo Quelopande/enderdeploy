@@ -31,8 +31,7 @@ if (isset($_SESSION['id'])) {
                     }
                     if ($userResult['role'] != '-1') {
                         header("HTTP/1.0 403 Forbidden");
-                        echo "<h1>Error 403 - Ni tienes acceso a esta página.</h1>";
-                        echo "<a href='/'>Volver al inicio</h1>";
+                        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
                         exit();
                     } else {
                         require_once APP_ROOT . 'src/views/staffPanel/user.view.php';
@@ -53,7 +52,9 @@ if (isset($_SESSION['id'])) {
                 echo '<a href="/staffPanel/users">Regresar</a>';
             }
         } else {
+            header("HTTP/1.0 403 Forbidden");
             require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            exit();
         }
         if ($roleResult['manageUser'] == '1') {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -89,6 +90,10 @@ if (isset($_SESSION['id'])) {
                 }
             }
         }
+    } else{
+        header("HTTP/1.0 403 Forbidden");
+        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+        exit();
     }
 } else {
     header('Location: ../auth/signin');

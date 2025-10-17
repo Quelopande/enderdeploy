@@ -27,3 +27,5 @@ foreach ($subscriptions->autoPagingIterator() as $sub) {
 }
 
 echo "</table>";
+
+// Nota: Agregar verificacion staff

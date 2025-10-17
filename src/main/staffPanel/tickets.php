@@ -10,13 +10,19 @@ if (isset($_SESSION['id'])) {
         $roleStatement->execute(array(':roleId' => $roleId));
         $roleResult = $roleStatement->fetch();
         if ($roleResult['ticket'] == '1') {
-            $messagesStatement = $connection->prepare('SELECT * FROM helpBody');
+            $messagesStatement = $connection->prepare('SELECT * FROM helpbody');
             $messagesStatement->execute();
             $messages = $messagesStatement->fetchAll();
             require_once APP_ROOT . 'src/views/staffPanel/tickets.view.php';
         } else {
-            require 'noAccess.php';
+            header("HTTP/1.0 403 Forbidden");
+            require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+            exit();
         }
+    } else {
+        header("HTTP/1.0 403 Forbidden");
+        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+        exit();
     }
 } else {
     header('Location: ../auth/signin');

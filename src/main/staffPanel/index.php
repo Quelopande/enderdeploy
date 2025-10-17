@@ -8,7 +8,9 @@ if (isset($_SESSION['id'])) {
     if ($result['role'] != -1) {
         require_once APP_ROOT . 'src/views/staffPanel/index.view.php';
     } else {
-        require 'noAccess.php';
+        header("HTTP/1.0 403 Forbidden");
+        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+        exit();
     }
 } else {
     header('Location: ../auth/signin');
