@@ -9,6 +9,32 @@ body {
     --blue-light: #7492ff;
     overflow-x: hidden;
 }
+.utils{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border: 1px solid var(--blue-light);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.utils div:nth-child(1){
+    display: flex;
+    gap: 2rem;
+    border: 1px solid var(--blue-light);
+    padding: 1rem;
+}
+.utils div:nth-child(1) form:nth-child(1){
+    border-right: 1px solid var(--blue-light);
+    padding-right: 2rem;
+}
+.utils div:nth-child(2){
+    display: flex;
+    gap: 1rem;
+    border: 2px solid var(--blue-light);
+    padding: 1rem 2rem;
+}
 .menu {
     display: flex;
     justify-content: space-between;

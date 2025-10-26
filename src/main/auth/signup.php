@@ -10,15 +10,15 @@ if(isset($_SESSION['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-  $password = $_POST['password'] ?? '';
-  $password2 = $_POST['password2'] ?? '';
+  $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)); 
+  $password = trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW));
+  $password2 = trim(filter_input(INPUT_POST, 'password2', FILTER_UNSAFE_RAW));
   $agree = isset($_POST['agree']);
   $email = strtolower($email);
   $role = '-1';
   $status = 'notverified';
 
-  $pepper = $_ENV['pepper'] ?? ''; // Ensure this env var exists and is set
+  $pepper = $_ENV['pepper'];
 
   if (empty($password) || empty($email) || empty($password2)) {
     $errors[] = 'Rellena todo el formulario.';
@@ -38,38 +38,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (!$agree) {
     $errors[] = 'Debes aceptar la política de privacidad y los términos y condiciones para registrarte.';
   }
-  if (empty($errors)) {
-    require_once APP_ROOT . 'src/config/connection.php';
-    $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
-    $statement->execute(array(':email' => $email));
-    $result = $statement->fetch();
 
-    if (!isset($_POST['agree'])) {
-      $errors .= 'Acepta la política de privad y los terminos y condiciones para registrarse.';
-    }
-
-    if ($result != false) {
-      $errors .= '¡Este email está en uso! Si crees que es un error contacta con soporte.';
-    }
-
-    $pepper = $_ENV['pepper'];
-    $salt = openssl_random_pseudo_bytes(32);
-    $passPepper = $password . $pepper . $salt;
-    $hash = password_hash($passPepper, PASSWORD_BCRYPT, ['cost' => 12]);
-
-    if ($password !== $password2) {
-      $errors .= 'Las contraseñas no coinciden.';
-    }
+  require_once APP_ROOT . 'src/config/connection.php';
+  $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+  $statement->execute(array(':email' => $email));
+  $result = $statement->fetch();
+  if ($result != false) {
+    $errors[] = '¡Este email está en uso! Si crees que es un error contacta con soporte.';
   }
+  
+  if (empty($errors)) {
+    $pepper = $_ENV['pepper'];
+    $passwordWithPepper = $password . $pepper; 
+    $hash = password_hash($passwordWithPepper, PASSWORD_DEFAULT, ['cost' => 12]);
 
-  if ($errors === '') {
     try{
-      $statement = $connection->prepare('INSERT INTO users (id, email, password, salt, status, role) VALUES (NULL, :email, :password, :salt, :status, :role)');
+      $statement = $connection->prepare('INSERT INTO users (id, email, password, status, role) VALUES (NULL, :email, :password, :status, :role)');
       $statement->execute(array(
         ':email' => $email,
         ':password' => $hash,
         ':status' => $status,
-        ':salt' => $salt,
         ':role' => $role
       ));
       $newUserId = $connection->lastInsertId();
@@ -93,10 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ':userId' => $newUserId
       ));
 
-      $userLocationstatement = $connection->prepare('INSERT INTO usersCode (userId) VALUES (:userId)');
-      $userLocationstatement->execute(array(
-        ':userId' => $newUserId
-      ));
+      $usersCodeStatement = $connection->prepare('INSERT INTO usersCode (userId) VALUES (:userId)');
+      $usersCodeStatement->execute([':userId' => $newUserId]);
+
+      $connection->commit();
 
       function encryptCookie($data) {
         $encryptionKey = $_ENV['cookieEncryptKey'];

@@ -1,5 +1,5 @@
 <?php
-$errors = '';
+$errors[] = '';
 
 function encryptCookie($data) {
     $cookieEncryptKey = $_ENV['cookieEncryptKey'];
@@ -31,11 +31,11 @@ if (isset($_COOKIE['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = htmlspecialchars(strtolower(trim($_POST['email'])), ENT_QUOTES, 'UTF-8');
-    $password = trim($_POST['password']);
+    $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)); 
+    $password = trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW));
 
     if (empty($email) || empty($password)) {
-        $errors .= '<div class="alert alert-danger d-flex align-items-center" role="alert">Please, fill the gaps.</div>';
+        $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Please, fill the gaps.</div>';
     } else {
         require_once APP_ROOT . 'src/config/connection.php';
         $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
@@ -43,19 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $statement->fetch();
 
         if ($result === false) {
-            $errors .= '<div class="alert alert-danger d-flex align-items-center" role="alert">Email account not found.</div>';
+            $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Email account not found.</div>';
         } else {
             $id = $result['id'];
             $pepper = $_ENV['pepper'];
-            $passPepper = $password . $pepper . $result['salt'];
+            $passPepper = $password . $pepper;
 
             if (!password_verify($passPepper, $result['password'])) {
-                $errors .= '<div class="alert alert-danger d-flex align-items-center" role="alert">Incorrect password.</div>';
+                $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Incorrect password.</div>';
             }
         }
     }
 
-    if ($errors === '') {
+    if (empty($errors)) {
+        session_regenerate_id(true);
+        
         $encryptedCookieValue = encryptCookie($id);
         setcookie('id', $encryptedCookieValue, time() + 3 * 24 * 60 * 60, '/', '', true, true); // 15 days cookie
         $_SESSION['id'] = $id;

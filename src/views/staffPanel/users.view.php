@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="menu">
-        <h2>Staff Panel</h2>
+        <h2>Staff Panel | <b style="background:red; padding: 2px 5px;">SENSIBLE</b></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
             <a href="/staffPanel/services">Servicios</a>
@@ -17,14 +17,19 @@
         </div>
     </div>
     <div class="utils">
-        <form action="/staffPanel/user" method="get">
-            <input type="text" name="userId" id="userId" placeholder="Buscar usuario por ID"> 
-            <input type="submit">
-        </form>
-        <form action="/staffPanel/user" method="get">
-            <input type="text" name="userEmail" id="userEmail" placeholder="Buscar usuario por EMAIL"> 
-            <input type="submit">
-        </form>
+        <div>
+            <form action="<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>" method="get">
+                <input type="text" name="userId" id="userId" placeholder="Buscar usuario por ID"> 
+                <input type="submit">
+            </form>
+            <form action="<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>" method="get">
+                <input type="text" name="userEmail" id="userEmail" placeholder="Buscar usuario por EMAIL"> 
+                <input type="submit">
+            </form>
+        </div>
+        <div>
+            <a href="/staffPanel/createUser" class="createUserBtn">Crear usuario</a>
+        </div>
     </div>
     <div class="allUsers">
         <h2>Usuarios</h2>

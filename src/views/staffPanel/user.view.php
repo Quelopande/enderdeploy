@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="menu">
-        <h2>Staff Panel</h2>
+        <h2>Staff Panel | <b style="background:red; padding: 2px 5px;">SENSIBLE</b></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
             <a href="/staffPanel/services">Servicios</a>
