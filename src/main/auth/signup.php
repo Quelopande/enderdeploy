@@ -51,8 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pepper = $_ENV['pepper'];
     $passwordWithPepper = $password . $pepper; 
     $hash = password_hash($passwordWithPepper, PASSWORD_DEFAULT, ['cost' => 12]);
+    $stripeCustomerId = null;
 
     try{
+      $connection->beginTransaction();
+      \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
+      
       $statement = $connection->prepare('INSERT INTO users (id, email, password, status, role) VALUES (NULL, :email, :password, :status, :role)');
       $statement->execute(array(
         ':email' => $email,
@@ -76,12 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ':userId' => $newUserId
       ));
 
-      $userLocationstatement = $connection->prepare('INSERT INTO usersLocation (userId) VALUES (:userId)');
+      $userLocationstatement = $connection->prepare('INSERT INTO userslocation (userId) VALUES (:userId)');
       $userLocationstatement->execute(array(
         ':userId' => $newUserId
       ));
 
-      $usersCodeStatement = $connection->prepare('INSERT INTO usersCode (userId) VALUES (:userId)');
+      $usersCodeStatement = $connection->prepare('INSERT INTO userscode (userId) VALUES (:userId)');
       $usersCodeStatement->execute([':userId' => $newUserId]);
 
       $connection->commit();
@@ -94,11 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
       $encryptedCookieValue = encryptCookie($newUserId);
 
-      setcookie('user', $encryptedCookieValue, time() + 15 * 24 * 60 * 60, '/', '', true, true);
+      setcookie('id', $encryptedCookieValue, time() + 15 * 24 * 60 * 60, '/', '', true, true);
       header('Location: ../auth/signin');
       exit; 
     } catch (PDOException $e) {
       $connection->rollBack();
+      if ($stripeCustomerId){ 
+        \Stripe\Customer::retrieve($stripeCustomerId)->delete();
+      }
       error_log("SIGNUP (1): Database error during signup: " . $e->getMessage());
       $errors[] = 'Ocurrió un error en la base de datos al registrar tu cuenta. Inténtalo de nuevo.';
     } catch (\Stripe\Exception\ApiErrorException $e) {
@@ -107,6 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $errors[] = 'Ocurrió un error con el servicio de pago (Stripe). Por favor, inténtalo de nuevo o contacta con soporte.';
     } catch (Exception $e) {
       $connection->rollBack();
+      if ($stripeCustomerId){
+        \Stripe\Customer::retrieve($stripeCustomerId)->delete();
+      }
       error_log("SIGNUP (3): General error during signup for email " . $email . ": " . $e->getMessage());
       $errors[] = 'Ocurrió un error inesperado al registrar tu cuenta. Inténtalo de nuevo.';
     }

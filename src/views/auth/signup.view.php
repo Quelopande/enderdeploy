@@ -54,13 +54,16 @@
                     <svg viewBox="0 0 64 64" height="20px" width="20px"><path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path></svg>
                     <p>He leído y acepto los <a href="/terms" target="_blank">Términos de Servicio</a> y la <a href="/privacy" target="_blank">Política de Privacidad</a>.</p>
                 </label>
-                <?php if(!empty($errors)): ?>
-				<div style="color: red; margin-bottom: 10px;">
-					<ul>
-						<?php echo $errors; ?>
-					</ul>
-				</div>
-			<?php endif; ?>
+                <?php
+                if (!empty($errors) && is_array($errors)): ?>
+                    <div style="color: red; margin-bottom: 10px;">
+                        <?php 
+                        foreach ($errors as $error) {
+                            echo '<p>' . htmlspecialchars($error) . '</p>';
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
                 <button type="submit" class="login-button">Registrarse</button>
             </form>
             <p class="register-link">¿Ya tienes una cuenta? <a href="../auth/signin">Inicia Sesión</a></p>

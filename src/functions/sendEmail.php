@@ -12,13 +12,13 @@ function sendMail($receiverMail, $receiverName, $subject, $htmlBody, $plainBody)
         $mail->isSMTP();
         $mail->Host = 'smtp.zeptomail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'emailapikey'; 
+        $mail->Username = 'emailappsmtp.2dd0b785541be1af'; 
         $mail->Password = $smtpPassword;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
 
-        $mail->setFrom('noreply@rendercores.online', 'EnderDeploy - Noreply');
+        $mail->setFrom('noreply@rendercores.com', 'EnderDeploy - Noreply');
         $mail->addAddress(htmlspecialchars($receiverMail), htmlspecialchars($receiverName));
 
         $mail->isHTML(true);

@@ -1,5 +1,5 @@
 <?php
-$errors[] = '';
+$errors = [];
 
 function encryptCookie($data) {
     $cookieEncryptKey = $_ENV['cookieEncryptKey'];

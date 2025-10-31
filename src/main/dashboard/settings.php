@@ -96,15 +96,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (empty($actualPassword) || empty($newPassword) || empty($newPassword2)) {
             $passErrors .= '<p style="border: solid 1px #8d0000;background: #ad00005c;color: #8d0000;padding:10px;border-radius:20px;display:block;">Rellena todos los campos.</p>';
         } else {
-            if (!password_verify($actualPassword . $pepper . $result['salt'], $password)) {
+            if (!password_verify($actualPassword . $pepper, $password)) {
                 $passErrors .= '<p style="border: solid 1px #8d0000;background: #ad00005c;color: #8d0000;padding:10px;border-radius:20px;display:block;">Rellena el campo de "Contraseña Actual" con la contraseña que tienes establecida actualmente en la cuenta.</p>';
             } elseif ($actualPassword === $newPassword) {
                 $passErrors .= '<p style="border: solid 1px #8d0000;background: #ad00005c;color: #8d0000;padding:10px;border-radius:20px;display:block;">La nueva contraseña no debe ser la misma.</p>';
             } elseif ($newPassword !== $newPassword2) {
                 $passErrors .= '<p style="border: solid 1px #8d0000;background: #ad00005c;color: #8d0000;padding:10px;border-radius:20px;display:block;">Los campos "Nueva contraseña" y "Nueva contraseña 2" deben de tener los mismos datos.</p>';
             } else {
-                $newPassPepper = $newPassword . $pepper . $result['salt'];
-                $hash = password_hash($newPassPepper, PASSWORD_BCRYPT, ['cost' => 12]);
+                $newPassPepper = $newPassword . $pepper;
+                $hash = password_hash($newPassPepper, PASSWORD_DEFAULT, ['cost' => 12]);
     
                 $statement = $connection->prepare('UPDATE users SET password = :password WHERE id = :id');
                 $statement->execute([

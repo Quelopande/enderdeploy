@@ -46,6 +46,16 @@
                     <label for="password">Contraseña:</label>
                     <input type="password" name="password" id="password" class="input-text" placeholder="Ingresa tu contraseña" required minlength="8">
                 </div>
+                <?php
+                if (!empty($errors) && is_array($errors)): ?>
+                    <div style="color: red; margin-bottom: 10px;">
+                        <?php 
+                        foreach ($errors as $error) {
+                            echo '<p>' . htmlspecialchars($error) . '</p>';
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
                 <button type="submit" class="login-button">Iniciar Sesión</button>
             </form>
             <p class="register-link">¿No tienes una cuenta? <a href="../auth/signup">Regístrate</a></p>
