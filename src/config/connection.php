@@ -1,9 +1,9 @@
 <?php
 $dbHost ="localhost"; // Default host MySql
 $dbPort = "3306"; // Default port MySql
-$database = "example_db";
+$database = "renderco_enderdeploy"; // Database name change it in production
 $dbCharset = "utf8mb4";
-$dbUsername = "example_user";
+$dbUsername = "root"; // Default username MySql
 $dbPassword = $_ENV['dbPassword'];
 try {
     $connection = new PDO(
