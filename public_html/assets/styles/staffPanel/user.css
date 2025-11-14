@@ -32,45 +32,62 @@ body {
     flex-direction: column;
     gap: 20px;
 }
-.user-info {
-    background-color: rgb(234, 234, 234);
-    padding: 20px;
-    border-radius: 26px;
+.userInfo {
+    border: 1px solid var(--blue-light);
+    padding: 3rem;
 }
-.user-info h2 {
+.userInfo .userDetailsEditable{
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+}
+.userInfo .userDetailsEditable input{
+    font-family: "Poppins", serif;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid rgb(200, 200, 200);
+    outline: none;
+}
+.userInfo h2 {
     font-size: 22px;
     margin-bottom: 15px;
 }
-
-.user-info p {
+.userInfo p {
     font-size: 16px;
     line-height: 1.6;
     margin-bottom: 10px;
 }
-.user-actions h2 {
-    font-size: 22px;
+.userInfo .userDetailsEditable div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-bottom: 15px;
 }
-
-.user-actions a {
-    display: inline-block;
-    padding: 10px 15px;
-    margin-right: 10px;
-    color: white;
-    text-decoration: none;
-    background-color: #3498db;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.user-actions a:hover {
-    background-color: #2980b9;
-}
 button{
-    font-family: "Poppins", serif;
-    margin:20px 0;
-    padding: 10px 50px;
-    border-radius: 100px;
-    border: solid 1px;
+    all: unset;
+    text-align: center;
+    margin-top: 20px;
+    background-color: var(--blue-light);
+    color: white;
+    padding: 10px;
+    width: 100%;
+}
+.userActions{
+    display: flex;
+    margin-top: 20px;
+}
+.userActions div{
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--blue-light);
+    cursor: pointer;
+    width: 100%;
+}
+a{
+    all: unset;
+}
+.userActions div:hover{
+    background-color: var(--blue-light);
+    color: white;
 }
