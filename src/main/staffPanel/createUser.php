@@ -38,7 +38,7 @@ if (!isset($_SESSION['totpVerified'])) {
         exit("Todos los administradores de roles deben tener 2FA habilitado.<br><a href='/dashboard'>Volver</a>");
     }
     
-    $errors = '';
+    $errors[] = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
         $oneCodeInput = filter_input(INPUT_POST, 'code', FILTER_SANITIZE_NUMBER_INT);
@@ -87,7 +87,7 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
         $user = trim(filter_input(INPUT_POST, 'user', FILTER_SANITIZE_SPECIAL_CHARS));
         $lastName = trim(filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_SPECIAL_CHARS));
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)); 
-        $$password = trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW));
+        $password = trim(filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW));
         // Optional fields
         $secondName = trim(filter_input(INPUT_POST, 'secondName', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $secondLastName = trim(filter_input(INPUT_POST, 'secondLastName', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
@@ -98,21 +98,21 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
         $domicile = trim(filter_input(INPUT_POST, 'domicile', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '');
         $zipCode = trim(filter_input(INPUT_POST, 'zipCode', FILTER_SANITIZE_ADD_SLASHES) ?? '');
 
-        $errors[] = "";
+        $errors = [];
 
         if (empty($user)) {
-            $errors = "El campo Nombre es obligatorio.";
+            $errors[] = "El campo Nombre es obligatorio.";
         }
         if (empty($lastName)) {
-            $errors = "El campo Apellido es obligatorio.";
+            $errors[] = "El campo Apellido es obligatorio.";
         }
         if (!$email) {
-            $errors = "El email no es válido.";
+            $errors[] = "El email no es válido.";
         }
-        if (empty($$password)) {
+        if (empty($password)) {
             $errors[] = "La contraseña es obligatoria.";
-        } elseif (strlen($$password) < 8) {
-            $errors = "La contraseña debe tener al menos 8 caracteres.";
+        } elseif (strlen($password) < 8) {
+            $errors[] = "La contraseña debe tener al menos 8 caracteres.";
         }
 
         if (empty($errors)) {
@@ -141,6 +141,7 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
                 ]);
                 $newUserId = $connection->lastInsertId();
 
+                \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
                 $customer = \Stripe\Customer::create([
                     'name' => (string)$newUserId,
                     'email' => $email,
@@ -151,10 +152,10 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
                 $userStatement = $connection->prepare('UPDATE users SET stripeCustomerId = :stripeCustomerId WHERE id = :userId');
                 $userStatement->execute([':stripeCustomerId' => $stripeCustomerId, ':userId' => $newUserId]);
 
-                $userLocationstatement = $connection->prepare('INSERT INTO usersLocation (userId) VALUES (:userId)');
+                $userLocationstatement = $connection->prepare('INSERT INTO userslocation (userId) VALUES (:userId)');
                 $userLocationstatement->execute([':userId' => $newUserId]);
 
-                $usersCodeStatement = $connection->prepare('INSERT INTO usersCode (userId) VALUES (:userId)');
+                $usersCodeStatement = $connection->prepare('INSERT INTO userscode (userId) VALUES (:userId)');
                 $usersCodeStatement->execute([':userId' => $newUserId]);
 
                 $connection->commit();
