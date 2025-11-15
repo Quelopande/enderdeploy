@@ -104,11 +104,58 @@
                     <button type="submit" id="saveButton" name="userInformationUpdate" style="display:none;">Guardar cambios</button>
                 <?php endif; ?>
             </form>
+            <?php if ($roleResult['manageUser'] == '1'): ?>
             <div class="userActions">
                 <div><?php echo $viewServices ?? '<a>Sin acceso</a>'; ?></div>
-                <div id="verifyUserButton">Verificar</div>
+                <?php if ($userResult['status'] !== "verified"): ?>
+                    <div id="verifyUserButton">Verificar</div>
+                    <script>
+                        document.getElementById("verifyUserButton").addEventListener("click", function() {
+                            let verificationPrompt = prompt("Por favor, introduce 'verify_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>':");
+                            if (verificationPrompt === "verify_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>") {
+                                alert("Correcto, has introducido: " + verificationPrompt + "(Reinicia la página para ver los cambios)");
+                            } else{
+                                alert("Error: No se pudo verificar al usuario.");
+                            }
+
+                            let data = new FormData();
+                            data.append('userVerification', verificationPrompt);
+
+                            fetch("<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>", {
+                                method: "POST",
+                                body: data
+                            }).then(res => {
+                                console.log("Request complete! response:", res);
+                            });
+                        });
+                    </script>
+                <?php else: ?>
+                    <div id="deVerifyUserButton">Desverificar</div>
+                    <script>
+                         document.getElementById("deVerifyUserButton").addEventListener("click", function() {
+                            let isConfirmed = confirm("¿Quitar verificación?");
+
+                            if (isConfirmed) {
+                                alert("¡Cambios guardados con éxito! (Reinicia la página para ver los cambios)");
+
+                                let data = new FormData();
+                                data.append('deVerifyConfirmation', isConfirmed);
+
+                                fetch("<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>", {
+                                    method: "POST",
+                                    body: data
+                                }).then(res => {
+                                    console.log("Request complete! response:", res);
+                                });
+                            } else {
+                                alert("Has decidido cancelar. Los cambios no se guardarán.");
+                            }
+                         });
+                    </script>
+                <?php endif; ?>
                 <div>Totp</div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
     <?php if ($_GET['userDataRegistrationStatus'] === 'success'): ?>
@@ -116,26 +163,6 @@
     <?php elseif ($_GET['userDataRegistrationStatus'] === 'error'): ?>
         <script>alert('Error al actualizar los datos del usuario. Por favor, inténtelo de nuevo más tarde.');</script>
     <?php endif; ?>
-    <script>
-        document.getElementById("verifyUserButton").addEventListener("click", function() {
-            let verificationPrompt = prompt("Por favor, introduce 'verify_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>':");
-            if (verificationPrompt === "verify_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>") {
-                alert("Correcto, has introducido: " + verificationPrompt);
-            } else{
-                alert("Error: No se pudo verificar al usuario.");
-            }
-
-            let data = new FormData();
-            data.append('userVerification', verificationPrompt);
-
-            fetch("<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>", {
-                method: "POST",
-                body: data
-            }).then(res => {
-                console.log("Request complete! response:", res);
-            });
-        });
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const editButton = document.getElementById("editButton");
