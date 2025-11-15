@@ -1,0 +1,181 @@
+/*! Aspekta | OFL v1.1 License | Ivo Dolenc (c) 2025 | https://github.com/ivodolenc/aspekta */
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 50;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-50.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-50.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-50.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-100.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-100.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-100.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 150;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-150.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-150.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-150.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-200.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-200.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-200.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 250;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-250.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-250.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-250.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-300.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-300.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-300.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 350;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-350.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-350.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-350.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-400.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-400.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-400.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 450;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-450.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-450.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-450.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-500.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-500.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-500.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 550;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-550.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-550.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-550.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-600.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-600.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-600.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 650;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-650.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-650.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-650.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-700.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-700.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-700.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 750;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-750.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-750.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-750.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-800.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-800.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-800.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 850;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-850.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-850.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-850.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-900.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-900.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-900.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 950;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-950.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-950.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-950.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Aspekta';
+  font-style: normal;
+  font-weight: 1000;
+  font-display: swap;
+  src: url('../../../assets/fonts/aspekta/webfonts/Aspekta-1000.woff2') format('woff2'),
+       url('../../../assets/fonts/aspekta/otf/Aspekta-1000.otf') format('opentype'),
+       url('../../../assets/fonts/aspekta/ttf/Aspekta-1000.ttf') format('truetype');
+}

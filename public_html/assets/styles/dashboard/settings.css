@@ -1,0 +1,148 @@
+nav .sidebar {
+    margin-top: -10px !important;
+}
+.serverStatus{
+    background-color: #bbe8c8;
+    margin-top: 100px;
+    padding: 15px;
+    border-radius: 20px;
+    color: #188038;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+}
+section{
+    background-color: rgb(226, 226, 226);
+    margin-top: 10px;
+    padding: 20px 40px 50px;
+    border-radius: 26px;
+}
+section h1{
+    color: rgb(42, 42, 42);
+    font-family: "Funnel Display", serif;
+    font-size: 30px;
+}
+.showInformation{
+    display: flex;
+    margin-top: -20px;
+}
+.margin-left{
+    margin-left: 10px;
+}
+.showInformation div{
+    min-width: 100px;
+}
+input, #contenteditable{
+    border: solid 1px;
+    outline: none;
+    padding: 7px 12px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 16px;
+    font-size: 15px;
+}
+label{
+    margin-left: 5px;
+}
+.asterisk{
+    color: rgb(201, 60, 0);
+}
+#contenteditable{
+    margin-top: -10px;
+    background-color: rgb(203, 203, 203);
+    color: rgb(58, 58, 58);
+    cursor: no-drop;
+}
+form button{
+    border: none;
+    padding: 10px 70px;
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    background-color: #00944A;
+    margin-top: -20px;
+    color: white;
+    border-radius: 100px;
+    right: 60px;
+    font-size: 15px;
+    font-weight: 400;
+}
+form button:hover{
+    cursor: pointer;
+    background-color: #00793c;
+    transition: 0.4s all;
+}
+.firstInfo{
+    display: flex;
+    margin-top: 20px;
+}
+.firstInfo div{
+    display: flex;
+    flex-direction: column;
+}
+.secondInfo{
+    margin-top: 20px;
+}
+.link div{
+    display: flex;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: solid 1px;
+    padding: 20px 40px;
+    border-radius: 26px;
+    align-items: center;
+    width: 100%;
+    margin: 10px;
+}
+.item i{
+    font-size: 40px;
+}
+.item h2{
+    margin-top: 10px;
+    font-weight: 500;
+}
+.item a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    background-color: #00944A;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 100px;
+    width: 100%;
+    margin-top: -10px;
+}
+.modal form span{
+    padding: 10px 50px;
+    border-radius: 200px;
+    cursor: pointer;
+    margin-top: -20px;
+    margin-right: 180px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.modal form span:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+.modal form div:nth-child(5){
+    display: flex;
+    flex-direction: row;
+    right: 0;
+    justify-content: right;
+}
+@media (max-width: 990px) {
+    .firstInfo{flex-direction: column;}
+    section{padding: 10px 30px 40px;}
+    .modal form{width: 65vw!important;}
+    form button{margin-top: 20px;padding: 10px 20px;width: 100%;position: static;}
+    .modal form div:nth-child(5){flex-direction: column;}
+    .modal form span{margin: 10px 0 -10px 0;display:block; text-align: center;padding: 10px 0;width: 100%;position: static;}
+    .secondInfo{display: flex;flex-direction: column;}
+    .secondInfo input{margin-top: -20px;}
+    .showInformation{flex-direction: column;}
+    .margin-left{margin-left: 0;}
+    .link div{flex-direction: column;margin-right: 100px;}
+}
+@media (max-width: 837px) {
+    nav .sidebar {margin-top: -35px !important;}
+}

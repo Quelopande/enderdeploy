@@ -1,0 +1,6 @@
+/vendor/
+/.vscode/
+/.env
+/storage/
+/.gitignore
+/node_modules/

@@ -1,0 +1,112 @@
+:root{
+    --bgMainColor: #0000001a;
+}
+nav .sidebar {
+    margin-top: -10px !important;
+}
+.serverStatus{
+    background-color: #bbe8c8;
+    margin-top: 100px;
+    padding: 15px;
+    border-radius: 20px;
+    color: #188038;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+}
+main .top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 5px;
+    background-color: var(--bgMainColor);
+    border-radius: 200px;
+    margin-right: 50px;
+    margin-top: 10px;
+    margin-top: 100px;
+}
+main .top .btn{
+    display: block;
+    text-decoration: none;
+    color: black;
+    background-color: var(--bgMainColor);
+    padding: 10px 20px;
+    border-radius: 100px;
+    cursor: pointer;
+    border: solid 1px #0000002a;
+    font-size: 16px;
+    font-family: "Poppins", serif;
+}
+main .top .btn:hover{
+    background-color: #0000003a;
+    transition: all 0.5s;
+}
+main .top .btn:active{
+    background-color: #0000005a;
+}
+main .problemExplanation{
+    background-color: red;
+    background-color: var(--bgMainColor);
+    padding: 10px 20px;
+    border-radius: 26px;
+    margin: 20px 50px 0 0;
+}
+main .problemExplanation h1{
+    text-align: center;
+}
+main .answers{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--bgMainColor);
+    margin-right: 50px;
+    border-radius: 20px;
+}
+main .answers .staff{
+    --bgColor: rgb(190, 196, 255) !important;
+}
+main .answer{
+    --bgColor: #0000001a;
+}
+main .answer p{
+    margin: 20px 20px;
+}
+main .staff span{
+    background-color: rgba(0, 124, 52, 0.359);
+    padding: 4px 20px;
+    border-radius: 100px;
+    font-size: 12px;
+    margin-top: -10px !important;
+    position: absolute;
+}
+main .answer p:nth-child(1){
+    font-weight: 600;
+}
+main .answer p:nth-child(2){
+    margin-top: -15px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: var(--bgColor);
+}
+main .answers form input{
+    outline: none;
+    font-family: "Poppins", serif;
+    font-size: 15px;
+    border-radius: 1000px;
+    border: solid 1px;
+    padding: 5px 10px;
+    margin-left: 20px;
+}
+main .answers form button{
+    padding: 7px 30px;
+    border-radius: 50px;
+    border: none;
+    font-family: "Poppins", serif;
+    font-size: 15px;
+    background-color: rgb(16, 107, 0);
+    color: white;
+    cursor: pointer;
+}
+@media (max-width: 837px) {
+    nav .sidebar {margin-top: -35px !important;}
+}
