@@ -113,11 +113,34 @@ if (isset($_SESSION['id'])) {
                         ));
 
                         $connection->commit();
-                        header('Location: /dashboard');
                         exit();
                     } catch (PDOException $e) {
                         $connection->rollBack();
                         error_log("VERIFICATION_ERROR: Database error: " . $e->getMessage());
+                        $errors[] = 'Ocurrió un error en la base de datos. Inténtalo de nuevo.';
+                    }
+                } else {
+                    echo "<script>alert('Error: No se pudo verificar al usuario.');</script>";
+                }
+            } else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['deVerifyConfirmation'])) {
+                $deVerifyConfirmation = filter_input(INPUT_POST, 'deVerifyConfirmation', FILTER_SANITIZE_SPECIAL_CHARS);
+                if($deVerifyConfirmation === "true") {
+                    try {
+                        $connection->beginTransaction();
+                        $statement = $connection->prepare('UPDATE users SET status = :status WHERE id = :id');
+                        $statement->execute(array(
+                            ':status' => "notverified",
+                            ':id' => $userIdToModify,
+                        ));
+
+                        $replaceStatement = $connection->prepare('REPLACE INTO userscode (userId) VALUES (:userId)');
+                        $replaceStatement->execute([':userId' => $userIdToModify]);
+
+                        $connection->commit();
+                        exit();
+                    } catch (PDOException $e) {
+                        $connection->rollBack();
+                        error_log("DEVERIFICATION_ERROR: Database error: " . $e->getMessage());
                         $errors[] = 'Ocurrió un error en la base de datos. Inténtalo de nuevo.';
                     }
                 } else {
