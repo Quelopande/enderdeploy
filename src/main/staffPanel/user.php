@@ -146,6 +146,27 @@ if (isset($_SESSION['id'])) {
                 } else {
                     echo "<script>alert('Error: No se pudo verificar al usuario.');</script>";
                 }
+            } else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['removeUserAccount'])) {
+                $removeUserAccount = filter_input(INPUT_POST, 'removeUserAccount', FILTER_SANITIZE_SPECIAL_CHARS);
+                if($removeUserAccount === "removeAccount_" . $userIdToModify) {
+                    try {
+                        $connection->beginTransaction();
+                        $statement = $connection->prepare('DELETE FROM users WHERE id = :id');
+                        $statement->execute(array(
+                            ':id' => $userIdToModify,
+                        ));
+                        
+                        // NOTE: When creating the staff's logs system, add the id of the deleted user, the services he used to hold and email in case we need to contact him.
+                        $connection->commit();
+                        exit();
+                    } catch (PDOException $e) {
+                        $connection->rollBack();
+                        error_log("ACCOUNT_REMOVAL_ERROR: Database error: " . $e->getMessage());
+                        $errors[] = 'Ocurrió un error en la base de datos. Inténtalo de nuevo.';
+                    }
+                } else {
+                    echo "<script>alert('Error: No se pudo verificar al usuario.');</script>";
+                }
             }
         }
     } else{

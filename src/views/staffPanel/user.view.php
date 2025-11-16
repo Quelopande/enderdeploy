@@ -154,6 +154,7 @@
                     </script>
                 <?php endif; ?>
                 <div>Totp</div>
+                <div style="background:red; font-weight: bold;" id="removeUserAccount">ELIMINAR CUENTA</div>
             </div>
             <?php endif; ?>
         </div>
@@ -163,6 +164,26 @@
     <?php elseif ($_GET['userDataRegistrationStatus'] === 'error'): ?>
         <script>alert('Error al actualizar los datos del usuario. Por favor, inténtelo de nuevo más tarde.');</script>
     <?php endif; ?>
+    <script>
+        document.getElementById("removeUserAccount").addEventListener("click", function() {
+            let removalPrompt = prompt("Por favor, introduce 'removeAccount_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>':");
+            if (removalPrompt === "removeAccount_<?php echo htmlspecialchars($userResult['id'], ENT_QUOTES, 'UTF-8'); ?>") {
+                alert("Correcto, has introducido: " + removalPrompt + " (Reinicia la página para ver si se ha borrado correctamente)");
+            } else{
+                alert("Error: No se pudo verificar al usuario.");
+            }
+
+            let removeFormData = new FormData();
+            removeFormData.append('removeUserAccount', removalPrompt);
+
+            fetch("<?php echo htmlspecialchars('/staffPanel/user' . '?' . $_SERVER['QUERY_STRING']);?>", {
+                method: "POST",
+                body: removeFormData
+            }).then(res => {
+                console.log("Request complete! response:", res);
+            });
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const editButton = document.getElementById("editButton");
