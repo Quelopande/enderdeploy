@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="menu">
-        <h2>Staff Panel</h2>
+        <h2><a href="/staffPanel" style="text-decoration: none;">StaffPanel</a></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
             <a href="/staffPanel/services">Servicios</a>
@@ -20,6 +20,7 @@
         <h1>Staff Panel</h1>
         <h2>Bienvenido, <span><?php echo $result['user'];?></span></h2>
     </div>
+    <a href="/dashboard">Volver a dashboard común (Panel de usuarios)</a>
     <div class="fastLinks">
         <h2>Enlaces rápidos</h2>
         <a href="/staffPanel/tickets">Tickets</a>
