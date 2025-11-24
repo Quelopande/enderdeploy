@@ -13,10 +13,12 @@ if (isset($_SESSION['id'])) {
 
         $userResult = null; 
         $userLocationResult = null;
+        $errors = [];
 
         if ($roleResult['viewUser'] == '1') {
-            // The first two variables of the fuction are used to obtain the variables of the rest of the code into the function.
-            function getUserData($connection, $roleResult, $obteinedUserData, $dataType){
+            function getUserData($connection, $roleResult, $obteinedUserData, $dataType, $returnOnlyData = false){
+                global $viewServices, $userResult, $userLocationResult;
+                
                 if ($dataType === "idType"){
                     $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
                     $userStatement->execute(array(':userId' => $obteinedUserData));
@@ -24,15 +26,21 @@ if (isset($_SESSION['id'])) {
                     $userStatement = $connection->prepare('SELECT * FROM users WHERE email = :userEmail LIMIT 1');
                     $userStatement->execute(array(':userEmail' => $obteinedUserData));
                 }
-                $userResult = $userStatement->fetch();
+                $userResult = $userStatement->fetch(PDO::FETCH_ASSOC);
 
                 if($userResult){
                     $userLocationStatement = $connection->prepare('SELECT * FROM userslocation WHERE userId = :userId LIMIT 1');
                     $userLocationStatement->execute(array(':userId' => $userResult['id']));
-                    $userLocationResult = $userLocationStatement->fetch();
+                    $userLocationResult = $userLocationStatement->fetch(PDO::FETCH_ASSOC);
+                    
                     if ($roleResult['viewServiceData'] == '1') {
                         $viewServices = "<a href='/staffPanel/services?userId=" . htmlspecialchars($userResult['id']) ."'>Ver Servicios</a>";
                     }
+                    
+                    if ($returnOnlyData) {
+                        return ['user' => $userResult, 'location' => $userLocationResult];
+                    }
+
                     if ($userResult['role'] != '-1') {
                         header("HTTP/1.0 403 Forbidden");
                         require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
@@ -47,10 +55,10 @@ if (isset($_SESSION['id'])) {
                 }
             }
 
-            if($_GET['userId']){
+            if(isset($_GET['userId'])){
                 $userId = filter_input(INPUT_GET, 'userId', FILTER_VALIDATE_INT);
                 $userIdToModify = getUserData($connection, $roleResult, $userId, "idType");
-            } elseif($_GET['userEmail']){
+            } elseif(isset($_GET['userEmail'])){
                 $userEmail = filter_input(INPUT_GET, 'userEmail', FILTER_VALIDATE_EMAIL);
                 $userIdToModify = getUserData($connection, $roleResult, $userEmail, "emailType");
             } else {
@@ -74,21 +82,84 @@ if (isset($_SESSION['id'])) {
                     $city = strip_tags(filter_input(INPUT_POST, 'city', FILTER_UNSAFE_RAW));
                     $state = strip_tags(filter_input(INPUT_POST, 'state', FILTER_UNSAFE_RAW));
                     $country = strip_tags(filter_input(INPUT_POST, 'country', FILTER_UNSAFE_RAW));
-                    $zipCode = strip_tags(filter_input(INPUT_POST, 'zipCode', FILTER_UNSAFE_RAW));               
+                    $zipCode = strip_tags(filter_input(INPUT_POST, 'zipCode', FILTER_UNSAFE_RAW));
                     try {
+                        $userEmailStatement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+                        $userEmailStatement->execute(array(':email' => $email));
+                        $userEmailResult = $userEmailStatement->fetch(PDO::FETCH_ASSOC);
+                        
+                        if ($userEmailResult) {
+                            if ($userEmailResult['id'] != $userIdToModify) {
+                                echo "<script>alert('El email proporcionado ya está en uso por otro usuario.');</script>";
+                                $errors[] = 'El email proporcionado ya está en uso por otro usuario.';
+                                exit(); 
+                            }
+                        }
+                        $connection->beginTransaction();
                         $userStatement = $connection->prepare('UPDATE users SET user = :user, secondName = :secondName, lastName = :lastName, secondLastName = :secondLastName, email = :email WHERE id = :userId');
-                        $userStatement->execute(array(':user' => $user, ':secondName' => $secondName, ':lastName' => $lastName, ':secondLastName' => $secondLastName, ':email' => $email, ':userId' => $userIdToModify));
-                        
-                        
+                        $userStatement->execute(array(
+                            ':user' => $user, 
+                            ':secondName' => $secondName, 
+                            ':lastName' => $lastName, 
+                            ':secondLastName' => $secondLastName, 
+                            ':email' => $email, 
+                            ':userId' => $userIdToModify
+                        ));
+
                         $userLocationStatement = $connection->prepare('UPDATE userslocation SET domicile = :domicile, city = :city, state = :state, country = :country, zipCode = :zipCode WHERE userId = :userId');
-                        $userLocationStatement->execute(array(':domicile' => $domicile, ':city' => $city, ':state' => $state, ':country' => $country, ':userId' => $userIdToModify, ':zipCode' => $zipCode));
-                    } catch (PDOException $e) {
-                        error_log('Error updating user data: ' . $e->getMessage());
-                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userId . '&userDataRegistrationStatus=error";</script>';
+                        $userLocationStatement->execute(array(
+                            ':domicile' => $domicile, 
+                            ':city' => $city, 
+                            ':state' => $state, 
+                            ':country' => $country, 
+                            ':userId' => $userIdToModify, 
+                            ':zipCode' => $zipCode
+                        ));
+                        
+                        $userEmailCheck = $userEmailResult;
+                        $stripeCustomerId = $userEmailCheck['stripeCustomerId'] ?? null;
+                        
+                        if (!$stripeCustomerId) {
+                            $userCurrentData = getUserData($connection, $roleResult, $userIdToModify, "idType", true); 
+                            $stripeCustomerId = $userCurrentData['user']['stripeCustomerId'] ?? null;
+                        }
+
+                        \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
+                        $stripe = new \Stripe\StripeClient($_ENV['stripeSecret']);
+                        $customer = $stripe->customers->update(
+                            $stripeCustomerId,
+                            ['email' => $email, 'metadata' => ['userEmail' => $email]]
+                        );
+
+                        $connection->commit();
+                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userIdToModify . '&userDataRegistrationStatus=success";</script>';
+                        exit;
+
+                    } catch (\PDOException $e) {
+                        if ($connection->inTransaction()) {
+                            $connection->rollBack();
+                        }
+                        error_log('Error al actualizar datos de usuario (BD): ' . $e->getMessage());
+                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userIdToModify . '&userDataRegistrationStatus=error";</script>';
+                        exit;
+                        
+                    } catch (\Stripe\Exception\ApiErrorException $e) {
+                        if ($connection->inTransaction()) {
+                            $connection->rollBack();
+                        }
+                        error_log("USER EDITION: Stripe API error: " . $e->getMessage());
+                        $errors[] = 'Ocurrió un error con el servicio de pago (Stripe). Por favor, inténtalo de nuevo.';
+                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userIdToModify . '&userDataRegistrationStatus=error";</script>';
+                        exit;
+                        
+                    } catch (\Exception $e) {
+                        if ($connection->inTransaction()) {
+                            $connection->rollBack();
+                        }
+                        error_log('Error inesperado al actualizar usuario: ' . $e->getMessage());
+                        echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userIdToModify . '&userDataRegistrationStatus=error";</script>';
                         exit;
                     }
-                    echo '<script type="text/javascript">window.location.href ="/staffPanel/user?userId=' . $userId . '&userDataRegistrationStatus=success";</script>';
-                    exit;                    
                 } else {
                     echo "<script>alert('Faltan los siguientes datos obligatorios: Nombre, apellido y email');</script>";
                     exit;
@@ -151,7 +222,7 @@ if (isset($_SESSION['id'])) {
                 if($removeUserAccount === "removeAccount_" . $userIdToModify) {
                     try {
                         $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
-                        $userStatement->execute(array(':userId' => $obteinedUserData));
+                        $userStatement->execute(array(':userId' => $userIdToModify));
                         $userResult = $userStatement->fetch();
                         $stripeCustomerId = $userResult['stripeCustomerId'];
                         
@@ -164,7 +235,6 @@ if (isset($_SESSION['id'])) {
                             ':id' => $userIdToModify,
                         ));
                         
-                        // NOTE: When creating the staff's logs system, add the id of the deleted user, the services he used to hold and email in case we need to contact him.
                         $connection->commit();
                         exit();
                     } catch (PDOException $e) {
@@ -185,4 +255,4 @@ if (isset($_SESSION['id'])) {
 } else {
     header('Location: ../auth/signin');
     exit;
-} 
+}

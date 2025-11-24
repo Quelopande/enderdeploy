@@ -71,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'name' => (string)$newUserId,
         'email' => $email,
         'metadata' => [
-          'userId' => $newUserId
+          'userId' => $newUserId,
+          'userEmail' => $email
         ],
       ]);
       $stripeCustomerId = $customer->id;

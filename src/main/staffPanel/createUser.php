@@ -147,7 +147,7 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
                 $customer = \Stripe\Customer::create([
                     'name' => (string)$newUserId,
                     'email' => $email,
-                    'metadata' => ['userId' => $newUserId],
+                    'metadata' => ['userId' => $newUserId, 'userEmail' => $email],
                 ]);
                 $stripeCustomerId = $customer->id;
                 
