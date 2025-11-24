@@ -51,18 +51,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pepper = $_ENV['pepper'];
     $passwordWithPepper = $password . $pepper; 
     $hash = password_hash($passwordWithPepper, PASSWORD_DEFAULT, ['cost' => 12]);
-    $stripeCustomerId = null;
+    $stripeCustomerId = 'notset';
 
     try{
       $connection->beginTransaction();
       \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
       
-      $statement = $connection->prepare('INSERT INTO users (id, email, password, status, role) VALUES (NULL, :email, :password, :status, :role)');
+      $statement = $connection->prepare('INSERT INTO users (id, email, password, status, role, stripeCustomerId) VALUES (NULL, :email, :password, :status, :role, :stripeCustomerId)');
       $statement->execute(array(
         ':email' => $email,
         ':password' => $hash,
         ':status' => $status,
-        ':role' => $role
+        ':role' => $role,
+        ':stripeCustomerId' => $stripeCustomerId
       ));
       $newUserId = $connection->lastInsertId();
 
@@ -87,6 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $usersCodeStatement = $connection->prepare('INSERT INTO userscode (userId) VALUES (:userId)');
       $usersCodeStatement->execute([':userId' => $newUserId]);
+
+      $usersRecoveryStatement = $connection->prepare('INSERT INTO userrecovery (userId) VALUES (:userId)');
+      $usersRecoveryStatement->execute([':userId' => $newUserId]);
 
       $connection->commit();
 

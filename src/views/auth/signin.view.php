@@ -59,6 +59,7 @@
                 <button type="submit" class="login-button">Iniciar Sesión</button>
             </form>
             <p class="register-link">¿No tienes una cuenta? <a href="../auth/signup">Regístrate</a></p>
+            <p class="register-link">¿No te acuerdas de la contraseña? <a href="/auth/recovery">Recuperar cuenta</a></p>
         </div>
     </div>
 </body>

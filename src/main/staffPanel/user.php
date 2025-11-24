@@ -150,6 +150,14 @@ if (isset($_SESSION['id'])) {
                 $removeUserAccount = filter_input(INPUT_POST, 'removeUserAccount', FILTER_SANITIZE_SPECIAL_CHARS);
                 if($removeUserAccount === "removeAccount_" . $userIdToModify) {
                     try {
+                        $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
+                        $userStatement->execute(array(':userId' => $obteinedUserData));
+                        $userResult = $userStatement->fetch();
+                        $stripeCustomerId = $userResult['stripeCustomerId'];
+                        
+                        \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
+                        \Stripe\Customer::retrieve($stripeCustomerId)->delete();
+
                         $connection->beginTransaction();
                         $statement = $connection->prepare('DELETE FROM users WHERE id = :id');
                         $statement->execute(array(

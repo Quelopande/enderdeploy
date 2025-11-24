@@ -131,14 +131,16 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
                 $hash = password_hash($passwordWithPepper, PASSWORD_DEFAULT, ['cost' => 12]);
                 $status = "notverified"; 
                 $role = "-1";
+                $stripeCustomerId = 'notset';
                 
-                $statement = $connection->prepare('INSERT INTO users (email, password, status, role) VALUES (:email, :password, :status, :role)');
-                $statement->execute([
+                $statement = $connection->prepare('INSERT INTO users (id, email, password, status, role, stripeCustomerId) VALUES (NULL, :email, :password, :status, :role, :stripeCustomerId)');
+                $statement->execute(array(
                     ':email' => $email,
                     ':password' => $hash,
                     ':status' => $status,
-                    ':role' => $role
-                ]);
+                    ':role' => $role,
+                    ':stripeCustomerId' => $stripeCustomerId
+                ));
                 $newUserId = $connection->lastInsertId();
 
                 \Stripe\Stripe::setApiKey($_ENV['stripeSecret']);
@@ -157,6 +159,9 @@ if (isset($_SESSION['totpVerifiedTime']) && (time() - $_SESSION['totpVerifiedTim
 
                 $usersCodeStatement = $connection->prepare('INSERT INTO userscode (userId) VALUES (:userId)');
                 $usersCodeStatement->execute([':userId' => $newUserId]);
+
+                $usersRecoveryStatement = $connection->prepare('INSERT INTO userrecovery (userId) VALUES (:userId)');
+                $usersRecoveryStatement->execute([':userId' => $newUserId]);
 
                 $connection->commit();
 

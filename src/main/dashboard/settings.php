@@ -87,9 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (isset($_POST["securitySubmit"])) {
         $passErrors = "";
-        $actualPassword = trim($_POST['actualPassword']);
-        $newPassword = trim($_POST['newPassword']);
-        $newPassword2 = trim($_POST['newPassword2']);
+        $actualPassword = trim(filter_input(INPUT_POST, 'actualPassword', FILTER_UNSAFE_RAW));
+        $newPassword = trim(filter_input(INPUT_POST, 'newPassword', FILTER_UNSAFE_RAW));
+        $newPassword2 = trim(filter_input(INPUT_POST, 'newPassword2', FILTER_UNSAFE_RAW));
         $password = $result['password'];
         $pepper = $_ENV['pepper'];
         

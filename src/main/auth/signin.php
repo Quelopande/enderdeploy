@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($email) || empty($password)) {
-        $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Please, fill the gaps.</div>';
+        $errors[] = 'Rellena todo el formulario.';
     } else {
         require_once APP_ROOT . 'src/config/connection.php';
         $statement = $connection->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
@@ -51,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $statement->fetch();
 
         if ($result === false) {
-            $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Email account not found.</div>';
+            $errors[] = 'La cuenta no fué encontrada.';
         } else {
             $id = $result['id'];
             $pepper = $_ENV['pepper'];
             $passPepper = $password . $pepper;
 
             if (!password_verify($passPepper, $result['password'])) {
-                $errors[] = '<div class="alert alert-danger d-flex align-items-center" role="alert">Incorrect password.</div>';
+                $errors[] = 'Contraseña incorrecta.';
             }
         }
     }
