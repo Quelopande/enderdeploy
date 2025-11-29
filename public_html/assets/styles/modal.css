@@ -19,7 +19,7 @@
     justify-content: center; 
     align-items: center;
 }
-.modal form {
+.modal form, .modal .modalContent {
     position: relative;
     transform: translate(-50%, -50%);
     background: white;
@@ -39,25 +39,26 @@
     border-radius: 20px;
     border: solid 1px;
 }
-.modal form button{
+.modal button{
     padding: 10px 50px;
+    font-size: 15px;
     font-family: 'Poppins', sans-serif;
     border: none;
-    border-radius: 200px;
+    border-radius: 17px;
     cursor: pointer;
 }
-.modal form button:nth-child(1){
+.modal button:nth-child(1){
     background-color: rgba(0, 0, 0, 0.1);
 }
-.modal form button:nth-child(1):hover{
+.modal button:nth-child(1):hover{
     background-color: rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
 }
-.modal form button:nth-child(2){
+.modal button:nth-child(2){
     background-color: rgb(12, 145, 0);
     color: white;
 }
-.modal form button:nth-child(2):hover{
+.modal button:nth-child(2):hover{
     background-color: rgb(10, 122, 0);
     transition: all 0.2s;
 }

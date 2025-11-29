@@ -1,0 +1,127 @@
+nav .sidebar {
+    margin-top: -10px;
+}
+.serverStatus{
+    background-color: #bbe8c8;
+    margin-top: 100px;
+    padding: 15px;
+    border-radius: 20px;
+    color: #188038;
+    font-weight: 500;
+    border: solid 1px #188038;
+    text-align: center;
+}
+.serviceManagementContainer{
+    margin-top: 30px;
+    border: 2px solid #c4c4c4;
+    border-radius: 37px;
+    padding: 20px;
+}
+.serviceManagementContainer .serviceManagementBox{
+    background-color: #e5e5e5;
+    padding: 10px 20px;
+    border-radius: 27px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.serviceManagementContainer .serviceManagementBox div{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.serviceManagementContainer .serviceManagementBox div a{
+    text-decoration: none;
+    color: #1a1a1a;
+    font-weight: 500;
+    border-radius: 17px;
+    background-color: var(--btn);
+    border: solid 2px var(--btn-hover);
+    padding: 9px 17px;
+}
+.serviceManagementContainer .serviceManagementBox div a:hover{
+    background-color: var(--btn-hover);
+    transition: all 300ms;
+    cursor: pointer;
+}
+.serviceManagementContainer .serviceManagementBox div a:first-child:hover{
+    color: white !important;
+}
+.serviceManagementContainer .serviceManagementBox #btnUpdateService:hover{
+    color: white !important;
+    cursor: pointer;
+}
+.serviceManagementInformationTitle{
+    margin-top: 20px;
+    padding: 0 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.serviceManagementInformationTitle span{
+    border: solid 1px #dcdcdc;
+    padding: 8px 25px;
+    border-radius: 17px;
+}
+.serviceManagementInformationTitle span:hover{
+    cursor: pointer;
+    background-color: #dcdcdc;
+    transition: all 300ms;
+}
+.serviceManagementContainer .serviceManagementInformationBox{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox{
+    width: 100%;
+    border: solid 1px #c4c4c4;
+    border-radius: 27px;
+    padding: 15px 25px;
+}
+.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox p{
+    color: #6b6b6b;
+}
+.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox .serviceManagementInformationInnerBoxIcon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox .serviceManagementInformationInnerBoxIcon span{
+    padding: 4px 30px;
+    border-radius: 100px;
+    background: var(--notify);
+    color: var(--notify-strong);
+    font-weight: 600;
+}
+.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox h2{
+    font-size: 30px;
+    margin-top: 0px;
+}
+.modal form button{
+    font-weight: 500;
+}
+.modal form button:nth-child(2){
+    color: #1a1a1a;
+    border-radius: 17px;
+    background-color: var(--btn);
+    border: solid 2px var(--btn-hover);
+}
+.modal form button:nth-child(2):hover{
+    background-color: var(--btn-hover);
+    transition: all 300ms;
+    color: white !important;
+}
+.inTxtLink{
+    text-decoration: none;
+    color: #3b46d3;
+    font-weight: 700;
+}
+.inTxtLink:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}

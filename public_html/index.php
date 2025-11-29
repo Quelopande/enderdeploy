@@ -1,9 +1,10 @@
 <?php
 ini_set('session.cookie_secure', 0); // 1 in production
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Lax'); // Strict in production
+ini_set('session.cookie_samesite', 'Lax'); // Lax, with Strict Stripe won't work fine
 ini_set('session.use_strict_mode', 0); // 1 in production
 ini_set('session.use_only_cookies', 1);
+//ini_set('session.cookie_domain', '.rendercores.com'); // Comment this line for local development
 error_reporting(E_ALL);
 session_start();
 
@@ -32,7 +33,7 @@ if (empty($path) || $path === '/' || $path === '/index') {
 
 // staff panel only shows up when the path starts with /staffPanel and not with /staffpanel
 if (strpos($path, '/dashboard') === 0 || strpos($path, '/staffPanel') === 0) {
-    $dotenv->load();
+    $dotenv->safeLoad();
     require_once APP_ROOT . 'src/config/connection.php';
     if (!isset($_SESSION['id'])) {
         header('Location: /auth/signin');
@@ -41,7 +42,7 @@ if (strpos($path, '/dashboard') === 0 || strpos($path, '/staffPanel') === 0) {
         $id = $_SESSION['id'];
     }
 } else if(strpos($path, '/auth') === 0){
-    $dotenv->load();
+    $dotenv->safeLoad();
     require_once APP_ROOT . 'src/config/connection.php';
 }
 

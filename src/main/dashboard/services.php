@@ -56,7 +56,7 @@ $billingPortalSessionLink = \Stripe\BillingPortal\Session::create([
 ]);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $servicePlan = htmlspecialchars(trim($_POST['selectedPlan']), ENT_QUOTES, 'UTF-8');
+    $serviceId = htmlspecialchars(trim($_POST['selectedPlan']), ENT_QUOTES, 'UTF-8');
     $serviceName = htmlspecialchars(trim($_POST['serviceName']), ENT_QUOTES, 'UTF-8');
     $serviceVersion = htmlspecialchars(trim($_POST['serviceVersion']), ENT_QUOTES, 'UTF-8');
     $acceptLaws = htmlspecialchars(trim($_POST['acceptLaws']), ENT_QUOTES, 'UTF-8');
@@ -64,11 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
     $statement->execute(array(':id' => $id));
-    $result = $statement->fetch();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
     $istatement = $connection->prepare('SELECT * FROM subscriptions WHERE subscriptionName = :subscriptionName LIMIT 1');
     $istatement->execute(array(':subscriptionName' => $serviceName));
-    $iresult = $istatement->fetch();
-    if(empty($serviceName) || empty($servicePlan) || empty($serviceVersion)){
+    $iresult = $istatement->fetch(PDO::FETCH_ASSOC);
+    if(empty($serviceName) || empty($serviceId) || empty($serviceVersion)){
         $serviceErrors = "Debes de rellenar todos los datos";
     }elseif ($iresult != false) {
         $serviceErrors = "Este nombre ya está en uso";
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serviceErrors = "Tienes que aceptar que se apliquen las leyes de la region. También debes aceptar que los datos se compartan de forma privada y segura con el socio local.";
     }else{
         $serviceStatement = $connection->prepare('SELECT * FROM services WHERE serviceId = :serviceId LIMIT 1');
-        $serviceStatement->execute(array(':serviceId' => $servicePlan));
-        $serviceResult = $serviceStatement->fetch();
+        $serviceStatement->execute(array(':serviceId' => $serviceId));
+        $serviceResult = $serviceStatement->fetch(PDO::FETCH_ASSOC);
         $checkout_session = \Stripe\Checkout\Session::create([
             'customer' => $result['stripeCustomerId'],
             'payment_method_types' => ['card'],
@@ -86,12 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'quantity' => 1,
             ]],
             'mode' => 'subscription',
-            'success_url' => 'http://rendercores.com/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => 'http://enderdeploy.test/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => 'https://rendercores.com/dashboard/services',
             'metadata' => [
                 'userId' => $id,
                 'serviceName' => $serviceName,
                 'serviceVersion' => $serviceVersion,
+                'serviceId' => $serviceId,
             ],
         ]);
         
@@ -102,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $subscriptionsStatement = $connection->prepare('SELECT * FROM subscriptions WHERE userId = :userId');
 $subscriptionsStatement->execute(array(':userId' => $id));
-$subscriptions = $subscriptionsStatement->fetchAll();
+$subscriptions = $subscriptionsStatement->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_SESSION['id'])){
     if($result['status'] === 'verified'){

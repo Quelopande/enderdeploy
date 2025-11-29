@@ -12,7 +12,7 @@
     <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
-    <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
+    <meta property="og:url" content="https://rendercores.com"/>
     <meta property="og:image" content="/assets/img/logo.png"/>
     <meta property="og:image:width" content="540"/>
     <meta property="og:image:height" content="520"/>
@@ -29,20 +29,19 @@
     <main class="separate">
         <div class="serverStatus separate"><i class="fa-solid fa-leaf"></i> Todos nuestros servicios estan funcionales, disfruta sin problemas</div>
         <div class="displayModal" id="displayModal"><i class="fa-sharp-duotone fa-light fa-plus"></i> <p>Agregar servicio</p></div>
-        <a class="billingPortal" href="<?php echo $billingPortalSessionLink->url ?>" target="_blank">Accede al panel de facturación</a>
+        <a class="billingPortal" href="<?php echo htmlspecialchars($billingPortalSessionLink->url) ?>" target="_blank">Accede al panel de facturación</a>
         <div class="containers">
             <?php foreach ($subscriptions as $subscription): ?>
-            <a class="container" href="https://<?php echo htmlspecialchars($subscription['serviceName'], ENT_QUOTES, 'UTF-8'); ?>.enderhosting.com.mx">
-                <h2><?php echo htmlspecialchars($subscription['serviceName'], ENT_QUOTES, 'UTF-8'); ?></h2>
-                <p>Versión: <?php echo ucfirst(htmlspecialchars($subscription['serviceVersion'], ENT_QUOTES, 'UTF-8')); ?></p>
-                <?php $creationTime = new DateTime($subscription['creationTime']);?>
-                <small>Creado el: <?php echo htmlspecialchars($creationTime->format('d/m/Y H:i:s'), ENT_QUOTES, 'UTF-8'); ?></small>
+            <a class="container" href="/dashboard/serviceManagement?subscriptionId=<?php echo htmlspecialchars($subscription['subscriptionId'], ENT_QUOTES, 'UTF-8'); ?>">
+                <h2><?php echo htmlspecialchars($subscription['subscriptionName'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <?php $subscriptionExpirationTime = new DateTime($subscription['subscriptionExpirationTime']);?>
+                <small>Próximo periodo: <?php echo htmlspecialchars($subscriptionExpirationTime->format('d/m/Y'), ENT_QUOTES, 'UTF-8'); ?></small>
             </a>
             <?php endforeach; ?>
         </div>
         <?php if(!empty($serviceErrors)): ?>
         <div>
-		    <ul><?php echo $serviceErrors; ?></ul>
+		    <ul><?php echo htmlspecialchars($serviceErrors); ?></ul>
 		</div>
         <?php endif; ?>	
     </main>
@@ -59,13 +58,13 @@
             <section class="pricingTable">
                 <?php foreach ($planes as $plan): ?>
                     <div class="plan">
-                        <p class="price">$<?php echo $plan['price'];?> MXN/mes (IVA incluido)</p>
+                        <p class="price">$<?php echo htmlspecialchars($plan['price']);?> MXN/mes (IVA incluido)</p>
                         <ul>
                             <?php foreach ($plan['features'] as $caracteristica): ?>
-                                <li><?php echo $caracteristica; ?></li>
+                                <li><?php echo htmlspecialchars($caracteristica); ?></li>
                             <?php endforeach; ?>
                         </ul>
-                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo $plan['planId']; ?>" required>Seleccionar</label>  
+                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>  
                     </div>
                 <?php endforeach; ?>
             </section>

@@ -13,7 +13,7 @@
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Inicio de sesión"/>
     <meta property="og:description" content="EnderDeploy es una plataforma avanzada de despliegue de aplicaciones SaaS y administración de infraestructura como servicio (IaaS), diseñada para optimizar la implementación y gestión de soluciones tecnológicas. Desarrollada por EnderHosting, proporciona un entorno flexible y escalable para facilitar el crecimiento de tu empresa."/>
-    <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
+    <meta property="og:url" content="https://rendercores.com"/>
     <meta property="og:image" content="/assets/img/logo.png"/>
     <meta property="og:image:width" content="540"/>
     <meta property="og:image:height" content="520"/>

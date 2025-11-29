@@ -10,7 +10,7 @@
     <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="EnderDeploy - Dashboard"/>
-    <meta property="og:url" content="https://deploy.enderhosting.com.mx"/>
+    <meta property="og:url" content="https://rendercores.com"/>
     <meta property="og:image" content="/assets/img/logo.png"/>
     <meta property="og:image:width" content="540"/>
     <meta property="og:image:height" content="520"/>

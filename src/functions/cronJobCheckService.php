@@ -1,48 +1,56 @@
 <?php
-$stripeSecret = $_ENV['stripeSecret'];
-\Stripe\Stripe::setApiKey("$stripeSecret");
-$logFile = 'cronJobCheckService.log';
-$todayDate = date('Y-m-d');
+define('APP_ROOT', __DIR__ . '/../');
+ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
 
+require APP_ROOT . 'vendor/autoload.php';
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(APP_ROOT);
+$dotenv->safeLoad();
 
-file_put_contents($logFile, "Inicio verificación {$todayDate}\n", FILE_APPEND);
+$stripe = new \Stripe\StripeClient($_ENV['stripeSecret']);
 
 try {
-    $subs = \Stripe\Subscription::all([
-        'limit' => 100,
-        'created' => [
-            'gte' => strtotime('today midnight'),
-            'lte' => strtotime('now')
-        ]
-    ]);
+    $subscriptions = $stripe->subscriptions->all(['status' => ['past_due', 'unpaid'], 'limit' => 100]);
+} catch (\Stripe\Exception\ApiErrorException $e) {
+    error_log("cronJobCheckService (1): Error when acquiring all the suspended subscription: " . $e->getMessage());
+    exit();
+}
 
-    $changes = 0;
-
-    foreach ($subs as $sub) {
-        $action = null;
-        if ($sub->status == 'canceled') {
-            $action = 'canceled';
-            $sub->current_period_end = $todayDate;
-        } elseif (date('Y-m-d', $sub->current_period_end) == $todayDate) {
-            $action = 'active';
-        }
-
-        if ($action) {
-            $estatement = $connection->prepare('UPDATE users SET subscriptionstatus = :subscriptionstatus, subscriptionExpirationTime = :subscriptionExpirationTime WHERE subscriptionServiceId = :subscriptionServiceId');
-            $estatement->execute([
-                ':subscriptionServiceId' => $sub->id,
-                ':subscriptionstatus' => $sub->status,
-                ':subscriptionExpirationTime' => date('Y-m-d H:i:s', $sub->current_period_end),
-            ]);
-            $changes++;
+foreach ($subscriptions->autoPagingIterator() as $subscription) {
+    if ($subscription->status === 'unpaid') {
+        try {
+            $stripe->subscriptions->cancel($subscription->id);
+            continue;
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            error_log("cronJobCheckService (3): Error when canceling UNPAID " . $subscription->id . " : " . $e->getMessage());
+            continue;
         }
     }
+    
+    try {
+        $invoices = $stripe->invoices->all([
+            'subscription' => $subscription->id,
+            'paid' => false,
+            'status' => 'open',
+            'limit' => 1,
+        ]);
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        error_log("cronJobCheckService (2): Error while listing invoices of the subcription " . $subscription->id . ": " . $e->getMessage());
+        continue;
+    }
 
-      file_put_contents($logFile, "Total cambios procesados: {$changes}\n", FILE_APPEND);
+    if (!empty($invoices->data)) {
+        $failedInvoice = $invoices->data[0];
+        $invoiceCreationTimestamp = $failedInvoice->created; 
+        $sevenDaysInSeconds = 7 * 24 * 60 * 60;
+        $deadlineTimestamp = $invoiceCreationTimestamp + $sevenDaysInSeconds;
 
-} catch (\Exception $e) {
-    $db->rollback();
-    file_put_contents($logFile, "ERROR: " . $e->getMessage() . "\n", FILE_APPEND);
-} finally {
-    $db->close();
+        if (time() >= $deadlineTimestamp) {
+            try{
+                $stripe->subscriptions->cancel($subscription->id);
+            } catch (\Stripe\Exception\ApiErrorException $e){
+                error_log("cronJobCheckService (3): Error while canceling the subscription " . $subscription->id . " : " . $e->getMessage());
+            }
+        }
+    }
 }

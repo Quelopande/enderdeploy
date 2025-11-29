@@ -12,7 +12,7 @@ if (isset($_SESSION['id'])) {
         if ($roleResult['ticket'] == '1') {
             $messagesStatement = $connection->prepare('SELECT * FROM helpbody');
             $messagesStatement->execute();
-            $messages = $messagesStatement->fetchAll();
+            $messages = $messagesStatement->fetchAll(PDO::FETCH_ASSOC);
             require_once APP_ROOT . 'src/views/staffPanel/tickets.view.php';
         } else {
             header("HTTP/1.0 403 Forbidden");
