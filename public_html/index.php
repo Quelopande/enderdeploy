@@ -1,10 +1,10 @@
 <?php
-ini_set('session.cookie_secure', 0); // 1 in production
+ini_set('session.cookie_secure', 1); // 1 in production
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_samesite', 'Lax'); // Lax, with Strict Stripe won't work fine
-ini_set('session.use_strict_mode', 0); // 1 in production
+ini_set('session.use_strict_mode', 1); // 1 in production
 ini_set('session.use_only_cookies', 1);
-//ini_set('session.cookie_domain', '.rendercores.com'); // Comment this line for local development
+ini_set('session.cookie_domain', '.rendercores.com'); // Comment this line for local development
 error_reporting(E_ALL);
 session_start();
 
