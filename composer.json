@@ -2,6 +2,7 @@
     "require": {
         "stripe/stripe-php": "^19.0",
         "phpmailer/phpmailer": "^7.0",
-        "sebastiandevs/simplethenticator": "^1.1"
+        "sebastiandevs/simplethenticator": "^1.1",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
