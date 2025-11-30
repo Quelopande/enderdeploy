@@ -9,41 +9,110 @@ $planes = [
         'planId' => '1',
         'price' => 499,
         'features' => [
-            '10 usuarios <span>$49.9MXN por Usuario al mes adicional</span>',
-            '1 GB <span>En Base de Datos</span>',
-            '25 GB <span>En Almacenamiento (expansion gratuita)</span>',
-            'Backups <span>Manuales</span>',
-            'Certificado SSL <span>Incluido</span>',
-            'Guia rapida y Documentacion <span>1 horas por mes</span>',
+            [
+                'main' => '10 usuarios',
+                'note' => '$49.9MXN por Usuario al mes adicional'
+            ],
+            [
+                'main' => '1 GB',
+                'note' => 'En Base de Datos'
+            ],
+            [
+                'main' => '25 GB En Almacenamiento',
+                'note' => '(expansion gratuita)'
+            ],
+            [
+                'main' => 'Backups',
+                'note' => 'Manuales'
+            ],
+            [
+                'main' => 'Certificado SSL',
+                'note' => 'Incluido'
+            ],
+            [
+                'main' => 'Guia rapida y Documentacion',
+                'note' => '1 horas por mes'
+            ],
         ],
     ],
     [
         'planId' => '2',
         'price' => 799,
         'features' => [
-            '20 usuarios <span>$39.9MXN por Usuario al mes adicional</span>',
-            '2 GB <span>En Base de Datos</span>',
-            '50 GB En Almacenamiento <span>(expansion gratuita)</span>',
-            'Backups <span>Automaticos</span>',
-            'Certificado SSL <span>Incluido</span>',
-            'Gestion 24/7 <span>Avanzada</span>',
-            'Garantia <span>lo hacemos funcionar por ti</span>',
-            'Guia y Capacitacion <span>2 horas por mes</span>',
+            [
+                'main' => '20 usuarios',
+                'note' => '$39.9MXN por Usuario al mes adicional'
+            ],
+            [
+                'main' => '2 GB',
+                'note' => 'En Base de Datos'
+            ],
+            [
+                'main' => '50 GB En Almacenamiento',
+                'note' => '(expansion gratuita)'
+            ],
+            [
+                'main' => 'Backups',
+                'note' => 'Automaticos'
+            ],
+            [
+                'main' => 'Certificado SSL',
+                'note' => 'Incluido'
+            ],
+            [
+                'main' => 'Gestion 24/7',
+                'note' => 'Avanzada'
+            ],
+            [
+                'main' => 'Garantia',
+                'note' => 'lo hacemos funcionar por ti'
+            ],
+            [
+                'main' => 'Guia y Capacitacion',
+                'note' => '2 horas por mes'
+            ],
         ],
     ],
     [
         'planId' => '3',
         'price' => 1399,
         'features' => [
-            '35 usuarios <span>$39.9MXN por Usuario al mes adicional</span>',
-            '5 GB <span>En Base de Datos</span>',
-            '150 GB En Almacenamiento <span>(expansion gratuita)</span>',
-            'Backups <span>Automaticos y Diarios</span>',
-            'Certificado SSL <span>Incluido</span>',
-            'Gestion 24/7 <span>Avanzada y Prioritaria</span>',
-            'Garantia <span>Lo hacemos funcionar por ti</span>',
-            'Acceso <span>a la base de datos</span>',
-            'Capacitacion y Guia Personalizada <span>te explicamos de 0 a 100 (4 horas al mes)</span>',
+            [
+                'main' => '35 usuarios',
+                'note' => '$39.9MXN por Usuario al mes adicional'
+            ],
+            [
+                'main' => '5 GB',
+                'note' => 'En Base de Datos'
+            ],
+            [
+                'main' => '150 GB En Almacenamiento',
+                'note' => '(expansion gratuita)'
+            ],
+            [
+                'main' => 'Backups',
+                'note' => 'Automaticos y Diarios'
+            ],
+            [
+                'main' => 'Certificado SSL',
+                'note' => 'Incluido'
+            ],
+            [
+                'main' => 'Gestion 24/7',
+                'note' => 'Avanzada y Prioritaria'
+            ],
+            [
+                'main' => 'Garantia',
+                'note' => 'Lo hacemos funcionar por ti'
+            ],
+            [
+                'main' => 'Acceso',
+                'note' => 'a la base de datos'
+            ],
+            [
+                'main' => 'Capacitacion y Guia Personalizada',
+                'note' => 'te explicamos de 0 a 100 (4 horas al mes)'
+            ],
         ],
     ],
 ];

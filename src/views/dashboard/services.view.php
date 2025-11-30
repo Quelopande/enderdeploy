@@ -60,11 +60,18 @@
                     <div class="plan">
                         <p class="price">$<?php echo htmlspecialchars($plan['price']);?> MXN/mes (IVA incluido)</p>
                         <ul>
-                            <?php foreach ($plan['features'] as $caracteristica): ?>
-                                <li><?php echo htmlspecialchars($caracteristica); ?></li>
+                            <?php foreach ($plan['features'] as $feature): ?>
+                                <li>
+                                    <?php echo htmlspecialchars($feature['main']); ?> 
+                                    <?php if (!empty($feature['note'])): ?>
+                                        <span class="note">
+                                            <?php echo htmlspecialchars($feature['note']); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
-                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>  
+                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>  
                     </div>
                 <?php endforeach; ?>
             </section>
