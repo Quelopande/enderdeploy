@@ -1,5 +1,7 @@
 <?php
-$endpoint_secret = $_ENV['stripeWebhoookSecret'];
+$endpointSecret = $_ENV['stripeWebhoookSecret'];
+$stripeSecret = $_ENV['stripeSecret'];
+$stripe = new \Stripe\StripeClient($stripeSecret);
 
 $payload = @file_get_contents('php://input');
 $event = null;
@@ -14,18 +16,26 @@ try {
 }
 
 if ($endpointSecret) {
-  $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+  $signHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'];
   try {
     $event = \Stripe\Webhook::constructEvent(
-      $payload, $sigHeader, $endpointSecret
+      $payload, $signHeader, $endpointSecret
     );
   } catch(\Stripe\Exception\SignatureVerificationException $e) {
-    echo 'stripeSubscriptionCreate (1):  signature verification failed.';
+    error_log('stripeWebhookManagement (a0): signature verification failed.');
+    http_response_code(400);
+    exit();
+  } catch(\UnexpectedValueException $e) {
+    error_log('stripeWebhookManagement (a1): payload verification failed.');
     http_response_code(400);
     exit();
   }
 }
 
+if ($event === null) {
+    http_response_code(500);
+    exit();
+}
 switch ($event->type) {
     case 'checkout.session.completed':
         $session = $event->data->object;
@@ -36,7 +46,7 @@ switch ($event->type) {
 
         $subscriptionId = $session->subscription;
         try{
-            $subscription = \Stripe\Subscription::retrieve($subscriptionId);
+            $subscription = $stripe->subscriptions->retrieve($subscriptionId);
         } catch (Exception $e) {
             error_log("stripeWebhookManagement (0): Error while trying to create Stripe Client " . $e->getMessage());
             break;
@@ -148,18 +158,4 @@ switch ($event->type) {
 }
 
 http_response_code(200);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>
+exit();

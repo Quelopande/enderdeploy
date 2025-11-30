@@ -23,6 +23,19 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 $path = rtrim($path, '/');
 
+// Webhook handling
+if (strpos($path, '/dashboard/webhooks/') === 0) {
+    $dotenv->safeLoad();
+    require_once APP_ROOT . 'src/config/connection.php';
+    
+    $target_file = APP_ROOT . 'src/main' . $path . '.php';
+    
+    if (file_exists($target_file)) {
+        require_once $target_file;
+        exit(); 
+    }
+}
+
 if (empty($path) || $path === '/' || $path === '/index') {
     $path = '/index';
 } else if ($path === '/dashboard') {

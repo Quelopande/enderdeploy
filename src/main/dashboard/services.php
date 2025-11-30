@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'quantity' => 1,
             ]],
             'mode' => 'subscription',
-            'success_url' => 'http://enderdeploy.test/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => 'https://www.rendercores.com/dashboard/payments/success?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => 'https://rendercores.com/dashboard/services',
             'metadata' => [
                 'userId' => $id,
