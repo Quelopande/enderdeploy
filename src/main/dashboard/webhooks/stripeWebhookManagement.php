@@ -1,7 +1,13 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', APP_ROOT . 'storage/logs/generalError.log');
 $endpointSecret = $_ENV['stripeWebhoookSecret'];
 $stripeSecret = $_ENV['stripeSecret'];
 $stripe = new \Stripe\StripeClient($stripeSecret);
+
+// ExpirationTime is in UTC/GMT and in sandbox mode the date is wrong
 
 $payload = @file_get_contents('php://input');
 $event = null;
@@ -55,7 +61,7 @@ switch ($event->type) {
         $userId = $session->metadata->userId;
         $serviceName = $session->metadata->serviceName;
         $serviceId = $session->metadata->serviceId;
-        $expirationTime = date('Y-m-d H:i:s', $subscription->current_period_end);
+        $expirationTime = gmdate('Y-m-d H:i:s', $subscription->current_period_end);
         $startTime = date('Y-m-d H:i:s', $subscription->current_period_start);
         try{
             $statement = $connection->prepare('INSERT INTO subscriptions (userId, subscriptionStripeId, subscriptionStatus, subscriptionExpirationTime, subscriptionStartTime, subscriptionName, serviceId) VALUES (:userId, :subscriptionStripeId, :subscriptionStatus, :subscriptionExpirationTime, :subscriptionStartTime, :subscriptionName, :serviceId)');
@@ -75,27 +81,30 @@ switch ($event->type) {
     case 'customer.subscription.updated':
         $subscription = $event->data->object;
 
+        $currentStripePriceId = $subscription->items->data[0]->price->id;
+        
+        $serviceStatement = $connection->prepare('SELECT serviceId FROM services WHERE priceId = :priceId LIMIT 1');
+        $serviceStatement->execute(array(':priceId' => $currentStripePriceId));
+        $serviceResult = $serviceStatement->fetch(PDO::FETCH_ASSOC);
+
         if($subscription->status === 'active'){
             $subscriptionStatus = 'active';
-
-            // EJECUTAR CÓDIGO PARA REACTIVAR SERVICIO SI ESTABA SUSPENDIDO
         } else if($subscription->status === 'past_due' || $subscription->status === 'unpaid'){
             $subscriptionStatus = 'suspended';
-
-            // EJECUTAR CÓDIGO PARA SUSPENDER SERVICIO (CANCELAR CON CRONJOB TRAS 7 DÍAS)
         } else if($subscription->status === 'canceled'){
             $subscriptionStatus = 'canceled';
-
-            // EJECUTAR CÓDIGO PARA CANCELAR SERVICIO
         } else{
             error_log("stripeWebhookManagement (2): Stripe Subscription status invalid:" . $subscriptionStatus);
         }
+
+        $expirationTime = gmdate('Y-m-d H:i:s', $subscription->current_period_end);
         try {
-            $statement = $connection->prepare('UPDATE subscriptions SET subscriptionStatus = :subscriptionStatus, subscriptionExpirationTime = :subscriptionExpirationTime WHERE subscriptionStripeId = :subscriptionStripeId');
+            $statement = $connection->prepare('UPDATE subscriptions SET subscriptionStatus = :subscriptionStatus, subscriptionExpirationTime = :subscriptionExpirationTime, serviceId = :serviceId WHERE subscriptionStripeId = :subscriptionStripeId');
             $statement->execute([
                 ':subscriptionStatus' => $subscriptionStatus,
-                ':subscriptionExpirationTime' => date('Y-m-d H:i:s', $subscription->current_period_end),
-                ':subscriptionStripeId' => $subscription->id
+                ':subscriptionExpirationTime' => $expirationTime,
+                ':subscriptionStripeId' => $subscription->id,
+                ':serviceId' => $serviceResult['serviceId']
             ]);
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (3): Error while trying to update status" . $e->getMessage());
@@ -103,16 +112,18 @@ switch ($event->type) {
         break;
     case 'invoice.payment_succeeded':
         $invoice = $event->data->object;
-        if (!$invoice->subscription) {
+        if (!isset($invoice->subscription) || empty($invoice->subscription)) {
             break;
         }
 
         $subscription = $stripe->subscriptions->retrieve($invoice->subscription);
+
+        $expirationTime = gmdate('Y-m-d H:i:s', $subscription->current_period_end);
         try {
             $statement = $connection->prepare('UPDATE subscriptions SET subscriptionStatus = :subscriptionStatus, subscriptionExpirationTime = :subscriptionExpirationTime WHERE subscriptionStripeId = :subscriptionStripeId');
             $statement->execute([
                 ':subscriptionStatus' => $subscription->status, // Must be 'active' after successful payment
-                ':subscriptionExpirationTime' => date('Y-m-d H:i:s', $subscription->current_period_end),
+                ':subscriptionExpirationTime' => $expirationTime,
                 ':subscriptionStripeId' => $subscription->id
             ]);
         } catch (PDOException $e) {
@@ -126,11 +137,13 @@ switch ($event->type) {
         }
 
         $subscription = $stripe->subscriptions->retrieve($invoice->subscription);
+
+        $expirationTime = gmdate('Y-m-d H:i:s', $subscription->current_period_end);
         try {
             $statement = $connection->prepare('UPDATE subscriptions SET subscriptionStatus = :subscriptionStatus, subscriptionExpirationTime = :subscriptionExpirationTime WHERE subscriptionStripeId = :subscriptionStripeId');
             $statement->execute([
                 ':subscriptionStatus' => "suspended", // We receive 'past_due' or 'unpaid', that means suspended
-                ':subscriptionExpirationTime' => date('Y-m-d H:i:s', $subscription->current_period_end),
+                ':subscriptionExpirationTime' => $expirationTime,
                 ':subscriptionStripeId' => $subscription->id
             ]);
         } catch (PDOException $e) {

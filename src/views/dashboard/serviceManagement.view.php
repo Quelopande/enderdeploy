@@ -20,6 +20,7 @@
     <link rel="website icon" type="ico" href="/assets/img/logo.ico">
     <link rel="stylesheet" href="/assets/styles/menu.css">
     <link rel="stylesheet" href="/assets/styles/modal.css">
+    <link rel="stylesheet" href="/assets/styles/dashboard/components/pricingTable.css">
     <link rel="stylesheet" href="/assets/styles/dashboard/serviceManagement.css">
     <script src="/assets/js/menu.js" defer></script>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet"/>
@@ -38,7 +39,9 @@
             </div>
             <div class="serviceManagementInformationTitle">
                 <h3>Plan Actual</h3>
-                <span>Cambiar plan</span>
+                <?php if($subscriptionResult['serviceId'] !== 3): ?>
+                <a href="<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&changePlan=1'); ?>" style="all: unset;"><span>Cambiar plan</span></a>
+                <?php endif; ?>
             </div>
             <div class="serviceManagementInformationBox">
                 <div class="serviceManagementInformationInnerBox">
@@ -46,7 +49,7 @@
                         <p>Plan Mensual</p>
                         <span style="--notify: <?php echo htmlspecialchars($notifyColor) ?>; --notify-strong: <?php echo htmlspecialchars($notifySecColor) ?>;">◉ <?php echo htmlspecialchars($notifyTxt) ?></span>
                     </div>
-                    <h2><?php echo htmlspecialchars($serviceResult['serviceName']) ?> / mes</h2>      
+                    <h2><?php echo htmlspecialchars(getServiceData($subscriptionResult['serviceId'], 'serviceName', $connection)) ?> / mes</h2>      
                 </div> 
                 <div class="serviceManagementInformationInnerBox">
                     <div class="serviceManagementInformationInnerBoxIcon">
@@ -78,7 +81,39 @@
         </div>
         <?php endif; ?>
     </div>
-    <div class="overlay" id="overlay">a</div>
+    <?php if($_GET['changePlan'] == 1): ?>
+        <div class="modal" style="display: block !important;">
+            <form action="<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>" method="post" name="subscriptionStatusUpdateBtn">
+                <h1>Mejorar plan</h1>
+                <section class="pricingTable">
+                    <?php foreach ($plans as $plan):?>
+                        <div class="plan">
+                            <p class="price">$<?php echo htmlspecialchars($plan['price']);?> MXN/mes (IVA incluido)</p>
+                            <ul>
+                                <?php foreach ($plan['features'] as $feature): ?>
+                                    <li>
+                                        <?php echo htmlspecialchars($feature['main']); ?> 
+                                        <?php if (!empty($feature['note'])): ?>
+                                            <span class="note">
+                                                <?php echo htmlspecialchars($feature['note']); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>
+                        </div>
+                    <?php endforeach; ?>
+                </section>
+                <div>
+                    <button onclick="window.location='<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>';">Cancelar</button>
+                    <button type="submit" name="subscriptionPlanUpdateBtn" style="--btn: #c2ffbc; --btn-hover: #0c9100;">Mejorar plan</button>
+                </div>
+            </form>
+        </div>
+        <div class="overlay" style="display: block !important;" onclick="window.location='<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>';"></div>
+    <?php endif; ?>
+    <div class="overlay" id="overlay"></div>
     <script>
         let modal = document.getElementById("modal");
         let overlay = document.getElementById("overlay");

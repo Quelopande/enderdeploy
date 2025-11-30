@@ -20,6 +20,7 @@
     <link rel="website icon" type="ico" href="/assets/img/logo.ico">
     <link rel="stylesheet" href="/assets/styles/menu.css">
     <link rel="stylesheet" href="/assets/styles/modal.css">
+    <link rel="stylesheet" href="/assets/styles/dashboard/components/pricingTable.css">
     <link rel="stylesheet" href="/assets/styles/dashboard/services.css">
     <script src="/assets/js/menu.js" defer></script>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet"/>
@@ -56,7 +57,7 @@
                 <option value="endersuit">EnderSuit | Versión estable</option>
             </select>
             <section class="pricingTable">
-                <?php foreach ($planes as $plan): ?>
+                <?php foreach ($plans as $plan): ?>
                     <div class="plan">
                         <p class="price">$<?php echo htmlspecialchars($plan['price']);?> MXN/mes (IVA incluido)</p>
                         <ul>
@@ -71,7 +72,7 @@
                                 </li>
                             <?php endforeach; ?>
                         </ul>
-                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>  
+                        <label class="btna"><input type="radio" name="selectedPlan" class="selectedPlan" value="<?php echo htmlspecialchars($plan['planId']); ?>" required>Seleccionar</label>
                     </div>
                 <?php endforeach; ?>
             </section>

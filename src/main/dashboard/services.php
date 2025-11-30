@@ -4,7 +4,8 @@ $statement->execute([':id' => $id]);
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 $serviceErrors = [];
 
-$planes = [
+$plans = [
+    // When modifying this ensure also to modify it in serviceManagement
     [
         'planId' => '1',
         'price' => 499,
@@ -166,7 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
         
         header("Location: " . $checkout_session->url);
-        // $output = shell_exec("python3 ../erpCreate.py $serviceName");
     }
 }
 

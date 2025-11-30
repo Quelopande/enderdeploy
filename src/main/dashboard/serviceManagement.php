@@ -27,6 +27,14 @@ $subscriptionStatement = $connection->prepare('SELECT * FROM subscriptions WHERE
 $subscriptionStatement->execute(array(':subscriptionId' => $subscriptionId));
 $subscriptionResult = $subscriptionStatement->fetch(PDO::FETCH_ASSOC);
 
+function getServiceData($serviceIdToObtain, $dataToObtain, $connection){
+    $serviceStatement = $connection->prepare('SELECT * FROM services WHERE serviceId = :serviceId LIMIT 1');
+    $serviceStatement->execute(array(':serviceId' => $serviceIdToObtain));
+    $serviceResult = $serviceStatement->fetch(PDO::FETCH_ASSOC);
+
+    return $serviceResult[$dataToObtain];
+}
+
 if(!$subscriptionResult){
     header('Location: /dashboard/services');
 }
@@ -143,11 +151,121 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionStatusUpda
             exit;
         }
     }
+} else if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionPlanUpdateBtn'])) {
+    $newServiceId = htmlspecialchars(trim($_POST['selectedPlan']), ENT_QUOTES, 'UTF-8');
+    if($subscriptionResult['serviceId'] < $newServiceId){
+        $priceId = getServiceData($newServiceId, 'priceId', $connection); 
+        try {
+            $stripe->subscriptions->update($subscriptionResult['subscriptionStripeId'], [
+                'items' => [
+                    [
+                        'id' => $stripeSubscription->items->data[0]->id,
+                        'price' => $priceId,
+                    ],
+                ],
+                'proration_behavior' => 'always_invoice',
+            ]);
+            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&status=plan_updated');
+            exit;
+
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            error_log("serviceManagement (6): Error al cambiar el plan en Stripe: " . $e->getMessage());
+            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&error=plan_update_fail');
+            exit;
+        }
+    }
+    header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId);
+    exit;
 }
 
-$serviceStatement = $connection->prepare('SELECT * FROM services WHERE serviceId = :serviceId LIMIT 1');
-$serviceStatement->execute(array(':serviceId' => $subscriptionResult['serviceId']));
-$serviceResult = $serviceStatement->fetch(PDO::FETCH_ASSOC);
+if($subscriptionResult['serviceId'] !== 3){
+    $plans = [
+        // When modifying this ensure also to modify it in services, there's no need to set planId 1 because user cannot downgrade
+        [
+            'planId' => '2',
+            'price' => 799,
+            'features' => [
+                [
+                    'main' => '20 usuarios',
+                    'note' => '$39.9MXN por Usuario al mes adicional'
+                ],
+                [
+                    'main' => '2 GB',
+                    'note' => 'En Base de Datos'
+                ],
+                [
+                    'main' => '50 GB En Almacenamiento',
+                    'note' => '(expansion gratuita)'
+                ],
+                [
+                    'main' => 'Backups',
+                    'note' => 'Automaticos'
+                ],
+                [
+                    'main' => 'Certificado SSL',
+                    'note' => 'Incluido'
+                ],
+                [
+                    'main' => 'Gestion 24/7',
+                    'note' => 'Avanzada'
+                ],
+                [
+                    'main' => 'Garantia',
+                    'note' => 'lo hacemos funcionar por ti'
+                ],
+                [
+                    'main' => 'Guia y Capacitacion',
+                    'note' => '2 horas por mes'
+                ],
+            ],
+        ],
+        [
+            'planId' => '3',
+            'price' => 1399,
+            'features' => [
+                [
+                    'main' => '35 usuarios',
+                    'note' => '$39.9MXN por Usuario al mes adicional'
+                ],
+                [
+                    'main' => '5 GB',
+                    'note' => 'En Base de Datos'
+                ],
+                [
+                    'main' => '150 GB En Almacenamiento',
+                    'note' => '(expansion gratuita)'
+                ],
+                [
+                    'main' => 'Backups',
+                    'note' => 'Automaticos y Diarios'
+                ],
+                [
+                    'main' => 'Certificado SSL',
+                    'note' => 'Incluido'
+                ],
+                [
+                    'main' => 'Gestion 24/7',
+                    'note' => 'Avanzada y Prioritaria'
+                ],
+                [
+                    'main' => 'Garantia',
+                    'note' => 'Lo hacemos funcionar por ti'
+                ],
+                [
+                    'main' => 'Acceso',
+                    'note' => 'a la base de datos'
+                ],
+                [
+                    'main' => 'Capacitacion y Guia Personalizada',
+                    'note' => 'te explicamos de 0 a 100 (4 horas al mes)'
+                ],
+            ],
+        ],
+    ];
+}
+if($subscriptionResult['serviceId'] === 2){
+    unset($plans[0]);
+}
 
 if (isset($_SESSION['id'])){
     if($result['status'] === 'verified'){
