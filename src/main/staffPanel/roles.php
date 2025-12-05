@@ -94,8 +94,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveRoles'])) {
             echo "<script>alert('El nombre del rol no puede estar vacío.');</script>";
         }else{
             $stmt = $connection->prepare("
-                UPDATE roles SET roleName = ?, ticket = ?, viewServiceData = ?, 
-                viewServicePricingData = ?, manageService = ?, addUser = ?, 
+                UPDATE roles SET roleName = ?, ticket = ?, viewSubscriptionData = ?, 
+                manageSubscription = ?, addUser = ?, 
                 manageUser = ?, viewUser = ?, viewLogs = ?, manageRoles = ?
                 WHERE roleId = ?
             ");
@@ -103,9 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveRoles'])) {
             $stmt->execute([
                 $roleName,
                 $_POST['ticket'][$roleId] ?? '0',
-                $_POST['viewServiceData'][$roleId] ?? '0',
-                $_POST['viewServicePricingData'][$roleId] ?? '0',
-                $_POST['manageService'][$roleId] ?? '0',
+                $_POST['viewSubscriptionData'][$roleId] ?? '0',
+                $_POST['manageSubscription'][$roleId] ?? '0',
                 $_POST['addUser'][$roleId] ?? '0',
                 $_POST['manageUser'][$roleId] ?? '0',
                 $_POST['viewUser'][$roleId] ?? '0',
@@ -120,18 +119,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['saveRoles'])) {
     if(empty($_POST['name'])) {
         echo "<script>alert('El nombre del rol no puede estar vacío12.');</script>";
     }
-    foreach (['ticket', 'viewServiceData', 'viewServicePricingData', 'manageService', 'addUser', 'manageUser', 'viewUser', 'viewLogs', 'manageRoles'] as $field) {
+    foreach (['ticket', 'viewSubscriptionData', 'manageSubscription', 'addUser', 'manageUser', 'viewUser', 'viewLogs', 'manageRoles'] as $field) {
         if (!isset($_POST[$field])) {
             $_POST[$field] = '0';
         }
     }
-    $stmt = $connection->prepare('INSERT INTO users (roleName, ticket, viewServiceData, viewServicePricingData, manageService, addUser, manageUser, viewUser, viewLogs, manageRoles) VALUES (:roleName, :ticket, :viewServiceData, :viewServicePricingData, :manageService, :addUser, :manageUser, :viewUser, :viewLogs, :manageRoles)');
+    $stmt = $connection->prepare('INSERT INTO users (roleName, ticket, viewSubscriptionData, manageSubscription, addUser, manageUser, viewUser, viewLogs, manageRoles) VALUES (:roleName, :ticket, :viewSubscriptionData, :manageSubscription, :addUser, :manageUser, :viewUser, :viewLogs, :manageRoles)');
     $stmt->execute(array(
         ':roleName' => htmlspecialchars(strtolower(trim($_POST['roleName'])), ENT_QUOTES, 'UTF-8'),
         ':ticket' => $_POST['ticket'],
-        ':viewServiceData' => $_POST['viewServiceData'],
-        ':viewServicePricingData' => $_POST['viewServicePricingData'],
-        ':manageService' => $_POST['manageService'],
+        ':viewSubscriptionData' => $_POST['viewSubscriptionData'],
+        ':manageSubscription' => $_POST['manageSubscription'],
         ':addUser' => $_POST['addUser'],
         ':manageUser' => $_POST['manageUser'],
         ':viewUser' => $_POST['viewUser'],
@@ -165,7 +163,7 @@ function isChecked($value) {
         <h2><a href="/staffPanel" style="text-decoration: none;">Staff Panel | <b style="background:red; padding: 2px 5px;">SENSIBLE</b></a></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
-            <a href="/staffPanel/services">Servicios</a>
+            <a href="/staffPanel/subscriptions">Servicios</a>
             <a href="/staffPanel/users">Usuarios</a>
         </div>
     </div>
@@ -192,7 +190,7 @@ function isChecked($value) {
                         <td><p><?= $roleId ?></p></td>
                         <td><input type="text" name="roleName[<?= $roleId ?>]" value="<?= htmlspecialchars($singleRole['roleName']) ?>" required></td>
 
-                        <?php foreach (['ticket', 'viewServiceData', 'viewServicePricingData', 'manageService', 'addUser', 'manageUser', 'viewUser', 'viewLogs', 'manageRoles'] as $field): ?>
+                        <?php foreach (['ticket', 'viewSubscriptionData', 'manageSubscription', 'addUser', 'manageUser', 'viewUser', 'viewLogs', 'manageRoles'] as $field): ?>
                             <td>
                                 <input type="hidden" name="<?= $field ?>[<?= $roleId ?>]" value="0">
                                 <input type="checkbox" name="<?= $field ?>[<?= $roleId ?>]" value="1" <?= isChecked($singleRole[$field]) ?>>
@@ -213,9 +211,8 @@ function isChecked($value) {
                 <?php
                 $permissions = [
                     'ticket' => 'Ticket',
-                    'viewServiceData' => 'Ver Servicios',
-                    'viewServicePricingData' => 'Ver Precios',
-                    'manageService' => 'Administrar Servicios',
+                    'viewSubscriptionData' => 'Ver Servicios',
+                    'manageSubscription' => 'Administrar Servicios',
                     'addUser' => 'Agregar Usuarios',
                     'manageUser' => 'Administrar Usuarios',
                     'viewUser' => 'Ver Usuarios',

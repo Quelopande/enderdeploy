@@ -12,7 +12,7 @@
         <h2><a href="/staffPanel">StaffPanel</a></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
-            <a href="/staffPanel/services">Servicios</a>
+            <a href="/staffPanel/subscriptions">Servicios</a>
             <a href="/staffPanel/users">Usuarios</a>
         </div>
     </div>

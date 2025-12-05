@@ -1,6 +1,6 @@
 <?php
 if (isset($_SESSION['id'])) {
-    $viewServices = '';
+    $viewSubscriptions = '';
     $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
     $statement->execute(array(':id' => $id));
     $result = $statement->fetch();
@@ -17,7 +17,7 @@ if (isset($_SESSION['id'])) {
 
         if ($roleResult['viewUser'] == '1') {
             function getUserData($connection, $roleResult, $obteinedUserData, $dataType, $returnOnlyData = false){
-                global $viewServices, $userResult, $userLocationResult;
+                global $viewSubscriptions, $userResult, $userLocationResult;
                 
                 if ($dataType === "idType"){
                     $userStatement = $connection->prepare('SELECT * FROM users WHERE id = :userId LIMIT 1');
@@ -33,8 +33,8 @@ if (isset($_SESSION['id'])) {
                     $userLocationStatement->execute(array(':userId' => $userResult['id']));
                     $userLocationResult = $userLocationStatement->fetch(PDO::FETCH_ASSOC);
                     
-                    if ($roleResult['viewServiceData'] == '1') {
-                        $viewServices = "<a href='/staffPanel/services?userId=" . htmlspecialchars($userResult['id']) ."'>Ver Servicios</a>";
+                    if ($roleResult['viewSubscriptionData'] == '1') {
+                        $viewSubscriptions = "<a href='/staffPanel/subscriptions?userId=" . htmlspecialchars($userResult['id']) ."'>Ver Servicios</a>";
                     }
                     
                     if ($returnOnlyData) {

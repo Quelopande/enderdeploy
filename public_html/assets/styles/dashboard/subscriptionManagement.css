@@ -11,13 +11,13 @@ nav .sidebar {
     border: solid 1px #188038;
     text-align: center;
 }
-.serviceManagementContainer{
+.subscriptionManagementContainer{
     margin-top: 30px;
     border: 2px solid #c4c4c4;
     border-radius: 37px;
     padding: 20px;
 }
-.serviceManagementContainer .serviceManagementBox{
+.subscriptionManagementContainer .subscriptionManagementBox{
     background-color: #e5e5e5;
     padding: 10px 20px;
     border-radius: 27px;
@@ -26,12 +26,12 @@ nav .sidebar {
     justify-content: space-between;
     align-items: center;
 }
-.serviceManagementContainer .serviceManagementBox div{
+.subscriptionManagementContainer .subscriptionManagementBox div{
     display: flex;
     flex-direction: row;
     gap: 15px;
 }
-.serviceManagementContainer .serviceManagementBox div a{
+.subscriptionManagementContainer .subscriptionManagementBox div a{
     text-decoration: none;
     color: #1a1a1a;
     font-weight: 500;
@@ -40,19 +40,19 @@ nav .sidebar {
     border: solid 2px var(--btn-hover);
     padding: 9px 17px;
 }
-.serviceManagementContainer .serviceManagementBox div a:hover{
+.subscriptionManagementContainer .subscriptionManagementBox div a:hover{
     background-color: var(--btn-hover);
     transition: all 300ms;
     cursor: pointer;
 }
-.serviceManagementContainer .serviceManagementBox div a:first-child:hover{
+.subscriptionManagementContainer .subscriptionManagementBox div a:first-child:hover{
     color: white !important;
 }
-.serviceManagementContainer .serviceManagementBox #btnUpdateService:hover{
+.subscriptionManagementContainer .subscriptionManagementBox #btnUpdateService:hover{
     color: white !important;
     cursor: pointer;
 }
-.serviceManagementInformationTitle{
+.subscriptionManagementInformationTitle{
     margin-top: 20px;
     padding: 0 25px;
     display: flex;
@@ -60,45 +60,45 @@ nav .sidebar {
     justify-content: space-between;
     align-items: center;
 }
-.serviceManagementInformationTitle span{
+.subscriptionManagementInformationTitle span{
     border: solid 1px #dcdcdc;
     padding: 8px 25px;
     border-radius: 17px;
 }
-.serviceManagementInformationTitle span:hover{
+.subscriptionManagementInformationTitle span:hover{
     cursor: pointer;
     background-color: #dcdcdc;
     transition: all 300ms;
 }
-.serviceManagementContainer .serviceManagementInformationBox{
+.subscriptionManagementContainer .subscriptionManagementInformationBox{
     margin-top: 15px;
     display: flex;
     flex-direction: row;
     gap: 20px;
 }
-.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox{
+.subscriptionManagementContainer .subscriptionManagementInformationBox .subscriptionManagementInformationInnerBox{
     width: 100%;
     border: solid 1px #c4c4c4;
     border-radius: 27px;
     padding: 15px 25px;
 }
-.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox p{
+.subscriptionManagementContainer .subscriptionManagementInformationBox .subscriptionManagementInformationInnerBox p{
     color: #6b6b6b;
 }
-.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox .serviceManagementInformationInnerBoxIcon{
+.subscriptionManagementContainer .subscriptionManagementInformationBox .subscriptionManagementInformationInnerBox .subscriptionManagementInformationInnerBoxIcon{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox .serviceManagementInformationInnerBoxIcon span{
+.subscriptionManagementContainer .subscriptionManagementInformationBox .subscriptionManagementInformationInnerBox .subscriptionManagementInformationInnerBoxIcon span{
     padding: 4px 30px;
     border-radius: 100px;
     background: var(--notify);
     color: var(--notify-strong);
     font-weight: 600;
 }
-.serviceManagementContainer .serviceManagementInformationBox .serviceManagementInformationInnerBox h2{
+.subscriptionManagementContainer .subscriptionManagementInformationBox .subscriptionManagementInformationInnerBox h2{
     font-size: 30px;
     margin-top: 0px;
 }

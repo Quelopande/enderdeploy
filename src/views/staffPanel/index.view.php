@@ -12,7 +12,7 @@
         <h2><a href="/staffPanel" style="text-decoration: none;">StaffPanel</a></h2>
         <div>
             <a href="/staffPanel/tickets">Tickets</a>
-            <a href="/staffPanel/services">Servicios</a>
+            <a href="/staffPanel/subscriptions">Servicios</a>
             <a href="/staffPanel/users">Usuarios</a>
         </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="fastLinks">
         <h2>Enlaces rápidos</h2>
         <a href="/staffPanel/tickets">Tickets</a>
-        <a href="/staffPanel/services">Servicios</a>
+        <a href="/staffPanel/subscriptions">Servicios</a>
         <a href="/staffPanel/users">Usuarios</a>
         <a href="/staffPanel/stats">Estadísticas</a>
     </div>

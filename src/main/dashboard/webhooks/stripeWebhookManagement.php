@@ -59,7 +59,7 @@ switch ($event->type) {
         }
 
         $userId = $session->metadata->userId;
-        $serviceName = $session->metadata->serviceName;
+        $subscriptionName = $session->metadata->subscriptionName;
         $serviceId = $session->metadata->serviceId;
         $expirationTime = gmdate('Y-m-d H:i:s', $subscription->current_period_end);
         $startTime = date('Y-m-d H:i:s', $subscription->current_period_start);
@@ -71,7 +71,7 @@ switch ($event->type) {
             ':subscriptionStatus' => $subscription->status,
             ':subscriptionExpirationTime' => $expirationTime,
             ':subscriptionStartTime' => $startTime,
-            ':subscriptionName' => $serviceName,
+            ':subscriptionName' => $subscriptionName,
             ':serviceId' => $serviceId
             ]);
         } catch (PDOException $e) {

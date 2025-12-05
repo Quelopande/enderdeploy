@@ -9,16 +9,16 @@ $stripe = new \Stripe\StripeClient($stripeSecret);
 try {
     $billingPortalSession = $stripe->billingPortal->sessions->create([
         'customer' => $result['stripeCustomerId'],
-        'return_url' => 'https://www.rendercores.com/dashboard/serviceManagement?' . $_SERVER['QUERY_STRING'],
+        'return_url' => 'https://www.rendercores.com/dashboard/subscriptionManagement?' . $_SERVER['QUERY_STRING'],
     ]);
     $billingPortalSessionLink = $billingPortalSession->url;
 } catch (\Stripe\Exception\ApiErrorException $e) {
-    error_log("serviceManagement (1): Error while creating the billing portal" . $e->getMessage());
-    $billingPortalSessionLink = '/dashboard/services'; 
+    error_log("subscriptionManagement (1): Error while creating the billing portal" . $e->getMessage());
+    $billingPortalSessionLink = '/dashboard/subscriptions'; 
 }
 
 if(!$_GET['subscriptionId']){
-    header('Location: /dashboard/services');
+    header('Location: /dashboard/subscriptions');
 } else{
     $subscriptionId = htmlspecialchars(trim($_GET['subscriptionId']), ENT_QUOTES, 'UTF-8');
 }
@@ -36,7 +36,7 @@ function getServiceData($serviceIdToObtain, $dataToObtain, $connection){
 }
 
 if(!$subscriptionResult){
-    header('Location: /dashboard/services');
+    header('Location: /dashboard/subscriptions');
 }
 
 $dateString = $subscriptionResult['subscriptionExpirationTime'];
@@ -70,7 +70,7 @@ $showBtn = false;
 try {
     $stripeSubscription = $stripe->subscriptions->retrieve($subscriptionResult['subscriptionStripeId']);
 } catch (\Stripe\Exception\ApiErrorException $e) {
-    error_log("serviceManagement (2): Error when trying to get subscription data directly from Stripe" . $e->getMessage());
+    error_log("subscriptionManagement (2): Error when trying to get subscription data directly from Stripe" . $e->getMessage());
     $stripeStatus = 'error'; 
     exit; 
 }
@@ -130,11 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionStatusUpda
             $stripe->subscriptions->update($subscriptionResult['subscriptionStripeId'], [
                 'cancel_at_period_end' => false,
             ]);
-            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&success=reactivated');
+            header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&success=reactivated');
             exit;
 
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            error_log("serviceManagement (4): Error al intentar reactivar la cancelación programada: " . $e->getMessage());
+            error_log("subscriptionManagement (4): Error al intentar reactivar la cancelación programada: " . $e->getMessage());
             header('Location: /checkout/new-subscription');
             exit;
         }
@@ -143,11 +143,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionStatusUpda
             $stripe->subscriptions->update($subscriptionResult['subscriptionStripeId'], [
                 'cancel_at_period_end' => true,
             ]);
-            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&status=cancel_scheduled');
+            header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&status=cancel_scheduled');
             exit;
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            error_log("serviceManagement (3): Error al programar la cancelación en Stripe: " . $e->getMessage());
-            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&error=stripe_api_cancel_fail');
+            error_log("subscriptionManagement (3): Error al programar la cancelación en Stripe: " . $e->getMessage());
+            header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&error=stripe_api_cancel_fail');
             exit;
         }
     }
@@ -165,22 +165,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionStatusUpda
                 ],
                 'proration_behavior' => 'always_invoice',
             ]);
-            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&status=plan_updated');
+            header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&status=plan_updated');
             exit;
 
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            error_log("serviceManagement (6): Error al cambiar el plan en Stripe: " . $e->getMessage());
-            header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&error=plan_update_fail');
+            error_log("subscriptionManagement (6): Error al cambiar el plan en Stripe: " . $e->getMessage());
+            header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&error=plan_update_fail');
             exit;
         }
     }
-    header('Location: /dashboard/serviceManagement?subscriptionId=' . $subscriptionId);
+    header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId);
     exit;
 }
 
 if($subscriptionResult['serviceId'] !== 3){
     $plans = [
-        // When modifying this ensure also to modify it in services, there's no need to set planId 1 because user cannot downgrade
+        // When modifying this ensure also to modify it in subscriptions, there's no need to set planId 1 because user cannot downgrade
         [
             'planId' => '2',
             'price' => 799,
@@ -269,7 +269,7 @@ if($subscriptionResult['serviceId'] === 2){
 
 if (isset($_SESSION['id'])){
     if($result['status'] === 'verified'){
-        require_once APP_ROOT . 'src/views/dashboard/serviceManagement.view.php';
+        require_once APP_ROOT . 'src/views/dashboard/subscriptionManagement.view.php';
     } else{
         require_once APP_ROOT . 'src/views/dashboard/notVerified.view.php';
     }

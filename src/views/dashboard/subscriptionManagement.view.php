@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="EnderDeploy - Service Management">
+    <meta name="twitter:title" content="EnderDeploy - Subscription Management">
     <meta name="twitter:image" content="/assets/img/logo.png">
     <!-- Facebook & discord -->
     <meta property="og:locale" content="es"/>
     <meta property="og:site_name" content="©RenderCores"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:title" content="EnderDeploy - Service Management"/>
+    <meta property="og:title" content="EnderDeploy - Subscription Management"/>
     <meta property="og:url" content="https://rendercores.com"/>
     <meta property="og:image" content="/assets/img/logo.png"/>
     <meta property="og:image:width" content="540"/>
     <meta property="og:image:height" content="520"/>
-    <title>Enderdeploy - Service Management</title>
+    <title>Enderdeploy - Subscription Management</title>
     <link rel="website icon" type="ico" href="/assets/img/logo.ico">
     <link rel="stylesheet" href="/assets/styles/menu.css">
     <link rel="stylesheet" href="/assets/styles/modal.css">
     <link rel="stylesheet" href="/assets/styles/dashboard/components/pricingTable.css">
-    <link rel="stylesheet" href="/assets/styles/dashboard/serviceManagement.css">
+    <link rel="stylesheet" href="/assets/styles/dashboard/subscriptionManagement.css">
     <script src="/assets/js/menu.js" defer></script>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" rel="stylesheet"/>
 </head>
@@ -29,30 +29,30 @@
     <?php require "menutemplate.view.php";?>
     <main class="separate">
         <div class="serverStatus separate"><i class="fa-solid fa-leaf"></i> Todos nuestros servicios estan funcionales, disfruta sin problemas</div>
-        <div class="serviceManagementContainer separate">
-            <div class="serviceManagementBox">
+        <div class="subscriptionManagementContainer separate">
+            <div class="subscriptionManagementBox">
                 <h3>Plan y Billing</h3>
                 <div>
                     <?php if($showBtn === true): ?><a id="displayModal" style="--btn: <?php echo htmlspecialchars($btnColor) ?>; --btn-hover: <?php echo htmlspecialchars($btnSecColor) ?>;"><?php echo htmlspecialchars($btnTxt) ?> plan</a> <?php endif; ?>
                     <a href="<?php echo htmlspecialchars($billingPortalSessionLink)?>" style="--btn: #ffffff; --btn-hover: #d4d4d4;">Panel de facturación</a>
                 </div>
             </div>
-            <div class="serviceManagementInformationTitle">
+            <div class="subscriptionManagementInformationTitle">
                 <h3>Plan Actual</h3>
                 <?php if($subscriptionResult['serviceId'] !== 3): ?>
-                <a href="<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId . '&changePlan=1'); ?>" style="all: unset;"><span>Cambiar plan</span></a>
+                <a href="<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&changePlan=1'); ?>" style="all: unset;"><span>Cambiar plan</span></a>
                 <?php endif; ?>
             </div>
-            <div class="serviceManagementInformationBox">
-                <div class="serviceManagementInformationInnerBox">
-                    <div class="serviceManagementInformationInnerBoxIcon">
+            <div class="subscriptionManagementInformationBox">
+                <div class="subscriptionManagementInformationInnerBox">
+                    <div class="subscriptionManagementInformationInnerBoxIcon">
                         <p>Plan Mensual</p>
                         <span style="--notify: <?php echo htmlspecialchars($notifyColor) ?>; --notify-strong: <?php echo htmlspecialchars($notifySecColor) ?>;">◉ <?php echo htmlspecialchars($notifyTxt) ?></span>
                     </div>
                     <h2><?php echo htmlspecialchars(getServiceData($subscriptionResult['serviceId'], 'serviceName', $connection)) ?> / mes</h2>      
                 </div> 
-                <div class="serviceManagementInformationInnerBox">
-                    <div class="serviceManagementInformationInnerBoxIcon">
+                <div class="subscriptionManagementInformationInnerBox">
+                    <div class="subscriptionManagementInformationInnerBoxIcon">
                         <p>Próximo ciclo de facturación</p>
                     </div>
                     <h2><?php echo htmlspecialchars($formattedDate) ?></h2>      
@@ -62,7 +62,7 @@
     </main>
     <div class="modal" id="modal">
         <?php if($stripeStatus === 'active'): ?>
-        <form action="<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>" method="post" name="subscriptionStatusUpdateBtn">
+        <form action="<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId); ?>" method="post" name="subscriptionStatusUpdateBtn">
             <h1><?php echo htmlspecialchars($btnTxt) ?> plan</h1>
             <p>Esto es un panel para verificar y autorificar que va a <span style="text-transform: lowercase;"><?php echo htmlspecialchars($btnTxt) ?></span> su plan.</p>
             <div>
@@ -83,7 +83,7 @@
     </div>
     <?php if($_GET['changePlan'] == 1): ?>
         <div class="modal" style="display: block !important;">
-            <form action="<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>" method="post" name="subscriptionStatusUpdateBtn">
+            <form action="<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId); ?>" method="post" name="subscriptionStatusUpdateBtn">
                 <h1>Mejorar plan</h1>
                 <section class="pricingTable">
                     <?php foreach ($plans as $plan):?>
@@ -106,12 +106,12 @@
                     <?php endforeach; ?>
                 </section>
                 <div>
-                    <button onclick="window.location='<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>';">Cancelar</button>
+                    <button onclick="window.location='<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId); ?>';">Cancelar</button>
                     <button type="submit" name="subscriptionPlanUpdateBtn" style="--btn: #c2ffbc; --btn-hover: #0c9100;">Mejorar plan</button>
                 </div>
             </form>
         </div>
-        <div class="overlay" style="display: block !important;" onclick="window.location='<?php echo htmlspecialchars('/dashboard/serviceManagement?subscriptionId=' . $subscriptionId); ?>';"></div>
+        <div class="overlay" style="display: block !important;" onclick="window.location='<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId); ?>';"></div>
     <?php endif; ?>
     <div class="overlay" id="overlay"></div>
     <script>
