@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$subscriptionsStatement = $connection->prepare('SELECT * FROM subscriptions WHERE userId = :userId');
+$subscriptionsStatement = $connection->prepare('SELECT * FROM subscriptions WHERE userId = :userId ORDER BY FIELD(subscriptionStatus, "active", "suspended", "canceled"), subscriptionStartTime DESC');
 $subscriptionsStatement->execute(array(':userId' => $id));
 $subscriptions = $subscriptionsStatement->fetchAll(PDO::FETCH_ASSOC);
 

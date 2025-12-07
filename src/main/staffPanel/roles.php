@@ -7,7 +7,6 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-$id = $_SESSION['id'];
 $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
 $statement->execute([':id' => $id]);
 $result = $statement->fetch();

@@ -19,14 +19,26 @@
     <?php if(isset($_GET['userId'])): ?>
         <h1>Servicios del usuario <?php htmlspecialchars($_GET['userId']); ?></h1>
         <?php foreach($subscriptionsResult as $subscription): ?>
-            <a href="/staffPanel/subscriptionManagement?<?php echo htmlspecialchars();?>" class="subscriptionCard">
-
+            <a href="/staffPanel/subscriptionManagement?subscriptionId=<?php echo htmlspecialchars($subscription['subscriptionId']);?>" class="subscriptionCard">
+                <h2><?php echo htmlspecialchars($subscription['subscriptionName']);?></h2>
+                <p><b>Estado:</b> <?php echo htmlspecialchars($subscription['subscriptionStatus']);?></p>
+                <p><b>Fecha de finalización:</b> <?php echo htmlspecialchars($subscription['subscriptionExpirationTime']);?></p>
             </a>
         <?php endforeach; ?>
     <?php else: ?>
-        <h1>Buscar servicios de un usuario</h1>
+        <h2>Buscar servicios de un usuario</h2>
         <form action="<?php echo htmlspecialchars('/staffPanel/subscriptions'); ?>" method="get">
             <input type="text" name="userId" placeholder="ID del usuario" required>
+            <button type="submit">Buscar</button>
+        </form>
+        <h2>Buscar un servicio por ID interna</h2>
+        <form action="<?php echo htmlspecialchars('/staffPanel/subscriptionManagement'); ?>" method="get">
+            <input type="text" name="subscriptionId" placeholder="ID interna de la subcripción" required>
+            <button type="submit">Buscar</button>
+        </form>
+        <h2>Buscar un servicio por ID de Stripe</h2>
+        <form action="<?php echo htmlspecialchars('/staffPanel/subscriptionManagement'); ?>" method="get">
+            <input type="text" name="subscriptionStripeId" placeholder="ID de Stripe de la subcripción" required>
             <button type="submit">Buscar</button>
         </form>
     <?php endif; ?>

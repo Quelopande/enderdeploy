@@ -1,18 +1,24 @@
 <?php
-$id = $_SESSION['id'];
-if (isset($_SESSION['id'])) {
-    $statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
-    $statement->execute(array(':id' => $id));
-    $result = $statement->fetch();
+$statement = $connection->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
+$statement->execute(array(':id' => $id));
+$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($result['role'] != -1) {
-        require_once APP_ROOT . 'src/views/staffPanel/subscriptionManagement.view.php';
-    } else {
-        header("HTTP/1.0 403 Forbidden");
-        require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
-        exit();
-    }
+$roleStatement = $connection->prepare('SELECT * FROM roles WHERE roleId = :roleId LIMIT 1');
+$roleStatement->execute(array(':roleId' => $result['role']));
+$roleResult = $roleStatement->fetch(PDO::FETCH_ASSOC);
+
+if ($result['role'] != -1 && ($roleResult['viewSubscriptionData'] == 1 OR $roleResult['manageSubscription'] == '1')) {
+    $subscriptionId = htmlspecialchars(trim((int)$_GET['subscriptionId']), ENT_QUOTES, 'UTF-8');
+
+    $subscriptionStatement = $connection->prepare('SELECT * FROM subscriptions WHERE subscriptionId = :subscriptionId');
+    $subscriptionStatement->execute(array(':subscriptionId' => $subscriptionId));
+    $subscriptionResult = $subscriptionStatement->fetch(PDO::FETCH_ASSOC);
+    
+
+
+    require_once APP_ROOT . 'src/views/staffPanel/subscriptionManagement.view.php';
 } else {
-    header('Location: ../auth/signin');
-    exit;
+    header("HTTP/1.0 403 Forbidden");
+    require_once APP_ROOT . 'src/main/staffPanel/noAccess.php';
+    exit();
 }
