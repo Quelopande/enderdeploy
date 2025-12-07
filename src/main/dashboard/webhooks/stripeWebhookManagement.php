@@ -74,6 +74,8 @@ switch ($event->type) {
             ':subscriptionName' => $subscriptionName,
             ':serviceId' => $serviceId
             ]);
+
+            error_log("[" . date('Y-m-d H:i:s') . "] stripeWebhookManagement (LOG 1)[checkout.session.completed]: New subscription created with the Stripe ID " . $subscription->id . PHP_EOL, 3, APP_ROOT . "storage/logs/webhooksLogs-" . $actualMonth . "-" . $actualYear . ".log");
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (1): Error while trying to insert the stripe Subscription details in DB " . $e->getMessage());
         }
@@ -106,6 +108,8 @@ switch ($event->type) {
                 ':subscriptionStripeId' => $subscription->id,
                 ':serviceId' => $serviceResult['serviceId']
             ]);
+
+            error_log("[" . date('Y-m-d H:i:s') . "] stripeWebhookManagement (LOG 2)[customer.subscription.updated]: A subscription was updated with the Stripe ID " . $subscription->id . PHP_EOL, 3, APP_ROOT . "storage/logs/webhooksLogs-" . $actualMonth . "-" . $actualYear . ".log");
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (3): Error while trying to update status" . $e->getMessage());
         }
@@ -126,6 +130,8 @@ switch ($event->type) {
                 ':subscriptionExpirationTime' => $expirationTime,
                 ':subscriptionStripeId' => $subscription->id
             ]);
+            
+            error_log("[" . date('Y-m-d H:i:s') . "] stripeWebhookManagement (LOG 3)[invoice.payment_succeeded]: A subcription was updated because the invoice succeeded, with the Stripe ID " . $subscription->id . PHP_EOL, 3, APP_ROOT . "storage/logs/webhooksLogs-" . $actualMonth . "-" . $actualYear . ".log");
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (4): Error while trying to renovate the subscription" . $e->getMessage());
         }
@@ -146,6 +152,8 @@ switch ($event->type) {
                 ':subscriptionExpirationTime' => $expirationTime,
                 ':subscriptionStripeId' => $subscription->id
             ]);
+
+            error_log("[" . date('Y-m-d H:i:s') . "] stripeWebhookManagement (LOG 4)[invoice.payment_failed]: A subcription was updated because the invoice failed, with the Stripe ID " . $subscription->id . PHP_EOL, 3, APP_ROOT . "storage/logs/webhooksLogs-" . $actualMonth . "-" . $actualYear . ".log");
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (5): Error while trying to renovate the subscription" . $e->getMessage());
         }
@@ -159,12 +167,11 @@ switch ($event->type) {
                 ':subscriptionStatus' => $subscription->status, // Must be 'canceled'
                 ':subscriptionStripeId' => $subscription->id
             ]);
+
+            error_log("[" . date('Y-m-d H:i:s') . "] stripeWebhookManagement (LOG 5)[invoice.payment_failed]: A subcription was deleted with the Stripe ID " . $subscription->id . PHP_EOL, 3, APP_ROOT . "storage/logs/webhooksLogs-" . $actualMonth . "-" . $actualYear . ".log");
         } catch (PDOException $e) {
             error_log("stripeWebhookManagement (5): Error while trying to renovate the subscription" . $e->getMessage());
         }
-        break;
-    case 'customer.created':
-        $customer = $event->data->object;
         break;
     default:
         echo 'Received unknown event type ' . $event->type;

@@ -35,7 +35,7 @@
     <div style="display: flex; flex-direction: row; gap: 10px; margin-top: 20px; justify-content: center;">
         <a href="/dashboard">Dashboard</a>
         <a href="/dashboard/support">Soporte</a>
-        <a href="/dashboard/services">Servicios</a>
+        <a href="/dashboard/subscriptions">Servicios</a>
     </div>
 </body>
 </html>
