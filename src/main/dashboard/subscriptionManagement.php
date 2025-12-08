@@ -9,7 +9,7 @@ $stripe = new \Stripe\StripeClient($stripeSecret);
 if(!$_GET['subscriptionId']){
     header('Location: /dashboard/subscriptions');
 } else{
-    $subscriptionId = htmlspecialchars(trim((int)$_GET['subscriptionId']), ENT_QUOTES, 'UTF-8');
+    $subscriptionId = (int)$_GET['subscriptionId'];
 }
 
 $subscriptionStatement = $connection->prepare('SELECT * FROM subscriptions WHERE subscriptionId = :subscriptionId LIMIT 1');
@@ -24,7 +24,7 @@ if($id == $subscriptionResult['userId']){
         ]);
         $billingPortalSessionLink = $billingPortalSession->url;
     } catch (\Stripe\Exception\ApiErrorException $e) {
-        error_log("subscriptionManagement (1): Error while creating the billing portal" . $e->getMessage());
+        error_log("dashboard/subscriptionManagement (1): Error while creating the billing portal" . $e->getMessage());
         $billingPortalSessionLink = '/dashboard/subscriptions'; 
     }
 
@@ -71,7 +71,7 @@ if($id == $subscriptionResult['userId']){
     try {
         $stripeSubscription = $stripe->subscriptions->retrieve($subscriptionResult['subscriptionStripeId']);
     } catch (\Stripe\Exception\ApiErrorException $e) {
-        error_log("subscriptionManagement (2): Error when trying to get subscription data directly from Stripe" . $e->getMessage());
+        error_log("dashboard/subscriptionManagement (2): Error when trying to get subscription data directly from Stripe" . $e->getMessage());
         $stripeStatus = 'error'; 
         exit; 
     }
@@ -135,7 +135,7 @@ if($id == $subscriptionResult['userId']){
                 exit;
 
             } catch (\Stripe\Exception\ApiErrorException $e) {
-                error_log("subscriptionManagement (4): Error al intentar reactivar la cancelación programada: " . $e->getMessage());
+                error_log("dashboard/subscriptionManagement (3): Error al intentar reactivar la cancelación programada: " . $e->getMessage());
                 header('Location: /checkout/new-subscription');
                 exit;
             }
@@ -147,14 +147,14 @@ if($id == $subscriptionResult['userId']){
                 header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&status=cancel_scheduled');
                 exit;
             } catch (\Stripe\Exception\ApiErrorException $e) {
-                error_log("subscriptionManagement (3): Error al programar la cancelación en Stripe: " . $e->getMessage());
+                error_log("dashboard/subscriptionManagement (4): Error al programar la cancelación en Stripe: " . $e->getMessage());
                 header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&error=stripe_api_cancel_fail');
                 exit;
             }
         }
     } else if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['subscriptionPlanUpdateBtn'])) {
-        $newServiceId = htmlspecialchars(trim($_POST['selectedPlan']), ENT_QUOTES, 'UTF-8');
-        if($subscriptionResult['serviceId'] < $newServiceId){
+        $newServiceId = (int)$_POST['selectedPlan'];
+        if($subscriptionResult['serviceId'] < $newServiceId && $stripeStatus !== 'canceled'){
             $priceId = getServiceData($newServiceId, 'priceId', $connection); 
             try {
                 $stripe->subscriptions->update($subscriptionResult['subscriptionStripeId'], [
@@ -170,7 +170,7 @@ if($id == $subscriptionResult['userId']){
                 exit;
 
             } catch (\Stripe\Exception\ApiErrorException $e) {
-                error_log("subscriptionManagement (6): Error al cambiar el plan en Stripe: " . $e->getMessage());
+                error_log("dashboard/subscriptionManagement (5): Error al cambiar el plan en Stripe: " . $e->getMessage());
                 header('Location: /dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&error=plan_update_fail');
                 exit;
             }
@@ -181,7 +181,7 @@ if($id == $subscriptionResult['userId']){
 
     if($subscriptionResult['serviceId'] !== 3){
         $plans = [
-            // When modifying this ensure also to modify it in subscriptions, there's no need to set planId 1 because user cannot downgrade
+            // When modifying this ensure also to modify it in subscriptions and staffPanel, there's no need to set planId 1 because user cannot downgrade
             [
                 'planId' => '2',
                 'price' => 799,

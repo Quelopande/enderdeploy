@@ -46,6 +46,33 @@
             </div>
         </div>
         <div class="editableSection">
+            <h2>Información editable</h2>
+            <p>Estos datos se obtienen directamente desde Stripe y/o DB, cualquier cambio realizado aquí afectará directamente al servicio del usuario.</p>
+            <div class="editableData">
+                <div>
+                    <h3>Estado (Stripe)</h3>
+                    <p><?php echo htmlspecialchars($notifyTxt); ?></p>
+                    <form action="<?php echo htmlspecialchars('/staffPanel/subscriptionManagement' . '?' . $_SERVER['QUERY_STRING']);?>" method="POST">
+                        <?php if($showBtn === true): ?><button type="submit" name="subscriptionStatusUpdateBtn"><?php echo htmlspecialchars($btnTxt) ?> plan</button> <?php endif; ?>
+                    </form>
+                </div>
+                <div>
+                    <h3>Plan Actual (DB)</h3>
+                    <p><?php echo htmlspecialchars(getServiceData($subscriptionResult['serviceId'], 'priceId', $connection) . " - " . getServiceData($subscriptionResult['serviceId'], 'serviceName', $connection)); ?></p>
+                    <?php if($subscriptionResult['serviceId'] !== 3): ?>
+                    <form action="<?php echo htmlspecialchars('/staffPanel/subscriptionManagement' . '?' . $_SERVER['QUERY_STRING']);?>" method="POST">
+                        <select>
+                            <?php foreach($plans as $plan): ?>
+                                <option value="<?php echo htmlspecialchars($plan[$planId]); ?>">
+                                    <?php echo htmlspecialchars($plan['planId'] . " - " . $plan['price'] . " MXN");?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" name="subscriptionPlanUpdateBtn">Upgradear plan</button>
+                    </form>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
 </body>

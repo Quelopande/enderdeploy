@@ -9,7 +9,7 @@ $roleResult = $roleStatement->fetch(PDO::FETCH_ASSOC);
 
 if ($result['role'] != -1 && ($roleResult['viewSubscriptionData'] == 1 OR $roleResult['manageSubscription'] == '1')) {
     $subscriptionsStatement = $connection->prepare('SELECT * FROM subscriptions WHERE userId = :userId ORDER BY FIELD(subscriptionStatus, "active", "suspended", "canceled"), subscriptionStartTime DESC');
-    $subscriptionsStatement->execute(array(':userId' => htmlspecialchars(trim((int)$_GET['userId']), ENT_QUOTES, 'UTF-8')));
+    $subscriptionsStatement->execute(array(':userId' => (int)$_GET['userId']));
     $subscriptionsResult = $subscriptionsStatement->fetchAll(PDO::FETCH_ASSOC);
 
     require_once APP_ROOT . 'src/views/staffPanel/subscriptions.view.php';

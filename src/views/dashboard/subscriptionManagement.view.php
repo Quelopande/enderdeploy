@@ -39,7 +39,7 @@
             </div>
             <div class="subscriptionManagementInformationTitle">
                 <h3>Plan Actual</h3>
-                <?php if($subscriptionResult['serviceId'] !== 3): ?>
+                <?php if($subscriptionResult['serviceId'] !== 3 && $stripeStatus !== 'canceled'): ?>
                 <a href="<?php echo htmlspecialchars('/dashboard/subscriptionManagement?subscriptionId=' . $subscriptionId . '&changePlan=1'); ?>" style="all: unset;"><span>Cambiar plan</span></a>
                 <?php endif; ?>
             </div>
