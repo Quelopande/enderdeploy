@@ -24,5 +24,8 @@
 </head>
 <body data-page-id="1">
     <?php require "menutemplate.view.php";?>
+    <main>
+        <?php echo htmlspecialchars($result['user']); ?>
+    </main>
 </body>
 </html>

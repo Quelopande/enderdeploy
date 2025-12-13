@@ -42,6 +42,8 @@ if (empty($path) || $path === '/' || $path === '/index') {
     $path = '/dashboard/index';
 } else if ($path === '/staffPanel') {
     $path = '/staffPanel/index';
+} else if ($path === '/auth') {
+    $path = '/auth/signin';
 }
 
 // staff panel only shows up when the path starts with /staffPanel and not with /staffpanel
@@ -57,13 +59,12 @@ if (strpos($path, '/dashboard') === 0 || strpos($path, '/staffPanel') === 0) {
 } else if(strpos($path, '/auth') === 0){
     $dotenv->safeLoad();
     require_once APP_ROOT . 'src/config/connection.php';
+} else if(strpos($path, '/api') === 0){
+    $dotenv->safeLoad();
+    require_once APP_ROOT . 'src/config/connection.php';
 }
 
-if (strpos($path, '/auth') === 0) {
-    $target_file = APP_ROOT . 'src/main' . $path . '.php';
-} else if (strpos($path, '/dashboard') === 0) {
-    $target_file = APP_ROOT . 'src/main' . $path . '.php';
-} else if (strpos($path, '/staffPanel') === 0) {
+if (strpos($path, '/auth') === 0 || strpos($path, '/api') === 0 || strpos($path, '/staffPanel') === 0 || strpos($path, '/dashboard') === 0) {
     $target_file = APP_ROOT . 'src/main' . $path . '.php';
 } else {
     $target_file = APP_ROOT . 'src/main/pages' . $path . '.php';
