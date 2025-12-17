@@ -1,0 +1,166 @@
+nav .sidebar {
+    margin-top: -10px !important;
+}
+
+
+
+
+/* ===============================
+   WELCOME TEXT
+================================ */
+.dashboard .welcome{
+    margin-top: 100px;
+    padding: 10px;
+    color: #000000;
+    text-align: left;
+    font-family: "Funnel Display", serif;
+    
+}
+
+
+/* ===============================
+   container  TEXT
+================================ */
+.dashboard .containers{
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    font-family: "Funnel Display", serif;
+    font-size: 30px;
+    padding: 0px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+
+}
+
+/* ===============================
+   MAIN CONTAINER
+================================ */
+.dashboard {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+
+/* ===============================
+   ACTION BUTTONS
+================================ */
+.dashboard .dashboard__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #D9D9D9;
+  padding: 4px 0;
+  border-radius: 15px;
+  
+}
+
+.dashboard .action-btn {
+  display: inline-flex; 
+  align-items: center;
+  gap: 10px;
+  padding: 10px clamp(16px, 4vw, 50px);
+  background-color: #e5e7eb;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #000000;              
+  text-decoration: none;      
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: "Funnel Display", serif;
+  
+}
+
+.action-btn:hover {
+  background-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.action-btn i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.1rem;
+}
+
+/* ===============================
+   CARD / TABLE CONTAINER
+================================ */
+.card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+/* ===============================
+   TABLE STYLES
+================================ */
+.dashboard .table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+  font-family: "Funnel Display", serif;
+  margin-right: 20px;
+}
+
+.table thead {
+  background-color: #D9D9D9;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.table th {
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.table td {
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+
+.table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .dashboard__actions {
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .dashboard .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  
+}
+
+
+.dashboard__actions {
+  list-style: none;
+}
+
+
