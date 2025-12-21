@@ -31,7 +31,7 @@
         <section class = "dashboard">
             <div class="dashboardContent">
                 <div class="welcome">
-                    ¡Bienvenido de vuelta <?php echo ucfirst(htmlspecialchars($result['user'], ENT_QUOTES, 'UTF-8')) ?>!
+                    ¡Bienvenido de vuelta <?php echo ucfirst(htmlspecialchars($result['user'], ENT_QUOTES, 'UTF-8')); ?>!
                 </div>
                 <div class ="dashboardActions">
                     <a href="/dashboard/support" class="actionBtn">
@@ -59,12 +59,12 @@
                                 <th>Contenedor</th>
                                 <th>Estado Actual</th>
                                 <th>Fecha de Inicio</th>
-                                <th>Fecha de Expiración</th>
+                                <th>Próxima Facturación</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            // Get data from index.php
+                            // Get data from dashboard/index.php
                             $containers = $subscriptions;
                             
                             if (empty($containers)) {
