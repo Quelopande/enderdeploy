@@ -26,10 +26,7 @@ nav .sidebar {
     align-items: center;
     font-family: 'Poppins', sans-serif;
     font-size: 30px;
-
-
 }
-
 /* ===============================
    MAIN CONTAINER
 ================================ */
@@ -41,7 +38,7 @@ section.dashboard {
   border-radius: 26px;
 
 }
-.dashboard__content {
+.dashboard .dashboardContent {
   width: 100%;
   padding: 20px 40px 50px;
   box-sizing: border-box;
@@ -51,7 +48,7 @@ section.dashboard {
 /* ===============================
    ACTION BUTTONS
 ================================ */
-.dashboard .dashboard__actions {
+.dashboard .dashboardActions {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -62,7 +59,7 @@ section.dashboard {
   
 }
 
-.dashboard .action-btn {
+.dashboard .actionBtn {
   display: inline-flex; 
   align-items: center;
   gap: 10px;
@@ -80,12 +77,12 @@ section.dashboard {
   
 }
 
-.action-btn:hover {
+.actionBtn:hover {
   background-color: #d1d5db;
   transform: translateY(-2px);
 }
 
-.action-btn i {
+.actionBtn i {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,16 +90,7 @@ section.dashboard {
   font-size: 1.1rem;
 }
 
-/* ===============================
-   CARD / TABLE CONTAINER
-================================ */
-.card {
-  border-radius: 18px;
-  padding: 6px;
-  overflow-x: auto;
-  font-family: 'Poppins', sans-serif;
- 
-}
+
 
 /* ===============================
    TABLE STYLES
@@ -144,12 +132,12 @@ section.dashboard {
    RESPONSIVE
 ================================ */
 @media (max-width: 768px) {
-  .dashboard__actions {
+  .dashboard .dashboardActions {
     flex-direction: column;
     padding: 12px;
   }
 
-  .dashboard .action-btn {
+  .dashboard .actionBtn {
     width: 100%;
     justify-content: center;
   }
@@ -158,7 +146,7 @@ section.dashboard {
 }
 
 
-.dashboard__actions {
+.dashboardActions {
   list-style: none;
 }
 
